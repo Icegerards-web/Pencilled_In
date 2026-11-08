@@ -71,6 +71,10 @@ final class PlannerViewController: UIViewController, WKScriptMessageHandlerWithR
             presentFolderPicker(reply: replyHandler)
             return
         }
+        if cmd == "net.fetch" {
+            fetchText(body["url"] as? String, reply: replyHandler)
+            return
+        }
 
         let store = self.store
         queue.async {
@@ -97,6 +101,37 @@ final class PlannerViewController: UIViewController, WKScriptMessageHandlerWithR
                 if let failureMessage = failureMessage { replyHandler(nil, failureMessage) } else { replyHandler(result, nil) }
             }
         }
+    }
+
+    // MARK: - Downloading a calendar link (the page itself can't, because school servers don't allow it from web pages)
+
+    private func fetchText(_ raw: String?, reply: @escaping (Any?, String?) -> Void) {
+        var link = (raw ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+        if link.lowercased().hasPrefix("webcal://") {
+            link = "https://" + String(link.dropFirst("webcal://".count))
+        }
+        guard let url = URL(string: link), let scheme = url.scheme?.lowercased(), scheme == "https" || scheme == "http" else {
+            reply(nil, "That doesn't look like a calendar link.")
+            return
+        }
+        var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 30)
+        request.setValue("text/calendar, */*", forHTTPHeaderField: "Accept")
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            var text: String?
+            var failure: String?
+            if let error = error {
+                failure = error.localizedDescription
+            } else if let http = response as? HTTPURLResponse, !(200...299).contains(http.statusCode) {
+                failure = "The calendar server answered with error \(http.statusCode)."
+            } else if let data = data {
+                text = String(data: data, encoding: .utf8) ?? String(data: data, encoding: .isoLatin1)
+            }
+            let body = text
+            let message = failure ?? (body == nil ? "The calendar couldn't be read." : nil)
+            DispatchQueue.main.async {
+                if let message = message { reply(nil, message) } else { reply(body, nil) }
+            }
+        }.resume()
     }
 
     // MARK: - Choosing the iCloud folder

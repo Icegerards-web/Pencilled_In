@@ -391,6 +391,83 @@ svg.i{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-widt
 .empty-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:4px}
 .empty-actions .btn{margin-top:0}
 
+/* ---------- side panel tabs ---------- */
+.side-tabs button{height:34px;padding:0 11px;font-size:13.5px}
+.tab-count{font-size:11.5px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+.side-tabs button[aria-pressed="true"] .tab-count{color:var(--primary)}
+.td-head{padding:10px 8px 8px 10px}
+.side-body{display:flex;flex-direction:column;flex:1;min-height:0}
+.count.late{background:var(--now);color:#fff}
+
+/* ---------- deadlines ---------- */
+.dl-add{display:flex;flex-direction:column;gap:6px;padding:4px 12px 10px}
+.dl-add-row{display:flex;gap:6px}
+.dl-add-row .ps-input{min-width:0}
+.dl-add-row #dlTitle{flex:1}
+.dl-add-row #dlDate{flex:1.5}
+.dl-add-row #dlTime{flex:1}
+.dl-add .btn{height:44px;width:44px;flex:none}
+.dl-group{list-style:none;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);padding:12px 8px 4px}
+.dl-group:first-child{padding-top:2px}
+.dl-group.late{color:var(--now)}
+.dl-item{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:6px 6px 6px 8px;border-radius:12px;transition:background .15s}
+.dl-item.open{background:var(--surface-2)}
+.dl-item.fresh{animation:fresh 1.2s ease-out}
+.dl-main{flex:1;min-width:0;display:flex;align-items:center;gap:10px;border:0;background:transparent;padding:2px 0;text-align:left;font:inherit;color:inherit}
+.dl-date{width:42px;height:44px;border-radius:10px;background:var(--c-bg);color:var(--c-fg);display:flex;flex-direction:column;align-items:center;justify-content:center;flex:none;line-height:1}
+.dl-date b{font:600 18px/1 var(--font-display);font-variant-numeric:tabular-nums}
+.dl-date span{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-top:3px}
+.dl-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.dl-title{font-size:14.5px;font-weight:600;line-height:1.3;overflow-wrap:anywhere}
+.dl-when{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.dl-rel{font-weight:700;color:var(--ink-2)}
+.dl-item.overdue .dl-rel{color:var(--now)}
+.dl-item.done .dl-title{text-decoration:line-through;color:var(--muted)}
+.dl-item.done .dl-date{opacity:.55}
+.dl-edit{flex-basis:100%;width:100%;min-width:0;box-sizing:border-box;display:flex;flex-direction:column;gap:8px;padding:4px 2px 2px}
+.dl-edit .ps-input{background:var(--surface);flex:none;width:100%}
+.dl-edit-row{display:flex;gap:6px;min-width:0}
+.dl-edit-row .ps-input{flex:1;width:auto;min-width:0}
+.dl-edit-row .ps-input[type=date]{flex:1.5}
+.dl-edit .cats{flex-wrap:wrap}
+.dl-add-row .ps-input{width:auto}
+.dl-edit .cats .chip{width:auto;padding:0 11px 0 8px;height:30px;font-size:12px}
+.dl-edit .cats .chip span{display:inline}
+.dls{border-top:1px solid var(--line-faint);padding:4px 5px 5px;display:flex;flex-direction:column;gap:3px;min-width:0;border-left:1px solid var(--line)}
+.dls.we{background:var(--weekend)}
+.dls-corner{position:sticky;left:0;z-index:2;background:var(--surface);border-left:0;font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--muted);align-items:center;justify-content:center}
+.dl-chip{display:flex;align-items:center;gap:4px;height:22px;border:0;border-radius:6px;padding:0 6px;background:var(--c-bg);color:var(--c-fg);font:700 11.5px var(--font-body);min-width:0;text-align:left}
+.dl-chip svg{width:12px;height:12px;flex:none;stroke-width:2.2}
+.dl-chip span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dl-chip.done{opacity:.5}
+.dl-chip.done span{text-decoration:line-through}
+.dl-chip.late{box-shadow:inset 0 0 0 1.5px var(--now)}
+.dl-more{height:20px;border:0;background:transparent;color:var(--muted);font:700 11px var(--font-body);text-align:left;padding:0 4px}
+
+/* ---------- import ---------- */
+.imp-tip{font-size:12.5px;color:var(--muted)}
+.imp-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.imp-switch{display:inline-flex;align-items:center;gap:9px;border:0;background:transparent;font:600 13.5px var(--font-body);color:var(--ink);padding:4px 0}
+.imp-switch .sw{width:38px;height:23px;border-radius:999px;background:var(--line-strong);position:relative;transition:background .15s;flex:none}
+.imp-switch .sw::after{content:"";position:absolute;top:2.5px;left:2.5px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .15s}
+.imp-switch[aria-checked="true"] .sw{background:var(--health-solid)}
+.imp-switch[aria-checked="true"] .sw::after{transform:translateX(15px)}
+.imp-file{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.imp-file .field-label{flex-basis:100%}
+.imp-pick{cursor:pointer}
+.imp-pick.disabled{opacity:.5;pointer-events:none}
+.vh{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;overflow:hidden}
+.imp .cats .chip{width:auto;padding:0 12px 0 9px}
+.imp .cats .chip span{display:inline}
+.imp-note{margin:0;font-size:13px;color:var(--muted)}
+.imp-cal{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:14px;padding:10px 10px 10px 12px;flex-wrap:wrap}
+.imp-cal-icon{width:38px;height:38px;border-radius:10px;background:var(--c-bg);color:var(--c-fg);display:grid;place-items:center;flex:none}
+.imp-cal .ps-info span{white-space:normal}
+.imp-err{color:var(--now) !important}
+.btn.danger-solid{background:var(--now);border-color:var(--now);color:#fff}
+.empty-close{position:absolute;top:6px;right:6px;pointer-events:auto;margin:0 !important}
+.empty-hint{position:absolute}
+
 /* ---------- iCloud sync sheet ---------- */
 .sync{left:50%;top:50%;transform:translate(-50%,-50%);width:min(440px,calc(100vw - 32px));max-height:calc(100% - 40px);overflow:auto;padding:24px 22px 20px;box-sizing:border-box;display:flex;flex-direction:column;gap:12px}
 .sync h2{margin:0;font:600 22px/1.2 var(--font-display);letter-spacing:-.015em}
@@ -489,6 +566,7 @@ svg.i{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-widt
     <div class="tool-actions">
       <button class="btn has-txt" id="presetsBtn" title="Presets (P)"><svg class="i" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 12.5l9 5 9-5"/><path d="M3 17l9 5 9-5"/></svg><span class="txt">Presets</span></button>
       <button class="btn has-txt" id="todoBtn" aria-pressed="false" title="To-do list (D)"><svg class="i" viewBox="0 0 24 24"><path d="M4 6.5l1.6 1.6L8.5 5"/><path d="M4 12.5l1.6 1.6L8.5 11"/><path d="M4 18.5l1.6 1.6L8.5 17"/><path d="M12 6.5h8M12 12.5h8M12 18.5h8"/></svg><span class="txt">To-do</span><span class="count" id="todoCount" hidden></span></button>
+      <button class="btn has-txt" id="dlBtn" aria-pressed="false" title="Deadlines"><svg class="i" viewBox="0 0 24 24"><path d="M5.5 21V4"/><path d="M5.5 4.5h12l-2.5 4 2.5 4h-12"/></svg><span class="txt">Deadlines</span><span class="count" id="dlCount" hidden></span></button>
     </div>
   </div>
 
@@ -513,6 +591,7 @@ svg.i{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-widt
       </div>
     </div>
     <div class="empty-hint" id="emptyHint" hidden>
+      <button class="btn icon ghost empty-close" id="emptyClose" aria-label="Hide this tip" title="Hide this tip"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
       <svg class="empty-demo" viewBox="0 0 120 62" aria-hidden="true">
         <rect x="1" y="1" width="118" height="60" rx="10" fill="var(--surface-2)"/>
         <path d="M30 1v60M60 1v60M90 1v60" stroke="var(--line-strong)" stroke-width="1"/>
@@ -522,18 +601,38 @@ svg.i{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-widt
       </svg>
       <h2>Draw your week</h2>
       <p>Drag down a day with Apple Pencil to block out time. Fingers scroll; press and hold with a finger to add.</p>
-      <div class="empty-actions"><button class="btn" id="emptyCopy">Copy last week</button><button class="btn" id="emptyPreset" hidden>Use a week preset</button></div>
+      <div class="empty-actions"><button class="btn" id="emptyCopy">Copy last week</button><button class="btn" id="emptyPreset" hidden>Use a week preset</button><button class="btn" id="emptyImport">Import a calendar</button></div>
     </div>
   </main>
   <aside class="todo" id="todo" aria-label="To-do list" hidden>
-    <div class="td-head"><h2>To-do</h2><span class="td-count" id="tdCount"></span><span class="spacer"></span>
-      <button class="btn icon ghost" id="tdClose" aria-label="Close to-do list"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
-    <form class="td-add" id="tdForm" autocomplete="off">
-      <input id="tdInput" type="text" placeholder="Add a to-do" enterkeyhint="done" aria-label="New to-do">
-      <button class="btn icon primary" type="submit" aria-label="Add to-do"><svg class="i" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
-    </form>
-    <div class="td-scroll" id="tdScroll"><ul class="td-list" id="tdList"></ul><div id="tdDone"></div></div>
-    <p class="td-hint" id="tdHint"><svg class="i" viewBox="0 0 24 24"><path d="M5 12h12M13 8l4 4-4 4"/><rect x="18" y="4" width="3" height="16" rx="1.5"/></svg>Drag a to-do onto the week to give it a time.</p>
+    <div class="td-head">
+      <div class="seg side-tabs" role="group" aria-label="Panel">
+        <button data-side="todo" aria-pressed="true">To-do <span class="tab-count" id="tabTodoCount"></span></button>
+        <button data-side="deadlines" aria-pressed="false">Deadlines <span class="tab-count" id="tabDlCount"></span></button>
+      </div>
+      <span class="spacer"></span>
+      <button class="btn icon ghost" id="tdClose" aria-label="Close panel"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="side-body" id="sideTodo">
+      <form class="td-add" id="tdForm" autocomplete="off">
+        <input id="tdInput" type="text" placeholder="Add a to-do" enterkeyhint="done" aria-label="New to-do">
+        <button class="btn icon primary" type="submit" aria-label="Add to-do"><svg class="i" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+      </form>
+      <div class="td-scroll" id="tdScroll"><ul class="td-list" id="tdList"></ul><div id="tdDone"></div></div>
+      <p class="td-hint" id="tdHint"><svg class="i" viewBox="0 0 24 24"><path d="M5 12h12M13 8l4 4-4 4"/><rect x="18" y="4" width="3" height="16" rx="1.5"/></svg>Drag a to-do onto the week to give it a time.</p>
+    </div>
+    <div class="side-body" id="sideDeadlines" hidden>
+      <form class="dl-add" id="dlForm" autocomplete="off">
+        <div class="dl-add-row">
+          <input id="dlTitle" class="ps-input" type="text" placeholder="Add a deadline" enterkeyhint="done" aria-label="New deadline">
+          <button class="btn icon primary" type="submit" aria-label="Add deadline"><svg class="i" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+        </div>
+        <div class="dl-add-row">
+          <input id="dlDate" class="ps-input" type="date" aria-label="Due date">
+          <input id="dlTime" class="ps-input" type="time" aria-label="Due time (optional)">
+        </div>
+      </form>
+      <div class="td-scroll"><ul class="td-list dl-list" id="dlList"></ul><div id="dlDone"></div></div>
+    </div>
   </aside>
   </div>
 
@@ -571,6 +670,7 @@ svg.i{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-widt
 </div>
 <div class="pop presets" id="presets" role="dialog" aria-label="Presets" hidden></div>
 <div class="pop sync" id="sync" role="dialog" aria-label="iCloud sync" hidden></div>
+<div class="pop presets imp" id="imp" role="dialog" aria-label="Import a calendar" hidden></div>
 <div class="todo-ghost" id="todoGhost" hidden><b></b><span></span></div>
 <div class="toast" id="toast" role="status" aria-live="polite"><span id="toastMsg"></span><button id="toastAction" hidden>Undo</button></div>
 
@@ -629,6 +729,10 @@ const ICON = {
   chevUp:'<svg class="i" viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg>',
   pen:'<svg class="i" viewBox="0 0 24 24"><path d="M5 19l1.1-4.3L15.4 5.4a1.9 1.9 0 0 1 2.7 0l.5.5a1.9 1.9 0 0 1 0 2.7L9.3 17.9z"/></svg>',
   copy:'<svg class="i" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg>',
+  flag:'<svg class="i" viewBox="0 0 24 24"><path d="M5.5 21V4"/><path d="M5.5 4.5h12l-2.5 4 2.5 4h-12"/></svg>',
+  calendar:'<svg class="i" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>',
+  upload:'<svg class="i" viewBox="0 0 24 24"><path d="M12 15V4M7.5 8.5L12 4l4.5 4.5"/><path d="M4 15v3.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V15"/></svg>',
+  refresh:'<svg class="i" viewBox="0 0 24 24"><path d="M19.5 12.5a7.5 7.5 0 1 1-2.2-5.8"/><path d="M19.5 4v4.5H15"/></svg>',
   cloud:'<svg class="i" viewBox="0 0 24 24"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.1 4.75 4.75 0 0 0 7 18.5z"/></svg>',
   help:'<svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6v.6"/><path d="M12 17.2v.1"/></svg>',
   sparkle:'<svg class="i" viewBox="0 0 24 24"><path d="M12 4l1.8 4.6L18 10.5l-4.2 1.9L12 17l-1.8-4.6L6 10.5l4.2-1.9z"/></svg>',
@@ -657,7 +761,7 @@ const Store = (() => {
      so an edit on one device and a different edit on the other are combined instead of overwritten. */
   const bridge = (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.pencilled) || null;
   const call = (cmd, extra) => bridge.postMessage(Object.assign({cmd}, extra || {}));
-  const SYNCED = /^(w\d{4}-\d{2}-\d{2}|todos|presets)$/;
+  const SYNCED = /^(w\d{4}-\d{2}-\d{2}|todos|presets|deadlines|calendars)$/;
   const nat = {cache: {}, base: {}, seen: {}, watchers: {}, dirty: new Set(), writeTimer: 0,
                cloud: {linked: false}, syncing: false, again: false, timer: 0, lastSync: 0, error: '', status: 'local'};
   let isBusy = () => false;
@@ -912,6 +1016,7 @@ const Store = (() => {
     return ls.get(name);
   }
   return { init, loadPrefs, savePrefs, watch, save, get, clientId, cloud: cloudApi,
+           fetchText(url){ return call('net.fetch', {url}); },
            get isNative(){ return mode === 'native'; },
            watchWeek(key, cb){ return watch('w' + key, (d, k) => cb(key, d, k), true); },
            saveWeek(key, d){ save('w' + key, d); },
@@ -942,6 +1047,9 @@ const state = {
   presets: {items: [], t: 0},
   todoOpen: false, todoEditing: null, pendingTodos: null, showDone: false, freshTodo: null,
   presetTab: 'day', presetSaveDay: 0, presetOpenId: null, presetTargets: [], presetReplace: false, presetDraft: '', freshPreset: null,
+  side: 'todo', deadlines: {items: [], t: 0}, calendars: {items: [], t: 0},
+  dlOpenId: null, showDlDone: false, freshDl: null, pendingDeadlines: null,
+  imp: {url: '', auto: true, cat: 'study', allDay: 'deadlines', busy: false, confirm: null},
 };
 function emptyWeek(){ return {v:1, blocks:[], strokes:[], t:0}; }
 function normalize(d){
@@ -963,7 +1071,7 @@ const els = {
   editor: $('editor'), scrim: $('scrim'), menu: $('menu'), help: $('help'),
   emptyHint: $('emptyHint'), eraserDot: $('eraserDot'),
   undoBtn: $('undoBtn'), redoBtn: $('redoBtn'), todayBtn: $('todayBtn'),
-  sync: $('sync'), todo: $('todo'), tdList: $('tdList'), tdDone: $('tdDone'), presets: $('presets'), todoGhost: $('todoGhost'),
+  sync: $('sync'), imp: $('imp'), todo: $('todo'), tdList: $('tdList'), tdDone: $('tdDone'), presets: $('presets'), todoGhost: $('todoGhost'),
 };
 const cols = [];
 const dhCells = [];
@@ -1121,7 +1229,7 @@ function renderNow(){
 function renderBanner(){ els.banner.hidden = !state.week.blocks.some(b => b.x); }
 function renderEmpty(){
   const ep = $('emptyPreset'); if (ep) ep.hidden = !state.presets.items.some(p => p.kind === 'week');
-  els.emptyHint.hidden = !state.loaded || state.week.blocks.length > 0 || state.week.strokes.length > 0 || !!state.ghost;
+  els.emptyHint.hidden = !!state.prefs.hideTip || !state.loaded || state.week.blocks.length > 0 || state.week.strokes.length > 0 || !!state.ghost;
 }
 function renderUndo(){ els.undoBtn.disabled = !state.undo.length; els.redoBtn.disabled = !state.redo.length; }
 
@@ -1199,7 +1307,7 @@ function scheduleRender(){
   requestAnimationFrame(() => { rafPending = false; renderBlocks(); renderDayHeads(); renderFooter(); renderEmpty(); });
 }
 function renderAll(){
-  renderTodos();
+  renderTodos(); renderDeadlines(); renderDeadlineStrip();
   renderHeader(); renderDayHeads(); renderBlocks(); renderInk(); renderFooter();
   renderNow(); renderBanner(); renderEmpty(); renderUndo(); renderPalette();
 }
@@ -1571,7 +1679,8 @@ function buildEditor(){
   els.editor.innerHTML =
     '<div class="ed-head"><div class="ed-titlewrap">' +
       '<input class="ed-title" id="edTitle" type="text" autocomplete="off" enterkeyhint="done" placeholder="What are you planning?" value="' + esc(b.t || '') + '" aria-label="Title">' +
-      (b.td && todoById(b.td) ? '<span class="scribble">' + ICON.list + 'From your to-do list</span>' : '<span class="scribble">' + ICON.pen + 'Write here with Apple Pencil, or type</span>') +
+      (b.src && calById(b.src) ? '<span class="scribble">' + ICON.calendar + 'From ' + esc(calById(b.src).name) + (calById(b.src).url && calById(b.src).auto ? ' · updates automatically' : '') + '</span>' :
+       b.td && todoById(b.td) ? '<span class="scribble">' + ICON.list + 'From your to-do list</span>' : '<span class="scribble">' + ICON.pen + 'Write here with Apple Pencil, or type</span>') +
     '</div><button class="btn icon ghost" id="edClose" aria-label="Close">' + ICON.close + '</button></div>' +
     '<div class="sugg" id="edSugg"' + (sugg.length ? '' : ' hidden') + '>' + suggHTML(sugg) + '</div>' +
     '<div class="field"><span class="field-label">Category</span><div class="cats">' +
@@ -1729,7 +1838,7 @@ els.editor.addEventListener('click', e => {
 els.scrim.addEventListener('pointerdown', e => {
   e.preventDefault();
   if (!els.editor.hidden) closeEditor();
-  closePresets(); closeSync();
+  closePresets(); closeSync(); closeImport();
   closeMenu(); closeHelp();
 });
 
@@ -1739,6 +1848,7 @@ function openMenu(){
   const hasSample = state.week.blocks.some(b => b.x);
   els.menu.innerHTML =
     '<button class="item" data-m="presets">' + ICON.layers + 'Presets</button>' +
+    '<button class="item" data-m="import">' + ICON.calendar + 'Import a calendar</button>' +
     (Store.isNative ? '<button class="item" data-m="sync">' + ICON.cloud + 'iCloud sync</button>' : '') +
     '<button class="item" data-m="help">' + ICON.help + 'How it works</button>' +
     '<hr>' +
@@ -1754,7 +1864,7 @@ function openMenu(){
   els.scrim.hidden = false; els.scrim.classList.remove('dim');
 }
 function closeMenu(){ if (els.menu.hidden) return; els.menu.hidden = true; scrimCheck(); }
-function scrimCheck(){ if (els.editor.hidden && els.menu.hidden && els.help.hidden && els.presets.hidden && els.sync.hidden){ els.scrim.hidden = true; els.scrim.classList.remove('dim'); } }
+function scrimCheck(){ if (els.editor.hidden && els.menu.hidden && els.help.hidden && els.presets.hidden && els.sync.hidden && els.imp.hidden){ els.scrim.hidden = true; els.scrim.classList.remove('dim'); } }
 function openHelp(){ closeMenu(); els.help.hidden = false; els.scrim.hidden = false; els.scrim.classList.add('dim'); }
 function closeHelp(){ if (els.help.hidden) return; els.help.hidden = true; scrimCheck(); }
 
@@ -1765,6 +1875,7 @@ els.menu.addEventListener('click', async e => {
   if (m === 'help') openHelp();
   if (m === 'presets') openPresets();
   if (m === 'sync') openSync();
+  if (m === 'import') openImport();
   if (m === 'day-save') openPresets({tab: 'day', saveDay: +t.dataset.day});
   if (m === 'day-apply') openPresets({tab: 'day', saveDay: +t.dataset.day, targets: [+t.dataset.day], expandFirst: true});
   if (m === 'day-clear') clearDay(+t.dataset.day);
@@ -1830,9 +1941,12 @@ function onListData(kind){
       const inc = normList(data);
       if (k !== 'sync' && cur.t && inc.t < cur.t){ Store.save(kind, cur); return; }
       if (kind === 'todos' && (state.todoEditing || tdrag)){ state.pendingTodos = inc; return; }
+      if (kind === 'deadlines' && dlBusy()){ state.pendingDeadlines = inc; return; }
       state[kind] = inc;
     }
     if (kind === 'todos') renderTodos();
+    else if (kind === 'deadlines'){ renderDeadlines(); renderDeadlineStrip(); }
+    else if (kind === 'calendars') renderImport();
     else { if (!presetsBusy()) renderPresets(); renderEmpty(); }
   };
 }
@@ -1871,10 +1985,9 @@ function renderTodos(){
   const open = items.filter(t => !t.done);
   const done = items.filter(t => t.done).sort((a, b) => (b.dt || 0) - (a.dt || 0));
   const cnt = $('todoCount'); cnt.textContent = open.length; cnt.hidden = !open.length;
-  $('todoBtn').setAttribute('aria-pressed', state.todoOpen);
-  els.todo.hidden = !state.todoOpen;
-  if (!state.todoOpen) return;
-  $('tdCount').textContent = open.length ? open.length + ' open' : '';
+  const tc = $('tabTodoCount'); if (tc) tc.textContent = open.length || '';
+  renderSideChrome();
+  if (!state.todoOpen || state.side !== 'todo') return;
   els.tdList.innerHTML = open.length ? open.map(todoItemHTML).join('') :
     '<li class="td-empty">' + ICON.list + '<b>' + (done.length ? 'All done' : 'Your list is clear') + '</b><span>Write a task above with your Pencil. Then drag it onto the week to give it a time.</span></li>';
   let dh = '';
@@ -1887,11 +2000,7 @@ function renderTodos(){
   $('tdHint').hidden = !open.length;
   state.freshTodo = null;
 }
-function setTodoOpen(v){
-  if (state.todoEditing) commitTodoEdit();
-  state.todoOpen = v; state.prefs.todoOpen = v; Store.savePrefs(state.prefs);
-  renderTodos();
-}
+function setTodoOpen(v){ showSide(state.side, v); }
 function addTodo(text){
   const t = {id: uid(), t: text, done: false, at: Date.now()};
   state.todos.items.unshift(t);
@@ -1961,7 +2070,7 @@ $('tdForm').addEventListener('submit', e => {
   if (!v) return;
   addTodo(v); inp.value = '';
 });
-$('todoBtn').addEventListener('click', () => setTodoOpen(!state.todoOpen));
+$('todoBtn').addEventListener('click', () => toggleSide('todo'));
 els.todo.addEventListener('click', e => {
   const chk = e.target.closest('.td-check');
   if (chk){ const li = chk.closest('.td-item'); if (li) toggleTodo(li.dataset.id); return; }
@@ -2299,6 +2408,554 @@ els.dayheads.addEventListener('keydown', e => {
   if (h && (e.key === 'Enter' || e.key === ' ')){ e.preventDefault(); openDayMenu(dhCells.indexOf(h), h); }
 });
 
+/* ================= side panel: To-do and Deadlines share one panel ================= */
+function renderSideChrome(){
+  const open = state.todoOpen, side = state.side;
+  els.todo.hidden = !open;
+  $('todoBtn').setAttribute('aria-pressed', open && side === 'todo');
+  $('dlBtn').setAttribute('aria-pressed', open && side === 'deadlines');
+  $('sideTodo').hidden = side !== 'todo';
+  $('sideDeadlines').hidden = side !== 'deadlines';
+  els.todo.querySelectorAll('[data-side]').forEach(b => b.setAttribute('aria-pressed', b.dataset.side === side));
+  els.todo.setAttribute('aria-label', side === 'todo' ? 'To-do list' : 'Deadlines');
+}
+function showSide(side, open){
+  if (state.todoEditing) commitTodoEdit();
+  state.side = side; state.todoOpen = open;
+  state.prefs.side = side; state.prefs.todoOpen = open; Store.savePrefs(state.prefs);
+  renderTodos(); renderDeadlines();
+}
+function toggleSide(side){ showSide(side, !(state.todoOpen && state.side === side)); }
+els.todo.addEventListener('click', e => {
+  const t = e.target.closest('[data-side]');
+  if (t) showSide(t.dataset.side, true);
+});
+$('dlBtn').addEventListener('click', () => toggleSide('deadlines'));
+
+/* ================= deadlines =================
+   A deadline is a date (and optional time) with a title. They live in one list across all weeks,
+   are shown in order in the Deadlines panel, and appear in a "Due" row above the week. */
+const dlById = id => state.deadlines.items.find(x => x.id === id);
+function parseDay(k){ const [y, m, d] = String(k).split('-').map(Number); return new Date(y, (m || 1) - 1, d || 1); }
+function todayStart(){ const n = new Date(); return new Date(n.getFullYear(), n.getMonth(), n.getDate()); }
+function dayDiff(date){ return Math.round((date - todayStart()) / 864e5); }
+function relText(diff){
+  if (diff < -1) return 'Overdue by ' + (-diff) + ' days';
+  if (diff === -1) return 'Was due yesterday';
+  if (diff === 0) return 'Today';
+  if (diff === 1) return 'Tomorrow';
+  if (diff < 14) return 'In ' + diff + ' days';
+  return 'In ' + Math.round(diff / 7) + ' weeks';
+}
+function dlSorted(list){ return list.slice().sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : (a.time || '99') < (b.time || '99') ? -1 : 1)); }
+function defaultDlDate(){ return keyOf(addDays(todayStart(), 7)); }
+function dlItemHTML(x){
+  const id = esc(x.id), dt = parseDay(x.date), diff = dayDiff(dt), c = esc(x.c || 'study');
+  const open = state.dlOpenId === x.id;
+  const when = DAY_SHORT[(dt.getDay() + 6) % 7] + ' ' + dt.getDate() + ' ' + MON_S[dt.getMonth()] + (x.time ? ' · ' + esc(x.time) : '');
+  let h = '<li class="dl-item cat-' + c + (x.done ? ' done' : '') + (!x.done && diff < 0 ? ' overdue' : '') + (open ? ' open' : '') + (state.freshDl === x.id ? ' fresh' : '') + '" data-id="' + id + '">' +
+    '<button class="td-check" data-dlcheck="' + id + '" aria-pressed="' + !!x.done + '" aria-label="' + (x.done ? 'Mark not done' : 'Mark done') + '">' + ICON.check + '</button>' +
+    '<button class="dl-main" data-dlopen="' + id + '" aria-expanded="' + open + '">' +
+      '<span class="dl-date"><b>' + dt.getDate() + '</b><span>' + MON_S[dt.getMonth()] + '</span></span>' +
+      '<span class="dl-body"><span class="dl-title">' + esc(x.t) + '</span><span class="dl-when"><span class="dl-rel">' + (x.done ? 'Done' : relText(diff)) + '</span> · ' + when + '</span></span></button>';
+  if (open){
+    h += '<div class="dl-edit">' +
+      '<input class="ps-input" data-dlf="t" type="text" autocomplete="off" enterkeyhint="done" value="' + esc(x.t) + '" aria-label="Deadline title">' +
+      '<div class="dl-edit-row"><input class="ps-input" data-dlf="date" type="date" value="' + esc(x.date) + '" aria-label="Date"><input class="ps-input" data-dlf="time" type="time" value="' + esc(x.time || '') + '" aria-label="Time (optional)"></div>' +
+      '<div class="cats">' + CATS.map(k => '<button class="chip cat-' + k.k + '" data-dlcat="' + k.k + '" aria-pressed="' + ((x.c || 'study') === k.k) + '"><span class="dot"></span><span>' + k.l + '</span></button>').join('') + '</div>' +
+      (x.src && calById(x.src) ? '<span class="scribble">' + ICON.calendar + 'From ' + esc(calById(x.src).name) + '</span>' : '') +
+      '<div class="ed-actions"><button class="btn icon danger" data-dldel="' + id + '" aria-label="Delete deadline" title="Delete">' + ICON.trash + '</button><span class="spacer"></span><button class="btn primary" data-dlclose="1">Done</button></div>' +
+      '</div>';
+  }
+  return h + '</li>';
+}
+function renderDeadlines(){
+  const items = state.deadlines.items;
+  const open = dlSorted(items.filter(x => !x.done));
+  const done = dlSorted(items.filter(x => x.done)).reverse();
+  // toolbar badge: what's due within a week, red when something is overdue
+  const soon = open.filter(x => dayDiff(parseDay(x.date)) <= 7);
+  const late = open.some(x => dayDiff(parseDay(x.date)) < 0);
+  const cnt = $('dlCount'); cnt.textContent = soon.length; cnt.hidden = !soon.length; cnt.classList.toggle('late', late);
+  const tc = $('tabDlCount'); if (tc) tc.textContent = open.length || '';
+  renderSideChrome();
+  if (!state.todoOpen || state.side !== 'deadlines') return;
+  if (dlBusy()) return;
+  const mon = mondayOf(new Date());
+  const groups = [['Overdue', x => parseDay(x.date) < todayStart()],
+                  ['This week', x => parseDay(x.date) < addDays(mon, 7)],
+                  ['Next week', x => parseDay(x.date) < addDays(mon, 14)],
+                  ['Later', () => true]];
+  let html = '', rest = open;
+  for (const [label, test] of groups){
+    const here = rest.filter(test); rest = rest.filter(x => !test(x));
+    if (here.length) html += '<li class="dl-group' + (label === 'Overdue' ? ' late' : '') + '">' + label + '</li>' + here.map(dlItemHTML).join('');
+  }
+  $('dlList').innerHTML = html || '<li class="td-empty">' + ICON.flag + '<b>No deadlines yet</b><span>Add tests, assignments and other due dates above. They show up here in order and above the week they fall in.</span></li>';
+  let dh = '';
+  if (done.length){
+    dh = '<div class="td-done-head"><button class="td-done-toggle" id="dlDoneToggle" aria-expanded="' + state.showDlDone + '">' + ICON.chev + 'Completed <b>' + done.length + '</b></button>' +
+      '<button class="btn ghost" id="dlClear">Clear</button></div>';
+    if (state.showDlDone) dh += '<ul class="td-list">' + done.map(dlItemHTML).join('') + '</ul>';
+  }
+  $('dlDone').innerHTML = dh;
+  const dateInput = $('dlDate'); if (dateInput && !dateInput.value) dateInput.value = defaultDlDate();
+  state.freshDl = null;
+}
+function dlBusy(){
+  const a = document.activeElement;
+  return !!(a && a.closest && a.closest('#sideDeadlines .dl-list') && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA'));
+}
+function renderDeadlineStrip(){
+  els.dayheads.querySelectorAll('.dls').forEach(e => e.remove());
+  const keys = weekDates().map(keyOf);
+  const per = keys.map(k => dlSorted(state.deadlines.items.filter(x => x.date === k)));
+  if (!per.some(a => a.length)) return;
+  const today = keyOf(new Date());
+  let h = '<div class="dls dls-corner">DUE</div>';
+  per.forEach((arr, i) => {
+    h += '<div class="dls dls-cell' + (i >= 5 ? ' we' : '') + '">' + arr.slice(0, 2).map(x => {
+      const late = !x.done && x.date < today;
+      return '<button class="dl-chip cat-' + esc(x.c || 'study') + (x.done ? ' done' : '') + (late ? ' late' : '') + '" data-dl="' + esc(x.id) + '" title="' + esc(x.t) + (x.time ? ' · ' + esc(x.time) : '') + '">' + ICON.flag + '<span>' + esc(x.t) + '</span></button>';
+    }).join('') + (arr.length > 2 ? '<button class="dl-more" data-dlmore="1">+' + (arr.length - 2) + ' more</button>' : '') + '</div>';
+  });
+  els.dayheads.insertAdjacentHTML('beforeend', h);
+}
+function openDeadline(id){
+  state.dlOpenId = id;
+  const x = dlById(id);
+  if (x && x.done) state.showDlDone = true;
+  showSide('deadlines', true);
+  const el = $('sideDeadlines').querySelector('.dl-item[data-id="' + CSS.escape(id) + '"]');
+  if (el) el.scrollIntoView({block: 'nearest'});
+}
+function saveDeadlines(){ saveList('deadlines'); renderDeadlineStrip(); }
+
+$('dlForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const t = $('dlTitle').value.trim(), date = $('dlDate').value || defaultDlDate(), time = $('dlTime').value || '';
+  if (!t){ $('dlTitle').focus(); return; }
+  const x = {id: uid(), t, date, time, c: state.cat || 'study', done: false, at: Date.now()};
+  state.deadlines.items.push(x);
+  state.freshDl = x.id;
+  $('dlTitle').value = ''; $('dlTime').value = '';
+  saveDeadlines(); renderDeadlines();
+  toast('Added: due ' + relText(dayDiff(parseDay(date))).toLowerCase());
+});
+$('sideDeadlines').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  const d = b.dataset;
+  if (d.dlcheck){
+    const x = dlById(d.dlcheck); if (!x) return;
+    x.done = !x.done; x.dt = x.done ? Date.now() : 0;
+    saveDeadlines(); renderDeadlines(); return;
+  }
+  if (d.dlopen){ state.dlOpenId = state.dlOpenId === d.dlopen ? null : d.dlopen; renderDeadlines(); return; }
+  if (d.dlclose){ if (document.activeElement) document.activeElement.blur(); state.dlOpenId = null; renderDeadlines(); return; }
+  if (d.dlcat){ const x = dlById(state.dlOpenId); if (x){ x.c = d.dlcat; saveDeadlines(); renderDeadlines(); } return; }
+  if (d.dldel){
+    const i = state.deadlines.items.findIndex(x => x.id === d.dldel); if (i < 0) return;
+    const [x] = state.deadlines.items.splice(i, 1);
+    state.dlOpenId = null; saveDeadlines(); renderDeadlines();
+    toast('Deadline deleted', 'Undo', () => { state.deadlines.items.push(x); saveDeadlines(); renderDeadlines(); });
+    return;
+  }
+  if (b.id === 'dlDoneToggle'){ state.showDlDone = !state.showDlDone; renderDeadlines(); return; }
+  if (b.id === 'dlClear'){
+    const before = state.deadlines.items.slice(), n = before.filter(x => x.done).length;
+    state.deadlines.items = before.filter(x => !x.done); saveDeadlines(); renderDeadlines();
+    toast('Cleared ' + n + ' completed', 'Undo', () => { state.deadlines.items = before; saveDeadlines(); renderDeadlines(); });
+  }
+});
+$('sideDeadlines').addEventListener('input', e => {
+  const f = e.target.dataset && e.target.dataset.dlf; if (!f) return;
+  const x = dlById(state.dlOpenId); if (!x) return;
+  if (f === 't'){ x.t = e.target.value; const row = e.target.closest('.dl-item'); const tt = row && row.querySelector('.dl-title'); if (tt) tt.textContent = x.t; }
+  else if (f === 'date'){ if (e.target.value) x.date = e.target.value; }
+  else if (f === 'time') x.time = e.target.value;
+  saveDeadlines();
+});
+$('sideDeadlines').addEventListener('change', e => {
+  const f = e.target.dataset && e.target.dataset.dlf;
+  if (f === 'date' || f === 'time'){ e.target.blur(); renderDeadlines(); }
+});
+$('sideDeadlines').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && e.target.dataset && e.target.dataset.dlf === 't'){ e.preventDefault(); e.target.blur(); }
+});
+$('sideDeadlines').addEventListener('focusout', e => {
+  if (!e.target.dataset || !e.target.dataset.dlf) return;
+  const x = dlById(state.dlOpenId);
+  if (x && !x.t.trim()){ x.t = 'Untitled deadline'; saveDeadlines(); }
+  setTimeout(() => { if (!dlBusy()){ if (state.pendingDeadlines){ state.deadlines = state.pendingDeadlines; state.pendingDeadlines = null; renderDeadlineStrip(); } renderDeadlines(); } }, 0);
+});
+els.dayheads.addEventListener('click', e => {
+  const chip = e.target.closest('[data-dl]');
+  if (chip){ e.stopPropagation(); openDeadline(chip.dataset.dl); return; }
+  if (e.target.closest('[data-dlmore]')){ e.stopPropagation(); showSide('deadlines', true); }
+}, true);
+
+/* ================= calendar import (.ics) =================
+   iCalendar is the standard format that school systems (Zermelo, Somtoday, Magister), Google,
+   Outlook and Apple Calendar use to share agendas. Timed events become blocks in the right week;
+   all-day events can become deadlines. Every imported item gets an id derived from the event,
+   so importing again updates items instead of adding copies, also across synced devices. */
+const calById = id => state.calendars.items.find(c => c.id === id);
+function hashStr(str){
+  let h1 = 0x811c9dc5, h2 = 0x9747b28c;
+  for (let i = 0; i < str.length; i++){ const c = str.charCodeAt(i); h1 = Math.imul(h1 ^ c, 16777619); h2 = Math.imul(h2 ^ c, 2246822519); }
+  return (h1 >>> 0).toString(36) + (h2 >>> 0).toString(36);
+}
+const WIN_TZ = {'W. Europe Standard Time': 'Europe/Amsterdam', 'Romance Standard Time': 'Europe/Paris', 'Central Europe Standard Time': 'Europe/Budapest',
+  'Central European Standard Time': 'Europe/Warsaw', 'GMT Standard Time': 'Europe/London', 'Greenwich Standard Time': 'Atlantic/Reykjavik',
+  'Eastern Standard Time': 'America/New_York', 'Central Standard Time': 'America/Chicago', 'Mountain Standard Time': 'America/Denver',
+  'Pacific Standard Time': 'America/Los_Angeles', 'UTC': 'UTC', 'Coordinated Universal Time': 'UTC'};
+function normTz(raw){
+  if (!raw) return null;
+  let tz = String(raw).replace(/^"|"$/g, '').replace(/^\//, '');
+  tz = WIN_TZ[tz] || tz;
+  const m = /([A-Za-z]+\/[A-Za-z_\-]+(?:\/[A-Za-z_\-]+)?)/.exec(tz);
+  if (!WIN_TZ[raw] && m) tz = m[1];
+  try { new Intl.DateTimeFormat('en-US', {timeZone: tz}); return tz; } catch { return null; }
+}
+function tzOffsetMin(tz, date){
+  const f = new Intl.DateTimeFormat('en-US', {timeZone: tz, hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'});
+  const p = {}; f.formatToParts(date).forEach(x => { p[x.type] = x.value; });
+  return (Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour % 24, +p.minute, +p.second) - date.getTime()) / 60000;
+}
+function zonedDate(y, mo, d, h, mi, s, tz){
+  const guess = Date.UTC(y, mo - 1, d, h, mi, s);
+  try {
+    const o1 = tzOffsetMin(tz, new Date(guess));
+    let t = guess - o1 * 60000;
+    const o2 = tzOffsetMin(tz, new Date(t));
+    if (o2 !== o1) t = guess - o2 * 60000;
+    return new Date(t);
+  } catch { return new Date(y, mo - 1, d, h, mi, s); }
+}
+function parseDateVal(v, params){
+  const m = /^(\d{4})(\d{2})(\d{2})(?:T(\d{2})(\d{2})(\d{2})?(Z)?)?$/.exec(String(v || '').trim());
+  if (!m) return null;
+  const Y = +m[1], Mo = +m[2], D = +m[3];
+  if (m[4] == null || (params && params.VALUE === 'DATE')) return {date: new Date(Y, Mo - 1, D), allDay: true};
+  const h = +m[4], mi = +m[5], s = +(m[6] || 0);
+  if (m[7]) return {date: new Date(Date.UTC(Y, Mo - 1, D, h, mi, s)), allDay: false};
+  const tz = params && params.TZID && normTz(params.TZID);
+  if (tz) return {date: zonedDate(Y, Mo, D, h, mi, s, tz), allDay: false};
+  return {date: new Date(Y, Mo - 1, D, h, mi, s), allDay: false};
+}
+function parseDuration(v){
+  const m = /^([+-])?P(?:(\d+)W)?(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?$/.exec(String(v || '').trim());
+  if (!m) return null;
+  const ms = (((+(m[2] || 0) * 7 + +(m[3] || 0)) * 24 + +(m[4] || 0)) * 60 + +(m[5] || 0)) * 60000 + +(m[6] || 0) * 1000;
+  return m[1] === '-' ? -ms : ms;
+}
+function icsLine(line){
+  let i = 0, q = false;
+  for (; i < line.length; i++){ const ch = line[i]; if (ch === '"') q = !q; else if (ch === ':' && !q) break; }
+  const parts = line.slice(0, i).split(';');
+  const name = (parts.shift() || '').toUpperCase(), params = {};
+  parts.forEach(p => { const j = p.indexOf('='); if (j > 0) params[p.slice(0, j).toUpperCase()] = p.slice(j + 1).replace(/^"|"$/g, ''); });
+  return {name, params, value: line.slice(i + 1)};
+}
+const icsText = v => String(v || '').replace(/\\n/gi, '\n').replace(/\\([,;\\])/g, '$1').trim();
+function parseICS(text){
+  const lines = String(text || '').replace(/^﻿/, '').replace(/\r\n?/g, '\n').replace(/\n[ \t]/g, '').split('\n');
+  const stack = [], events = [];
+  let ev = null, name = '';
+  for (const raw of lines){
+    if (!raw.trim()) continue;
+    const L = icsLine(raw);
+    if (L.name === 'BEGIN'){ const v = L.value.trim().toUpperCase(); stack.push(v); if (v === 'VEVENT' && stack.length <= 2) ev = {exdates: new Set()}; continue; }
+    if (L.name === 'END'){ const v = L.value.trim().toUpperCase(); if (v === 'VEVENT' && ev){ events.push(ev); ev = null; } stack.pop(); continue; }
+    const top = stack[stack.length - 1];
+    if (top === 'VCALENDAR' && L.name === 'X-WR-CALNAME') name = icsText(L.value);
+    if (top !== 'VEVENT' || !ev) continue;
+    switch (L.name){
+      case 'UID': ev.uid = L.value.trim(); break;
+      case 'SUMMARY': ev.summary = icsText(L.value); break;
+      case 'LOCATION': ev.location = icsText(L.value); break;
+      case 'DTSTART': { const d = parseDateVal(L.value, L.params); if (d){ ev.start = d.date; ev.allDay = d.allDay; } break; }
+      case 'DTEND': { const d = parseDateVal(L.value, L.params); if (d) ev.end = d.date; break; }
+      case 'DURATION': ev.duration = parseDuration(L.value); break;
+      case 'RRULE': ev.rrule = {}; L.value.split(';').forEach(p => { const [k, v] = p.split('='); if (k && v) ev.rrule[k.toUpperCase()] = v; }); break;
+      case 'EXDATE': L.value.split(',').forEach(v => { const d = parseDateVal(v, L.params); if (d){ ev.exdates.add(d.date.getTime()); ev.exdates.add(keyOf(d.date)); } }); break;
+      case 'RECURRENCE-ID': { const d = parseDateVal(L.value, L.params); if (d) ev.recurId = d.date; break; }
+      case 'STATUS': ev.cancelled = /CANCELLED/i.test(L.value); break;
+    }
+  }
+  const out = events.filter(e => e.start);
+  out.forEach(e => { if (!e.uid) e.uid = hashStr((e.summary || '') + '|' + e.start.getTime()); });
+  return {name, events: out};
+}
+function* occurrences(ev, limitDate){
+  const r = ev.rrule, s0 = ev.start;
+  const freq = (r.FREQ || '').toUpperCase(), interval = Math.max(1, +r.INTERVAL || 1);
+  const count = r.COUNT ? +r.COUNT : Infinity;
+  const until = r.UNTIL ? parseDateVal(r.UNTIL, {}) : null;
+  const limit = until && until.date < limitDate ? (until.allDay ? addDays(until.date, 1) : until.date) : limitDate;
+  const at = day => new Date(day.getFullYear(), day.getMonth(), day.getDate(), s0.getHours(), s0.getMinutes(), s0.getSeconds());
+  let n = 0;
+  if (freq === 'WEEKLY'){
+    const BY = {MO: 0, TU: 1, WE: 2, TH: 3, FR: 4, SA: 5, SU: 6};
+    let days = r.BYDAY ? r.BYDAY.split(',').map(x => BY[x.trim().slice(-2).toUpperCase()]).filter(x => x != null) : [];
+    if (!days.length) days = [(s0.getDay() + 6) % 7];
+    days.sort((a, b) => a - b);
+    const wk0 = mondayOf(s0);
+    for (let w = 0; w < 600; w += interval){
+      const ws = addDays(wk0, 7 * w);
+      if (ws > limit) return;
+      for (const wd of days){
+        const st = at(addDays(ws, wd));
+        if (st < s0) continue;
+        if (st > limit || n >= count) return;
+        n++; yield st;
+      }
+    }
+    return;
+  }
+  for (let i = 0; i < 2000; i++){
+    let st;
+    if (freq === 'DAILY') st = at(addDays(s0, i * interval));
+    else if (freq === 'MONTHLY'){ st = new Date(s0.getFullYear(), s0.getMonth() + i * interval, s0.getDate(), s0.getHours(), s0.getMinutes()); if (st.getDate() !== s0.getDate()) continue; }
+    else if (freq === 'YEARLY'){ st = new Date(s0.getFullYear() + i * interval, s0.getMonth(), s0.getDate(), s0.getHours(), s0.getMinutes()); if (st.getDate() !== s0.getDate()) continue; }
+    else { yield s0; return; }
+    if (st > limit || n >= count) return;
+    n++; yield st;
+  }
+}
+function expandEvents(events, from, to){
+  const out = [], overrides = new Set();
+  events.forEach(e => { if (e.recurId) overrides.add(e.uid + '|' + e.recurId.getTime()); });
+  for (const e of events){
+    let dur = e.end ? e.end - e.start : e.duration != null ? e.duration : e.allDay ? 864e5 : 0;
+    if (dur < 0) dur = 0;
+    const emit = (st, key) => {
+      const en = new Date(st.getTime() + dur);
+      if (st >= to || (en <= from && !(e.allDay && st >= from))) return;
+      out.push({ext: e.uid + '|' + key, start: st, end: en, allDay: !!e.allDay, title: e.summary || '', loc: e.location || ''});
+    };
+    if (e.cancelled) continue;
+    if (e.recurId){ emit(e.start, e.recurId.getTime()); continue; }
+    if (!e.rrule){ emit(e.start, e.start.getTime()); continue; }
+    for (const st of occurrences(e, to)){
+      const k = st.getTime();
+      if (e.exdates.has(k) || e.exdates.has(keyOf(st)) || overrides.has(e.uid + '|' + k)) continue;
+      emit(st, k);
+    }
+  }
+  return out;
+}
+const IMPORT_WEEKS = 26;
+async function applyImport(cal, parsed){
+  const from = mondayOf(new Date()), to = addDays(from, 7 * IMPORT_WEEKS);
+  const occ = expandEvents(parsed.events, from, to);
+  const perWeek = {}, dls = [];
+  for (const o of occ){
+    if (o.allDay){
+      if (cal.allDay === 'deadlines') dls.push({id: 'icsd' + hashStr(cal.id + '|' + o.ext), t: o.title || 'Untitled', date: keyOf(o.start), time: '', c: cal.cat, done: false, src: cal.id});
+      continue;
+    }
+    let s = new Date(o.start);
+    const e = new Date(Math.max(o.end.getTime(), s.getTime() + 15 * 60000));
+    for (let part = 0; part < 7 && s < e; part++){
+      const next = addDays(new Date(s.getFullYear(), s.getMonth(), s.getDate()), 1);
+      const segEnd = e < next ? e : next;
+      const sMin = s.getHours() * 60 + s.getMinutes();
+      const eMin = segEnd.getTime() >= next.getTime() ? DAY_MIN : segEnd.getHours() * 60 + segEnd.getMinutes();
+      if (eMin > sMin && s >= from && s < to){
+        const key = keyOf(mondayOf(s));
+        (perWeek[key] = perWeek[key] || []).push({id: 'ics' + hashStr(cal.id + '|' + o.ext + '|' + part), d: (s.getDay() + 6) % 7, s: sMin, e: eMin,
+          t: o.title || 'Untitled', c: cal.cat, n: o.loc || '', src: cal.id});
+      }
+      s = next;
+    }
+  }
+  let blocks = 0;
+  const weeks = new Set((cal.weeks || []).filter(k => k < keyOf(from)));   // keep earlier weeks as they were
+  for (let w = 0; w < IMPORT_WEEKS; w++){
+    const key = keyOf(addDays(from, 7 * w));
+    const fresh = perWeek[key] || [];
+    const isCur = key === state.key;
+    const doc = isCur ? state.week : normalize(await Store.getWeek(key));
+    const before = JSON.stringify(doc.blocks);
+    const ids = new Set(fresh.map(b => b.id));
+    doc.blocks = doc.blocks.filter(b => b.src !== cal.id || ids.has(b.id));
+    for (const nb of fresh){
+      const ex = doc.blocks.find(b => b.id === nb.id);
+      if (ex) Object.assign(ex, {d: nb.d, s: nb.s, e: nb.e, t: nb.t}, ex.n ? {} : {n: nb.n});
+      else doc.blocks.push(nb);
+    }
+    blocks += fresh.length;
+    if (fresh.length) weeks.add(key);
+    if (JSON.stringify(doc.blocks) === before) continue;
+    if (isCur){ commit(); }
+    else { doc.t = Date.now(); doc.by = Store.clientId; Store.saveWeek(key, doc); }
+  }
+  // deadlines from all-day events
+  const today = keyOf(todayStart());
+  const dlIds = new Set(dls.map(x => x.id));
+  const list = state.deadlines.items.filter(x => x.src !== cal.id || dlIds.has(x.id) || x.date < today);
+  for (const nd of dls){
+    const ex = list.find(x => x.id === nd.id);
+    if (ex) Object.assign(ex, {t: nd.t, date: nd.date});
+    else list.push(nd);
+  }
+  state.deadlines.items = list;
+  saveDeadlines();
+  cal.weeks = [...weeks].sort();
+  cal.count = blocks; cal.dlCount = dls.length; cal.last = Date.now(); cal.error = '';
+  renderAll();
+  return {blocks, deadlines: dls.length, weeks: perWeek ? Object.keys(perWeek).length : 0};
+}
+async function removeCalendar(id){
+  const cal = calById(id); if (!cal) return;
+  const keys = new Set(cal.weeks || []);
+  for (const key of keys){
+    const isCur = key === state.key;
+    const doc = isCur ? state.week : normalize(await Store.getWeek(key));
+    const n = doc.blocks.length;
+    doc.blocks = doc.blocks.filter(b => b.src !== id);
+    if (doc.blocks.length === n) continue;
+    if (isCur) commit(); else { doc.t = Date.now(); doc.by = Store.clientId; Store.saveWeek(key, doc); }
+  }
+  state.deadlines.items = state.deadlines.items.filter(x => x.src !== id);
+  saveDeadlines();
+  state.calendars.items = state.calendars.items.filter(c => c.id !== id);
+  saveList('calendars');
+  renderAll(); renderImport();
+  toast('Removed “' + cal.name + '”');
+}
+function calendarFromName(name){ return state.calendars.items.find(c => c.kind === 'file' && c.name === name); }
+async function importText(text, info){
+  const parsed = parseICS(text);
+  if (!parsed.events.length) throw new Error('No events were found in that calendar');
+  let cal = info.existing || (info.kind === 'file' ? calendarFromName(parsed.name || info.fallbackName) : null);
+  const isNew = !cal;
+  if (!cal) cal = {id: uid(), kind: info.kind, weeks: []};
+  Object.assign(cal, {name: parsed.name || cal.name || info.fallbackName || 'Imported calendar', cat: info.cat || cal.cat || 'study',
+    allDay: info.allDay || cal.allDay || 'deadlines'});
+  if (info.kind === 'link'){ cal.url = info.url; cal.auto = info.auto !== false; }
+  const res = await applyImport(cal, parsed);
+  if (isNew) state.calendars.items.push(cal);
+  saveList('calendars');
+  return {cal, res};
+}
+function fetchCalendar(url){
+  if (Store.isNative) return Store.fetchText(url);
+  return Promise.reject(new Error('Calendar links work in the iPad and iPhone app. Here, use an .ics file instead.'));
+}
+let calRefreshing = false;
+async function refreshCalendars(force){
+  if (calRefreshing || !Store.isNative) return;
+  if (drag || state.editing || tdrag){ setTimeout(() => refreshCalendars(force), 5000); return; }
+  calRefreshing = true;
+  for (const cal of state.calendars.items.slice()){
+    if (!cal.url || (!force && (!cal.auto || Date.now() - (cal.last || 0) < 3 * 3600e3))) continue;
+    try { await importText(await fetchCalendar(cal.url), {kind: 'link', existing: cal, url: cal.url, auto: cal.auto}); }
+    catch (err){ cal.error = String((err && err.message) || err); saveList('calendars'); }
+  }
+  calRefreshing = false;
+  renderImport();
+}
+document.addEventListener('visibilitychange', () => { if (!document.hidden) setTimeout(() => refreshCalendars(false), 1500); });
+
+/* import sheet */
+function openImport(){
+  closeMenu(); if (state.editing) closeEditor();
+  state.imp.busy = false; state.imp.confirm = null;
+  els.imp.hidden = false; els.scrim.hidden = false; els.scrim.classList.add('dim');
+  renderImport();
+}
+function closeImport(){ if (els.imp.hidden) return; els.imp.hidden = true; scrimCheck(); }
+function renderImport(){
+  if (!els.imp || els.imp.hidden) return;
+  const o = state.imp, native = Store.isNative, cals = state.calendars.items;
+  let h = '<div class="ps-head"><div><h2>Import a calendar</h2><p>Bring in your school timetable or another agenda. School systems like Zermelo, Somtoday and Magister, and Google, Outlook and Apple Calendar can share a calendar as a link or an .ics file.</p></div>' +
+    '<button class="btn icon ghost" data-imp="close" aria-label="Close">' + ICON.close + '</button></div>';
+  if (native){
+    h += '<section class="ps-save"><span class="field-label">Calendar link</span>' +
+      '<input class="ps-input" id="impUrl" type="url" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="webcal://… or https://…" value="' + esc(o.url) + '" aria-label="Calendar link">' +
+      '<span class="imp-tip">Look for “Calendar”, “iCal” or “Export” in your school’s app or website and copy the link.</span>' +
+      '<div class="imp-row"><button class="imp-switch" data-imp="auto" role="switch" aria-checked="' + o.auto + '"><span class="sw"></span>Keep it up to date</button><span class="spacer"></span>' +
+      '<button class="btn primary" data-imp="link"' + (o.busy ? ' disabled' : '') + '>' + (o.busy === 'link' ? 'Importing…' : 'Import link') + '</button></div></section>';
+  }
+  h += '<section class="imp-file"><span class="field-label">' + (native ? 'Or use a file' : 'From a file') + '</span>' +
+    '<label class="btn imp-pick' + (o.busy ? ' disabled' : '') + '" for="impFile">' + ICON.upload + (o.busy === 'file' ? 'Importing…' : 'Choose an .ics file') + '</label>' +
+    '<input id="impFile" class="vh" type="file" accept=".ics,text/calendar"></section>' +
+    '<div class="field"><span class="field-label">Lessons and other timed events</span><div class="cats">' +
+      CATS.map(k => '<button class="chip cat-' + k.k + '" data-impcat="' + k.k + '" aria-pressed="' + (o.cat === k.k) + '"><span class="dot"></span><span>' + k.l + '</span></button>').join('') + '</div></div>' +
+    '<div class="field"><span class="field-label">All-day events, like test weeks or holidays</span><div class="seg ps-mode" role="group">' +
+      '<button data-impall="deadlines" aria-pressed="' + (o.allDay === 'deadlines') + '">Add as deadlines</button><button data-impall="skip" aria-pressed="' + (o.allDay === 'skip') + '">Leave them out</button></div></div>' +
+    '<p class="imp-note">Events from this week up to six months ahead are added. Importing the same calendar again updates it instead of adding copies.</p>';
+  if (cals.length){
+    h += '<div class="ps-list-head"><span class="field-label">Your calendars</span></div><div class="ps-list">' + cals.map(c => {
+      const meta = (c.count || 0) + ' event' + (c.count === 1 ? '' : 's') + (c.dlCount ? ' · ' + c.dlCount + ' deadline' + (c.dlCount === 1 ? '' : 's') : '') + ' · ' +
+        (c.url ? (c.auto ? 'updates automatically · ' : 'link · ') : 'from a file · ') + 'updated ' + ago(c.last);
+      const confirming = o.confirm === c.id;
+      return '<div class="imp-cal cat-' + esc(c.cat) + '"><span class="imp-cal-icon">' + ICON.calendar + '</span>' +
+        '<span class="ps-info"><b>' + esc(c.name) + '</b><span>' + meta + '</span>' + (c.error ? '<span class="imp-err">Last update failed: ' + esc(c.error) + '</span>' : '') + '</span>' +
+        (c.url && native && !confirming ? '<button class="btn icon" data-imprefresh="' + esc(c.id) + '" aria-label="Update now" title="Update now">' + ICON.refresh + '</button>' : '') +
+        (confirming ? '<button class="btn danger-solid" data-impremove="' + esc(c.id) + '">Remove ' + (c.count || 0) + ' events</button><button class="btn ghost" data-impkeep="1">Keep</button>'
+                    : '<button class="btn icon danger" data-impask="' + esc(c.id) + '" aria-label="Remove calendar" title="Remove">' + ICON.trash + '</button>') + '</div>';
+    }).join('') + '</div>';
+  }
+  els.imp.className = 'pop presets imp' + (innerWidth < 600 ? ' sheet' : '');
+  els.imp.innerHTML = h;
+}
+function importDone(r){
+  const parts = [r.res.blocks + ' event' + (r.res.blocks === 1 ? '' : 's')];
+  if (r.res.deadlines) parts.push(r.res.deadlines + ' deadline' + (r.res.deadlines === 1 ? '' : 's'));
+  toast('Imported ' + parts.join(' and ') + ' from “' + r.cal.name + '”');
+}
+els.imp.addEventListener('click', async e => {
+  const b = e.target.closest('button'); if (!b) return;
+  const d = b.dataset, o = state.imp;
+  if (d.imp === 'close'){ closeImport(); return; }
+  if (d.imp === 'auto'){ o.auto = !o.auto; renderImport(); return; }
+  if (d.impcat){ o.cat = d.impcat; renderImport(); return; }
+  if (d.impall){ o.allDay = d.impall; renderImport(); return; }
+  if (d.impask){ o.confirm = d.impask; renderImport(); return; }
+  if (d.impkeep){ o.confirm = null; renderImport(); return; }
+  if (d.impremove){ o.confirm = null; await removeCalendar(d.impremove); return; }
+  if (d.imprefresh){
+    const cal = calById(d.imprefresh); if (!cal) return;
+    b.disabled = true;
+    try { importDone(await importText(await fetchCalendar(cal.url), {kind: 'link', existing: cal, url: cal.url, auto: cal.auto})); }
+    catch (err){ cal.error = String((err && err.message) || err); saveList('calendars'); toast('Couldn’t update: ' + cal.error); }
+    renderImport(); return;
+  }
+  if (d.imp === 'link'){
+    const url = (o.url || '').trim();
+    if (!url){ toast('Paste a calendar link first'); return; }
+    o.busy = 'link'; renderImport();
+    try {
+      const existing = state.calendars.items.find(c => c.url === url);
+      const r = await importText(await fetchCalendar(url), {kind: 'link', url, auto: o.auto, cat: o.cat, allDay: o.allDay, existing, fallbackName: hostOf(url)});
+      o.url = ''; importDone(r);
+    } catch (err){ toast('Couldn’t import: ' + ((err && err.message) || err)); }
+    o.busy = false; renderImport();
+  }
+});
+els.imp.addEventListener('input', e => { if (e.target.id === 'impUrl') state.imp.url = e.target.value; });
+els.imp.addEventListener('change', e => {
+  if (e.target.id !== 'impFile') return;
+  const file = e.target.files && e.target.files[0]; if (!file) return;
+  const o = state.imp;
+  o.busy = 'file'; renderImport();
+  const reader = new FileReader();
+  reader.onload = async () => {
+    try { importDone(await importText(String(reader.result || ''), {kind: 'file', cat: o.cat, allDay: o.allDay, fallbackName: file.name.replace(/\.ics$/i, '')})); }
+    catch (err){ toast('Couldn’t import: ' + ((err && err.message) || err)); }
+    o.busy = false; renderImport();
+  };
+  reader.onerror = () => { o.busy = false; renderImport(); toast('That file couldn’t be read'); };
+  reader.readAsText(file);
+});
+function hostOf(url){ try { return new URL(url.replace(/^webcal:/i, 'https:')).hostname.replace(/^www\./, ''); } catch { return 'Calendar'; } }
+
+$('emptyClose').addEventListener('click', () => { state.prefs.hideTip = true; Store.savePrefs(state.prefs); renderEmpty(); });
+$('emptyImport').addEventListener('click', openImport);
+
 /* ================= toolbar & header wiring ================= */
 function setMode(m){
   state.mode = m; renderPalette();
@@ -2351,14 +3008,14 @@ function scrollToStart(){
 }
 
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape'){ if (!els.sync.hidden) closeSync(); else if (!els.presets.hidden) closePresets(); else if (!els.help.hidden) closeHelp(); else if (!els.menu.hidden) closeMenu(); else closeEditor(); return; }
+  if (e.key === 'Escape'){ if (!els.imp.hidden) closeImport(); else if (!els.sync.hidden) closeSync(); else if (!els.presets.hidden) closePresets(); else if (!els.help.hidden) closeHelp(); else if (!els.menu.hidden) closeMenu(); else closeEditor(); return; }
   if (isEditable(e.target)) return;
   const mod = e.metaKey || e.ctrlKey;
   if (mod && e.key.toLowerCase() === 'z'){ e.preventDefault(); e.shiftKey ? redo() : undo(); return; }
   if (mod && e.key.toLowerCase() === 'y'){ e.preventDefault(); redo(); return; }
   if (mod || e.altKey) return;
   if (!els.editor.hidden && (e.key === 'Backspace' || e.key === 'Delete')){ $('edDelete').click(); return; }
-  if (!els.editor.hidden || !els.presets.hidden || !els.help.hidden) return;
+  if (!els.editor.hidden || !els.presets.hidden || !els.help.hidden || !els.imp.hidden || !els.sync.hidden) return;
   const k = e.key.toLowerCase();
   if (e.key === 'ArrowLeft') goWeek(-1);
   else if (e.key === 'ArrowRight') goWeek(1);
@@ -2367,7 +3024,8 @@ document.addEventListener('keydown', e => {
   else if (k === 'i') setMode('ink');
   else if (k === 'e') setMode('erase');
   else if (k === 'p') openPresets();
-  else if (k === 'd') setTodoOpen(!state.todoOpen);
+  else if (k === 'd') toggleSide('todo');
+  else if (k === 'l') toggleSide('deadlines');
   else if (k === 'n') $('addBtn').click();
 });
 
@@ -2448,7 +3106,8 @@ document.addEventListener('visibilitychange', () => { if (!document.hidden){ ren
 Store.cloud.setBusyCheck(name =>
   (name === 'w' + state.key && !!(drag || state.editing || tdrag || state.ghost)) ||
   (name === 'todos' && !!(state.todoEditing || tdrag)) ||
-  (name === 'presets' && presetsBusy()));
+  (name === 'presets' && presetsBusy()) ||
+  (name === 'deadlines' && dlBusy()));
 
 /* ================= boot ================= */
 (async function boot(){
@@ -2463,12 +3122,16 @@ Store.cloud.setBusyCheck(name =>
   applyPrefs(r.data);
   if (typeof state.prefs.todoOpen === 'boolean') state.todoOpen = state.prefs.todoOpen;
   else state.todoOpen = innerWidth >= 1000;
+  if (state.prefs.side === 'deadlines') state.side = 'deadlines';
   if (Store.isNative){
     els.status.setAttribute('role', 'button'); els.status.tabIndex = 0; els.status.classList.add('tappable');
     if (!state.prefs.syncPrompted && !Store.cloud.info().linked){ state.prefs.syncPrompted = true; Store.savePrefs(state.prefs); setTimeout(openSync, 600); }
   }
   Store.watch('todos', onListData('todos'));
   Store.watch('presets', onListData('presets'));
+  Store.watch('deadlines', onListData('deadlines'));
+  Store.watch('calendars', onListData('calendars'));
+  setTimeout(() => refreshCalendars(false), 4000);
   openWeek(state.weekStart);
   scrollToStart();
 })();
