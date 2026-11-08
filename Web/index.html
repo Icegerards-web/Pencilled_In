@@ -277,7 +277,7 @@ svg.i{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-widt
 .help-grid span{color:var(--ink-2);font-size:13.5px}
 .help .btn{margin-top:18px;width:100%}
 
-.toast{position:fixed;left:50%;bottom:calc(52px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;z-index:60;background:var(--ink);color:var(--surface);border-radius:12px;padding:10px 10px 10px 16px;display:flex;align-items:center;gap:12px;font-weight:600;font-size:13.5px;box-shadow:var(--shadow);transition:opacity .2s,transform .2s;pointer-events:none;max-width:calc(100vw - 32px)}
+.toast{position:fixed;left:50%;bottom:calc(52px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;z-index:40;background:var(--ink);color:var(--surface);border-radius:12px;padding:10px 10px 10px 16px;display:flex;align-items:center;gap:12px;font-weight:600;font-size:13.5px;box-shadow:var(--shadow);transition:opacity .2s,transform .2s;pointer-events:none;max-width:calc(100vw - 32px)}
 .toast.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
 .toast button{border:0;background:transparent;color:var(--accent);font:700 13.5px var(--font-body);padding:4px 8px;border-radius:8px}
 .toast button[hidden]{display:none}
@@ -468,6 +468,154 @@ svg.i{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-widt
 .empty-close{position:absolute;top:6px;right:6px;pointer-events:auto;margin:0 !important}
 .empty-hint{position:absolute}
 
+/* ---------- views ---------- */
+.view-btn .vi{display:inline-flex}
+.view-btn .chev{width:14px;height:14px;margin-left:-2px;color:var(--muted)}
+.scroller.windowed{overflow-x:hidden}
+#app[data-view="month"] .toolbar .seg,#app[data-view="month"] .palette,#app[data-view="myday"] .toolbar .seg,#app[data-view="myday"] .palette{visibility:hidden}
+.menu button.item.on{background:var(--primary-soft);color:var(--primary)}
+.menu .tick{margin-left:auto;display:inline-flex}
+.month,.myday{flex:1;min-width:0;min-height:0;background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:auto;overscroll-behavior:contain}
+.month{display:flex;flex-direction:column}
+.mo-head{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--surface);z-index:2}
+.mo-head span{padding:10px 10px 8px;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.mo-grid{flex:1;display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
+.mo-cell{border:0;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--surface);padding:7px 7px 8px;text-align:left;display:flex;flex-direction:column;gap:5px;min-width:0;font:inherit;color:inherit;cursor:pointer;transition:background .15s}
+.mo-cell:nth-child(7n){border-right:0}
+.mo-cell.we{background:var(--weekend)}
+.mo-cell:hover{background:var(--surface-2)}
+.mo-cell.out{color:var(--muted)}
+.mo-cell.out .mo-num{opacity:.5}
+.mo-top{display:flex;align-items:center;justify-content:space-between;gap:4px}
+.mo-num{font:600 15px/1 var(--font-display);min-width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-variant-numeric:tabular-nums;margin:-3px 0 0 -3px}
+.mo-cell.today .mo-num{background:var(--accent);color:var(--on-accent)}
+.mo-hrs{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.mo-bar{display:flex;height:5px;border-radius:3px;overflow:hidden;gap:1px}
+.mo-bar i{background:var(--c-solid);min-width:3px}
+.mo-dls{display:flex;flex-direction:column;gap:3px;min-width:0}
+.mo-dl{display:flex;align-items:center;gap:4px;font-size:11.5px;font-weight:700;color:var(--c-fg);background:var(--c-bg);border-radius:5px;padding:2px 5px;min-width:0}
+.mo-dl svg{width:11px;height:11px;flex:none;stroke-width:2.2}
+.mo-dl span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mo-dl.done{opacity:.5;text-decoration:line-through}
+.mo-dl.late{box-shadow:inset 0 0 0 1.5px var(--now)}
+.mo-more{font-size:11px;color:var(--muted);font-weight:600}
+.myday{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:18px;padding:18px;align-content:start}
+.md-col{display:flex;flex-direction:column;gap:14px;min-width:0}
+.md-card{background:var(--c-bg);color:var(--c-fg);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.md-card.md-free{background:var(--surface-2);color:var(--ink)}
+.md-label{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;opacity:.8}
+.md-title{font:600 22px/1.2 var(--font-display);letter-spacing:-.01em}
+.md-time{font-size:13.5px;font-weight:600;opacity:.85;font-variant-numeric:tabular-nums}
+.md-prog{height:6px;border-radius:3px;background:color-mix(in srgb,var(--c-solid) 22%,transparent);overflow:hidden;margin-top:4px}
+.md-prog i{display:block;height:100%;background:var(--c-solid);border-radius:3px}
+.md-actions{display:flex;gap:8px;margin-top:6px}
+.md-sec{display:flex;flex-direction:column;gap:6px}
+.md-sec h3{margin:0;display:flex;align-items:baseline;justify-content:space-between;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.link{border:0;background:transparent;color:var(--primary);font:700 12.5px var(--font-body);letter-spacing:0;text-transform:none;padding:4px}
+.md-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.md-row{display:flex;align-items:center;gap:10px;padding:6px 4px;border-radius:12px;min-width:0}
+.md-row.past .md-item{opacity:.6}
+.md-row.done .md-name{text-decoration:line-through;color:var(--muted)}
+.md-item{flex:1;min-width:0;display:flex;align-items:center;gap:10px;border:0;background:transparent;padding:4px 2px;text-align:left;font:inherit;color:inherit}
+.md-t{font-size:13px;font-weight:700;color:var(--ink-2);font-variant-numeric:tabular-nums;width:42px;flex:none}
+.md-dot{width:9px;height:9px;border-radius:50%;background:var(--c-solid);flex:none}
+.md-name{font-size:14.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0}
+.md-len{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.md-rel{font-size:12px;font-weight:700;color:var(--ink-2);white-space:nowrap}
+.md-rel.late{color:var(--now)}
+.md-empty{margin:0;color:var(--muted);font-size:13.5px}
+.grow{flex:1;min-width:0}
+@media (max-width:760px){ .myday{grid-template-columns:minmax(0,1fr);padding:14px} }
+
+/* ---------- select, erase, repeat ---------- */
+.review{width:min(620px,calc(100vw - 32px))}
+.toolbar.compact .tool-actions .txt,.toolbar.compact .seg .txt{display:none}
+.toolbar.compact .tool-actions .btn.has-txt{width:38px;padding:0}
+.toolbar.compact .tool-actions .count{position:absolute;top:-7px;right:-7px;min-width:18px;height:18px;line-height:18px;font-size:10.5px;padding:0 5px}
+@media (max-width:600px){
+  .toolbar{flex-wrap:wrap;row-gap:8px}
+  .toolbar .palette{order:3;flex-basis:100%}
+  .toolbar > .spacer{display:none}
+  .toolbar .tool-actions{margin-left:auto}
+  #app[data-view="month"] .toolbar .palette,#app[data-view="myday"] .toolbar .palette,#app[data-view="month"] .toolbar .seg,#app[data-view="myday"] .toolbar .seg{display:none}
+}
+.days.mode-select{cursor:crosshair}
+.block.picked{box-shadow:0 0 0 2.5px var(--primary),0 6px 16px rgba(16,24,40,.16);z-index:5}
+#lassoPath{fill:color-mix(in srgb,var(--primary) 9%,transparent);stroke:var(--primary);stroke-width:1.6;stroke-dasharray:6 5;stroke-linejoin:round}
+.sel-count{font-weight:700;font-size:13.5px;white-space:nowrap;padding:0 4px}
+.tool-note{font-size:13px;color:var(--muted);white-space:nowrap}
+.chip.dotonly{width:34px;padding:0;justify-content:center}
+.palette .btn{height:34px}
+.palette .btn.danger{color:var(--now)}
+.rep-mode{display:flex}
+.rep-mode button{flex:1;justify-content:center;font-size:13px;height:32px}
+.rep-note{font-size:12.5px;color:var(--muted)}
+.rep-own{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--accent-soft);border:1px solid var(--accent-line);border-radius:10px;padding:8px 8px 8px 12px;font-size:13px}
+.rep-own span{flex:1;min-width:140px}
+.ed-actions.ask{flex-wrap:wrap;background:var(--surface-2);border-radius:12px;padding:10px}
+.ed-actions.ask span{flex-basis:100%;font-weight:600;font-size:13.5px}
+.td-find{width:40px;height:40px;border:0;border-radius:10px;background:transparent;color:var(--primary);display:grid;place-items:center;flex:none}
+.dl-plan{align-self:flex-start}
+.mode-flash{position:fixed;left:50%;top:calc(76px + env(safe-area-inset-top,0px));transform:translate(-50%,-6px);opacity:0;z-index:65;background:var(--ink);color:var(--surface);border-radius:999px;padding:9px 16px;font-weight:700;font-size:13.5px;box-shadow:var(--shadow);transition:opacity .18s,transform .18s;pointer-events:none;white-space:nowrap}
+.mode-flash.show{opacity:1;transform:translate(-50%,0)}
+
+/* ---------- find a time / plan study time ---------- */
+.stepper{display:inline-flex;align-items:center;background:var(--surface-2);border-radius:12px;height:44px;align-self:flex-start}
+.stepper button{width:44px;height:44px;border:0;background:transparent;font:600 20px var(--font-body);color:var(--ink-2)}
+.stepper b{min-width:36px;text-align:center;font:600 18px var(--font-display);font-variant-numeric:tabular-nums}
+.len-chips{display:flex;flex-wrap:wrap;gap:6px}
+.pill{height:34px;border-radius:999px;border:1px solid var(--line);background:var(--surface);padding:0 13px;font:600 13px var(--font-body);color:var(--ink-2)}
+.pill[aria-pressed="true"]{background:var(--primary-soft);border-color:var(--primary);color:var(--primary)}
+.slot-list{display:flex;flex-direction:column;gap:6px}
+.slot-row{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;padding:8px 8px 8px 14px;min-height:40px}
+.slot-day{font-weight:700;font-size:14px;flex:1;min-width:0}
+.slot-time{font-variant-numeric:tabular-nums;font-weight:600;color:var(--ink-2)}
+.slot-row .btn{height:34px}
+.slot-note{margin:0;color:var(--muted);font-size:13.5px}
+.rem-time{display:flex;align-items:center;gap:10px;font-weight:600}
+.rem-time .ps-input{max-width:150px;flex:none}
+
+/* ---------- focus timer ---------- */
+.focus{position:fixed;inset:0;z-index:55;background:color-mix(in srgb,var(--paper) 86%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:grid;place-items:center;padding:calc(20px + env(safe-area-inset-top,0px)) 16px calc(20px + env(safe-area-inset-bottom,0px))}
+.fo-card{width:min(420px,100%);background:var(--raised);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:20px;display:flex;flex-direction:column;align-items:center;gap:14px;box-sizing:border-box}
+.fo-top{display:flex;align-items:center;gap:10px;width:100%}
+.fo-top b{flex:1;min-width:0;font:600 19px/1.25 var(--font-display);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fo-dot{width:12px;height:12px;border-radius:50%;background:var(--c-solid);flex:none}
+.fo-mode{width:100%;display:flex}
+.fo-mode button{flex:1;justify-content:center;font-size:12.5px;padding:0 6px}
+.fo-ring{position:relative;width:min(240px,64vw);aspect-ratio:1;max-width:100%}
+.fo-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.fo-ring .track{fill:none;stroke:var(--surface-2);stroke-width:12}
+.fo-ring .prog{fill:none;stroke:var(--c-solid);stroke-width:12;stroke-linecap:round;transition:stroke-dashoffset .5s linear}
+.fo-card.brk .prog{stroke:var(--health-solid)}
+.fo-time{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.fo-time b{font:600 46px/1 var(--font-display);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.fo-time span{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.fo-worked{margin:0;color:var(--ink-2);font-size:13.5px}
+.fo-actions{display:flex;gap:8px;width:100%}
+.fo-actions .btn{flex:1;height:46px;font-size:15px}
+.focus-pill{display:inline-flex;align-items:center;gap:6px;height:28px;border-radius:999px;border:0;background:var(--primary);color:var(--on-primary);font:700 12.5px var(--font-body);padding:0 12px;font-variant-numeric:tabular-nums;flex:none}
+.focus-pill svg{width:15px;height:15px}
+
+/* ---------- week review ---------- */
+.rv-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(92px,1fr));gap:8px}
+.rv-tile{background:var(--surface-2);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:2px}
+.rv-tile b{font:600 19px/1.1 var(--font-display);font-variant-numeric:tabular-nums;white-space:nowrap}
+.rv-tile span{font-size:12px;color:var(--muted)}
+.rv-bars{display:flex;flex-direction:column;gap:8px}
+.rv-bar{display:grid;grid-template-columns:72px minmax(0,1fr) auto;align-items:center;gap:10px;font-size:13px}
+.rv-name{font-weight:600}
+.rv-track{position:relative;height:10px;border-radius:5px;background:var(--surface-2)}
+.rv-track i{position:absolute;left:0;top:0;bottom:0;border-radius:5px}
+.rv-track .plan{background:var(--c-bg);box-shadow:inset 0 0 0 1px var(--c-solid)}
+.rv-track .done{background:var(--c-solid)}
+.rv-num{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.rv-list{list-style:none;margin:0 0 6px;padding:0;display:flex;flex-direction:column;gap:4px}
+.rv-list li{display:flex;align-items:center;gap:8px;font-size:14px;padding:4px 0}
+.rv-list li svg{width:14px;height:14px;color:var(--c-solid)}
+.rv-list li.more{color:var(--muted);font-size:13px}
+.rv-when{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+
 /* ---------- iCloud sync sheet ---------- */
 .sync{left:50%;top:50%;transform:translate(-50%,-50%);width:min(440px,calc(100vw - 32px));max-height:calc(100% - 40px);overflow:auto;padding:24px 22px 20px;box-sizing:border-box;display:flex;flex-direction:column;gap:12px}
 .sync h2{margin:0;font:600 22px/1.2 var(--font-display);letter-spacing:-.015em}
@@ -541,6 +689,7 @@ svg.i{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-widt
       <h1 id="weekTitle">&nbsp;</h1>
     </div>
     <div class="spacer"></div>
+    <button class="btn has-txt view-btn" id="viewBtn" aria-haspopup="menu" title="Change view"><span class="vi" id="viewIcon"></span><span class="txt" id="viewLabel">Week</span><svg class="i chev" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5"/></svg></button>
     <div class="nav">
       <button class="btn icon" id="prevWeek" aria-label="Previous week" title="Previous week (←)"><svg class="i" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
       <button class="btn" id="todayBtn" title="Jump to this week (T)">Today</button>
@@ -558,7 +707,8 @@ svg.i{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-widt
     <div class="seg" role="group" aria-label="Pencil tool">
       <button id="mode-blocks" aria-pressed="true" title="Blocks (B)"><svg class="i" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="9" rx="2"/><rect x="13" y="9" width="7" height="11" rx="2"/></svg><span class="txt">Blocks</span></button>
       <button id="mode-ink" aria-pressed="false" title="Ink (I)"><svg class="i" viewBox="0 0 24 24"><path d="M4 20c3-1 4.5-3 6-6"/><path d="M13.5 4.5l6 6-7 7-6-6z"/><path d="M10 13l1 1"/></svg><span class="txt">Ink</span></button>
-      <button id="mode-erase" aria-pressed="false" title="Erase ink (E)"><svg class="i" viewBox="0 0 24 24"><path d="M15.5 4l4.5 4.5-9.5 9.5H6l-2-2a1.8 1.8 0 0 1 0-2.5z"/><path d="M10 9.5l4.5 4.5"/><path d="M12 20h8"/></svg><span class="txt">Erase</span></button>
+      <button id="mode-erase" aria-pressed="false" title="Erase (E) · double-tap your Pencil to switch"><svg class="i" viewBox="0 0 24 24"><path d="M15.5 4l4.5 4.5-9.5 9.5H6l-2-2a1.8 1.8 0 0 1 0-2.5z"/><path d="M10 9.5l4.5 4.5"/><path d="M12 20h8"/></svg><span class="txt">Erase</span></button>
+      <button id="mode-select" aria-pressed="false" title="Select (S)"><svg class="i" viewBox="0 0 24 24"><path d="M7.5 17.5C4.5 16.3 3 14.4 3 12.2 3 8.2 7 5 12 5s9 3.2 9 7.2-4 7.2-9 7.2c-1 0-2-.1-2.9-.4" stroke-dasharray="2.6 2.6"/><path d="M9 16.5c-1 1.2-1.2 2.6-.4 3.5"/></svg><span class="txt">Select</span></button>
     </div>
     <div class="palette" id="palette"></div>
     <div class="spacer"></div>
@@ -604,6 +754,8 @@ svg.i{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-widt
       <div class="empty-actions"><button class="btn" id="emptyCopy">Copy last week</button><button class="btn" id="emptyPreset" hidden>Use a week preset</button><button class="btn" id="emptyImport">Import a calendar</button></div>
     </div>
   </main>
+  <section class="month" id="monthView" aria-label="Month" hidden></section>
+  <section class="myday" id="mydayView" aria-label="My day" hidden></section>
   <aside class="todo" id="todo" aria-label="To-do list" hidden>
     <div class="td-head">
       <div class="seg side-tabs" role="group" aria-label="Panel">
@@ -638,6 +790,7 @@ svg.i{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-widt
 
   <footer class="footer">
     <div class="totals" id="totals"></div>
+    <button class="focus-pill" id="focusPill" hidden></button>
     <div class="status busy" id="status"><i></i><span>Loading…</span></div>
   </footer>
 </div>
@@ -658,7 +811,9 @@ svg.i{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-widt
     <div class="hi"><svg class="i" viewBox="0 0 24 24"><path d="M8 13V5.5a1.5 1.5 0 0 1 3 0V12M11 11.5v-2a1.5 1.5 0 0 1 3 0V12M14 10.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-.5a6 6 0 0 1-4.6-2.2L4 16.5a1.6 1.6 0 0 1 2.4-2.1L8 16"/></svg></div>
     <div><b>Fingers</b><span>Swipe to scroll. Tap a block to edit it. Press and hold a block to pick it up, or an empty slot to add one.</span></div>
     <div class="hi"><svg class="i" viewBox="0 0 24 24"><path d="M3 17c3-4 5 2 8-2s4-6 7-3 2 6 3 5"/></svg></div>
-    <div><b>Ink and Erase</b><span>Switch to Ink to handwrite notes anywhere on the week. Erase removes ink, never blocks.</span></div>
+    <div><b>Ink and Erase</b><span>Switch to Ink to handwrite notes anywhere on the week. In Erase, rub out ink or tap a block to delete it. Double-tap your Pencil to switch between Erase and Blocks.</span></div>
+    <div class="hi"><svg class="i" viewBox="0 0 24 24"><path d="M7.5 17.5C4.5 16.3 3 14.4 3 12.2 3 8.2 7 5 12 5s9 3.2 9 7.2-4 7.2-9 7.2c-1 0-2-.1-2.9-.4" stroke-dasharray="2.6 2.6"/><path d="M9 16.5c-1 1.2-1.2 2.6-.4 3.5"/></svg></div>
+    <div><b>Select</b><span>Circle blocks with the Pencil to select them, then drag one to move them all, or mark them done, recolour or delete them.</span></div>
     <div class="hi"><svg class="i" viewBox="0 0 24 24"><rect x="4" y="9" width="7" height="6" rx="1.5"/><rect x="13" y="9" width="7" height="6" rx="1.5"/></svg></div>
     <div><b>Repeat on other days</b><span>Open a block and tap days under “Repeat on” to copy it, like a gym session on Mon, Wed and Fri.</span></div>
     <div class="hi"><svg class="i" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 12.5l9 5 9-5"/><path d="M3 17l9 5 9-5"/></svg></div>
@@ -671,6 +826,11 @@ svg.i{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-widt
 <div class="pop presets" id="presets" role="dialog" aria-label="Presets" hidden></div>
 <div class="pop sync" id="sync" role="dialog" aria-label="iCloud sync" hidden></div>
 <div class="pop presets imp" id="imp" role="dialog" aria-label="Import a calendar" hidden></div>
+<div class="pop presets slots" id="slots" role="dialog" aria-label="Find a time" hidden></div>
+<div class="pop presets rem" id="rem" role="dialog" aria-label="Reminders" hidden></div>
+<div class="pop presets review" id="review" role="dialog" aria-label="Week review" hidden></div>
+<div class="focus" id="focus" role="dialog" aria-label="Focus timer" hidden></div>
+<div class="mode-flash" id="modeFlash" role="status" hidden></div>
 <div class="todo-ghost" id="todoGhost" hidden><b></b><span></span></div>
 <div class="toast" id="toast" role="status" aria-live="polite"><span id="toastMsg"></span><button id="toastAction" hidden>Undo</button></div>
 
@@ -729,6 +889,9 @@ const ICON = {
   chevUp:'<svg class="i" viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg>',
   pen:'<svg class="i" viewBox="0 0 24 24"><path d="M5 19l1.1-4.3L15.4 5.4a1.9 1.9 0 0 1 2.7 0l.5.5a1.9 1.9 0 0 1 0 2.7L9.3 17.9z"/></svg>',
   copy:'<svg class="i" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg>',
+  timer:'<svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 9.5v4l2.5 2M9.5 3h5M12 3v3"/></svg>',
+  clock:'<svg class="i" viewBox="0 0 24 24"><rect x="3.5" y="5" width="12" height="12" rx="2"/><path d="M3.5 9h12"/><circle cx="17" cy="16" r="4.5"/><path d="M17 14v2.2l1.4 1"/></svg>',
+  lasso:'<svg class="i" viewBox="0 0 24 24"><path d="M7.5 17.5C4.5 16.3 3 14.4 3 12.2 3 8.2 7 5 12 5s9 3.2 9 7.2-4 7.2-9 7.2c-1 0-2-.1-2.9-.4" stroke-dasharray="2.6 2.6"/><path d="M9 16.5c-1 1.2-1.2 2.6-.4 3.5"/></svg>',
   flag:'<svg class="i" viewBox="0 0 24 24"><path d="M5.5 21V4"/><path d="M5.5 4.5h12l-2.5 4 2.5 4h-12"/></svg>',
   calendar:'<svg class="i" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>',
   upload:'<svg class="i" viewBox="0 0 24 24"><path d="M12 15V4M7.5 8.5L12 4l4.5 4.5"/><path d="M4 15v3.5A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5V15"/></svg>',
@@ -761,10 +924,11 @@ const Store = (() => {
      so an edit on one device and a different edit on the other are combined instead of overwritten. */
   const bridge = (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.pencilled) || null;
   const call = (cmd, extra) => bridge.postMessage(Object.assign({cmd}, extra || {}));
-  const SYNCED = /^(w\d{4}-\d{2}-\d{2}|todos|presets|deadlines|calendars)$/;
+  const SYNCED = /^(w\d{4}-\d{2}-\d{2}|todos|presets|deadlines|calendars|series)$/;
   const nat = {cache: {}, base: {}, seen: {}, watchers: {}, dirty: new Set(), writeTimer: 0,
                cloud: {linked: false}, syncing: false, again: false, timer: 0, lastSync: 0, error: '', status: 'local'};
   let isBusy = () => false;
+  let appEvent = null;
   const parseDoc = t => { try { const d = t ? JSON.parse(t) : null; return d && typeof d === 'object' ? d : null; } catch { return null; } };
   const ver = d => d ? (d.t || 0) + '|' + (d.by || '') : '';
   function stable(v){
@@ -879,6 +1043,7 @@ const Store = (() => {
       event(type){
         if (type === 'active') scheduleSync(300);
         if (type === 'inactive') { flushLocal(); scheduleSync(0); }
+        try { if (appEvent) appEvent(type); } catch (e){ console.error(e); }
       },
     };
     document.addEventListener('visibilitychange', () => { if (document.hidden){ flushLocal(); } else scheduleSync(300); });
@@ -1017,6 +1182,8 @@ const Store = (() => {
   }
   return { init, loadPrefs, savePrefs, watch, save, get, clientId, cloud: cloudApi,
            fetchText(url){ return call('net.fetch', {url}); },
+           native(cmd, extra){ return bridge ? call(cmd, extra) : Promise.reject(new Error('Only in the app')); },
+           onEvent(cb){ appEvent = cb; },
            get isNative(){ return mode === 'native'; },
            watchWeek(key, cb){ return watch('w' + key, (d, k) => cb(key, d, k), true); },
            saveWeek(key, d){ save('w' + key, d); },
@@ -1050,14 +1217,16 @@ const state = {
   side: 'todo', deadlines: {items: [], t: 0}, calendars: {items: [], t: 0},
   dlOpenId: null, showDlDone: false, freshDl: null, pendingDeadlines: null,
   imp: {url: '', auto: true, cat: 'study', allDay: 'deadlines', busy: false, confirm: null},
+  series: {items: [], t: 0}, sel: new Set(), view: 'week', lastGrid: 'week', dayOffset: 0, monthDate: null, slot: null, seriesPending: false, remDenied: false,
 };
-function emptyWeek(){ return {v:1, blocks:[], strokes:[], t:0}; }
+function emptyWeek(){ return {v:1, blocks:[], strokes:[], sx:[], t:0}; }
 function normalize(d){
   const w = emptyWeek();
   if (d && typeof d === 'object'){
     w.blocks = Array.isArray(d.blocks) ? d.blocks.filter(b => b && b.id) : [];
     w.strokes = Array.isArray(d.strokes) ? d.strokes.filter(s => s && s.id && Array.isArray(s.p)) : [];
     w.t = d.t || 0;
+    w.sx = Array.isArray(d.sx) ? d.sx.filter(x => typeof x === 'string') : [];
   }
   return w;
 }
@@ -1071,7 +1240,7 @@ const els = {
   editor: $('editor'), scrim: $('scrim'), menu: $('menu'), help: $('help'),
   emptyHint: $('emptyHint'), eraserDot: $('eraserDot'),
   undoBtn: $('undoBtn'), redoBtn: $('redoBtn'), todayBtn: $('todayBtn'),
-  sync: $('sync'), imp: $('imp'), todo: $('todo'), tdList: $('tdList'), tdDone: $('tdDone'), presets: $('presets'), todoGhost: $('todoGhost'),
+  sync: $('sync'), imp: $('imp'), slots: $('slots'), rem: $('rem'), review: $('review'), focus: $('focus'), todo: $('todo'), tdList: $('tdList'), tdDone: $('tdDone'), presets: $('presets'), todoGhost: $('todoGhost'),
 };
 const cols = [];
 const dhCells = [];
@@ -1106,7 +1275,7 @@ function todayIndex(){
   return ds.findIndex(d => d.getFullYear() === t.getFullYear() && d.getMonth() === t.getMonth() && d.getDate() === t.getDate());
 }
 
-function renderHeader(){
+function renderWeekHeader(){
   const ds = weekDates(), a = ds[0], b = ds[6];
   let title;
   if (a.getMonth() === b.getMonth()) title = MONTHS[a.getMonth()] + ' ' + a.getDate() + ' – ' + b.getDate() + ', ' + b.getFullYear();
@@ -1192,6 +1361,7 @@ function renderBlocks(){
       let extra = '';
       if (state.dragId === b.id) extra = 'dragging';
       else if (state.editing && state.editing.id === b.id) extra = 'selected';
+      else if (state.sel.has(b.id)) extra = 'picked';
       html += blockHTML(b, lay.get(b.id), extra);
     }
     if (state.ghost && state.ghost.d === i){
@@ -1276,7 +1446,7 @@ function renderInk(){
     strokeCache.set(s.id, pts);
     html += '<path d="' + outline(pts, sizePx(s.w)) + '" style="fill:var(--ink-' + (s.c || 'ink') + ')"/>';
   }
-  html += '<path id="liveInk"/>';
+  html += '<path id="liveInk"/><path id="lassoPath"/>';
   els.ink.innerHTML = html;
   els.ink.setAttribute('width', els.days.clientWidth);
   els.ink.setAttribute('height', els.days.clientHeight);
@@ -1292,12 +1462,22 @@ function renderPalette(){
     html = INKS.map(c => '<button class="swatch" data-ink="' + c.k + '" aria-pressed="' + (state.ink === c.k) + '" aria-label="' + c.l + ' ink" title="' + c.l + '"><span style="background:var(--ink-' + c.k + ')"></span></button>').join('') +
       '<div class="sizes" role="group" aria-label="Pen size">' + SIZES.map(s => '<button data-size="' + s.k + '" aria-pressed="' + (state.size === s.k) + '" aria-label="' + s.l + '" title="' + s.l + '"><span style="height:' + (s.k * 2 + 1) + 'px"></span></button>').join('') + '</div>';
     els.toolHint.textContent = 'Write anywhere on the week';
+  } else if (state.mode === 'select'){
+    const n = state.sel.size;
+    html = n ? '<span class="sel-count">' + n + ' selected</span>' +
+      '<button class="btn" data-sel="done">' + ICON.check + '<span>Done</span></button>' +
+      CATS.map(c => '<button class="chip dotonly cat-' + c.k + '" data-selcat="' + c.k + '" title="Make ' + c.l + '" aria-label="Make ' + c.l + '"><span class="dot"></span></button>').join('') +
+      '<button class="btn danger" data-sel="delete">' + ICON.trash + '<span>Delete</span></button><button class="btn ghost" data-sel="clear">Clear</button>'
+      : '<span class="tool-note">Circle blocks with your Pencil. Drag a selected block to move them all.</span>';
+    els.toolHint.textContent = 'Circle blocks to select them';
+    document.querySelector('.toolbar').classList.toggle('compact', n > 0);
   } else {
     html = '<button class="btn" data-act="clear-ink">' + ICON.clear + '<span>Clear all ink</span></button>';
-    els.toolHint.textContent = 'Drag across ink to erase it';
+    els.toolHint.textContent = 'Rub out ink, or tap a block to delete it';
   }
+  if (state.mode !== 'select') document.querySelector('.toolbar').classList.remove('compact');
   els.palette.innerHTML = html;
-  ['blocks','ink','erase'].forEach(m => $('mode-' + m).setAttribute('aria-pressed', state.mode === m));
+  ['blocks','ink','erase','select'].forEach(m => $('mode-' + m).setAttribute('aria-pressed', state.mode === m));
   els.days.className = 'days mode-' + state.mode;
 }
 
@@ -1308,23 +1488,26 @@ function scheduleRender(){
 }
 function renderAll(){
   renderTodos(); renderDeadlines(); renderDeadlineStrip();
+  if (state.view === 'month') renderMonth();
+  if (state.view === 'myday') renderMyDay();
   renderHeader(); renderDayHeads(); renderBlocks(); renderInk(); renderFooter();
   renderNow(); renderBanner(); renderEmpty(); renderUndo(); renderPalette();
 }
 
 /* ================= mutations, undo, saving ================= */
-const snapshot = () => JSON.stringify({blocks: state.week.blocks, strokes: state.week.strokes});
+const snapshot = () => JSON.stringify({blocks: state.week.blocks, strokes: state.week.strokes, sx: state.week.sx || []});
 function pushUndo(snap){
   state.undo.push(snap || snapshot());
   if (state.undo.length > 80) state.undo.shift();
   state.redo = [];
   renderUndo();
 }
-function restore(json){ const o = JSON.parse(json); state.week.blocks = o.blocks; state.week.strokes = o.strokes; }
+function restore(json){ const o = JSON.parse(json); state.week.blocks = o.blocks; state.week.strokes = o.strokes; state.week.sx = o.sx || []; }
 function commit(){
   state.week.t = Date.now();
   state.week.by = Store.clientId;
   Store.saveWeek(state.key, state.week);
+  scheduleReminders();
 }
 function undo(){
   if (!state.undo.length) return;
@@ -1350,6 +1533,7 @@ function openWeek(monday){
   state.loaded = false;
   state.undo = []; state.redo = [];
   state.pendingRemote = null;
+  state.sel.clear();
   renderAll();
   state.unwatch = Store.watchWeek(state.key, onWeekData);
 }
@@ -1360,6 +1544,7 @@ function onWeekData(key, data, kind){
     state.loaded = true;
     if (state.week.t){ Store.saveWeek(key, state.week); }
     else if (first) maybeSeed();
+    applySeriesToCurrent();
     renderAll();
     return;
   }
@@ -1368,9 +1553,11 @@ function onWeekData(key, data, kind){
   if (kind === 'sync' || !state.week.t || incoming.t >= state.week.t){ state.week = incoming; }
   else { Store.saveWeek(key, state.week); }
   state.loaded = true;
+  applySeriesToCurrent();
   renderAll();
 }
 function applyPendingRemote(){
+  if (state.seriesPending && !state.pendingRemote) applySeriesToCurrent();
   if (!state.pendingRemote) return;
   const d = state.pendingRemote; state.pendingRemote = null;
   onWeekData(state.key, d, 'data');
@@ -1430,12 +1617,25 @@ els.days.addEventListener('pointerdown', e => {
       drag = Object.assign(base, {type:'ink', pts: [{x: p.x, y: p.y, p: pressure(e)}]});
       drawLive();
     } else {
-      drag = Object.assign(base, {type:'erase', snap: snapshot(), removed: 0});
+      const hitEl = e.target.closest('.block');
+      drag = Object.assign(base, {type:'erase', snap: snapshot(), removed: 0, hit: hitEl && hitEl.dataset.id !== '__ghost' ? hitEl.dataset.id : null});
       eraseAt(p.x, p.y); showEraser(p.x, p.y);
     }
     return;
   }
 
+  if (state.mode === 'select'){
+    const sEl = e.target.closest('.block');
+    const hitId = sEl && sEl.dataset.id !== '__ghost' ? sEl.dataset.id : null;
+    if (isTouch){ drag = Object.assign(base, {type: 'sel-tap', hit: hitId}); return; }
+    e.preventDefault(); capture(e);
+    if (hitId && state.sel.has(hitId)){
+      drag = Object.assign(base, {type: 'gmove', snap: snapshot(), orig: new Map(selectedBlocks().map(b => [b.id, {d: b.d, s: b.s, e: b.e}]))});
+    } else {
+      drag = Object.assign(base, {type: 'lasso', pts: [[p.x, p.y]], hit: hitId});
+    }
+    return;
+  }
   const bEl = e.target.closest('.block');
   if (bEl && bEl.dataset.id !== '__ghost'){
     const b = findBlock(bEl.dataset.id);
@@ -1461,6 +1661,7 @@ els.days.addEventListener('pointermove', e => {
   if (!drag || e.pointerId !== drag.pointerId) return;
   drag.lastX = e.clientX; drag.lastY = e.clientY;
   const dist = Math.hypot(e.clientX - drag.cx0, e.clientY - drag.cy0);
+  drag.maxDist = Math.max(drag.maxDist || 0, dist);
 
   if (drag.type === 'ink'){
     const evs = (e.getCoalescedEvents && e.getCoalescedEvents().length) ? e.getCoalescedEvents() : [e];
@@ -1471,6 +1672,9 @@ els.days.addEventListener('pointermove', e => {
     drawLive(); return;
   }
   if (drag.type === 'erase'){ const p = pos(e.clientX, e.clientY); eraseAt(p.x, p.y); return; }
+  if (drag.type === 'lasso'){ e.preventDefault(); const p = pos(e.clientX, e.clientY); drag.pts.push([p.x, p.y]); drawLasso(drag.pts); return; }
+  if (drag.type === 'sel-tap'){ if (dist > 10) drag = null; return; }
+  if (drag.type === 'gmove'){ e.preventDefault(); updateGroupMove(); updateAutoScroll(); return; }
 
   if (drag.type === 'pending-block' || drag.type === 'pending-create'){
     if (drag.kind === 'touch'){
@@ -1541,6 +1745,7 @@ function endDrag(e, cancelled){
       if (cancelled && b){ Object.assign(b, d.orig); }
       else if (b && (b.d !== d.orig.d || b.s !== d.orig.s || b.e !== d.orig.e)){
         if (b.x) delete b.x;
+        if (b.sid) b.own = true;
         pushUndo(d.snap); commit();
       }
       scheduleRender();
@@ -1551,7 +1756,33 @@ function endDrag(e, cancelled){
       break;
     case 'erase':
       if (d.removed){ pushUndo(d.snap); commit(); }
+      else if (!cancelled && d.hit && (d.maxDist || 0) < 8) deleteBlocks([d.hit], d.snap);
       break;
+    case 'lasso': {
+      drawLasso([]);
+      if (cancelled) break;
+      if ((d.maxDist || 0) < 8){
+        if (d.hit){ if (state.sel.has(d.hit)) state.sel.delete(d.hit); else state.sel.add(d.hit); } else state.sel.clear();
+      } else state.sel = new Set(blocksInPolygon(d.pts));
+      renderBlocks(); renderPalette();
+      break;
+    }
+    case 'sel-tap':
+      if (cancelled) break;
+      if (d.hit){ if (state.sel.has(d.hit)) state.sel.delete(d.hit); else state.sel.add(d.hit); } else state.sel.clear();
+      renderBlocks(); renderPalette();
+      break;
+    case 'gmove': {
+      let changed = false;
+      for (const b of state.week.blocks){
+        const o = d.orig.get(b.id); if (!o) continue;
+        if (cancelled){ Object.assign(b, o); continue; }
+        if (o.d !== b.d || o.s !== b.s){ changed = true; if (b.sid) b.own = true; }
+      }
+      if (changed && !cancelled){ pushUndo(d.snap); commit(); }
+      scheduleRender();
+      break;
+    }
   }
   applyPendingRemote();
 }
@@ -1567,7 +1798,7 @@ els.scroller.addEventListener('touchstart', e => {
 }, {passive: false});
 els.scroller.addEventListener('touchmove', e => {
   const t = e.touches[0];
-  if (drag && ['move','resize-s','resize-e','create','ink','erase'].includes(drag.type)) e.preventDefault();
+  if (drag && ['move','resize-s','resize-e','create','ink','erase','lasso','gmove'].includes(drag.type)) e.preventDefault();
   else if (t && t.touchType === 'stylus' && e.target.closest && e.target.closest('#days')) e.preventDefault();
 }, {passive: false});
 
@@ -1607,7 +1838,7 @@ function autoScroll(y, cb){
   autoCb = cb;
   if (autoScrollV && !autoScrollRaf) autoScrollRaf = requestAnimationFrame(autoStep);
 }
-function updateAutoScroll(){ if (drag) autoScroll(drag.lastY, updateDrag); }
+function updateAutoScroll(){ if (drag) autoScroll(drag.lastY, drag.type === 'gmove' ? updateGroupMove : updateDrag); }
 function autoStep(){
   autoScrollRaf = 0;
   if (!autoScrollV || !autoCb) return;
@@ -1661,6 +1892,7 @@ function openEditor(id, opts){
   opts = opts || {};
   const b = findBlock(id); if (!b) return;
   state.editing = {id, isNew: !!opts.isNew, snap: opts.isNew ? null : snapshot(), via: opts.via || 'mouse'};
+  $('toast').classList.remove('show');
   renderBlocks();
   buildEditor();
   els.scrim.hidden = false; els.scrim.classList.remove('dim');
@@ -1686,19 +1918,22 @@ function buildEditor(){
     '<div class="field"><span class="field-label">Category</span><div class="cats">' +
       CATS.map(c => '<button class="chip cat-' + c.k + '" data-edcat="' + c.k + '" aria-pressed="' + (b.c === c.k) + '"><span class="dot"></span><span>' + c.l + '</span></button>').join('') +
     '</div></div>' +
-    '<div class="field"><span class="field-label">' + DAY_SHORT[b.d] + ' ' + ds[b.d].getDate() + ' ' + MON_S[ds[b.d].getMonth()] + '<em id="edDur">' + dur(b.e - b.s) + '</em></span>' +
+    '<div class="field"><span class="field-label">' + DAY_SHORT[b.d] + ' ' + ds[b.d].getDate() + ' ' + MON_S[ds[b.d].getMonth()] + '<em id="edDur">' + dur(b.e - b.s) + (b.f ? ' · focused ' + dur(b.f) : '') + '</em></span>' +
       '<div class="times">' +
         '<div class="tbox"><button data-t="s-" aria-label="Start 15 minutes earlier">−</button><span class="tval"><small>Start</small><b id="edS">' + hhmm(b.s) + '</b></span><button data-t="s+" aria-label="Start 15 minutes later">+</button></div>' +
         '<div class="tbox"><button data-t="e-" aria-label="End 15 minutes earlier">−</button><span class="tval"><small>End</small><b id="edE">' + hhmm(b.e) + '</b></span><button data-t="e+" aria-label="End 15 minutes later">+</button></div>' +
       '</div></div>' +
-    '<div class="field"><span class="field-label">Repeat on</span><div class="repeat" id="edRepeat">' + repeatHTML(b) + '</div></div>' +
+    '<div id="edRepeatField">' + repeatFieldHTML(b) + '</div>' +
     '<div class="field"><span class="field-label">Notes</span><textarea class="ed-notes" id="edNotes" rows="2" placeholder="Details, location, links">' + esc(b.n || '') + '</textarea></div>' +
+    (ed.askDel ? '<div class="ed-actions ask"><span>This block repeats every week.</span>' +
+        '<button class="btn" data-delone="1">Delete this week only</button><button class="btn danger-solid" data-delfuture="1">Stop repeating from here</button><button class="btn ghost" data-delcancel="1">Cancel</button></div>' :
     '<div class="ed-actions">' +
       '<button class="btn icon danger" id="edDelete" aria-label="Delete block" title="Delete">' + ICON.trash + '</button>' +
       '<button class="btn toggle-done" id="edDone" aria-pressed="' + !!b.done + '">' + ICON.check + '<span>' + (b.done ? 'Completed' : 'Mark done') + '</span></button>' +
+      '<button class="btn" id="edFocus" title="Start a focus timer for this block">' + ICON.timer + '<span>Focus</span></button>' +
       '<div class="spacer"></div>' +
       '<button class="btn primary" id="edSave">Done</button>' +
-    '</div>';
+    '</div>');
 }
 function suggestions(cur){
   const seen = new Set(), out = [];
@@ -1770,8 +2005,12 @@ function closeEditor(silent){
 function editBlock(fn, rebuild){
   const ed = state.editing; if (!ed) return;
   const b = findBlock(ed.id); if (!b) return;
+  const before = b.sid ? [b.d, b.s, b.e, b.t, b.c, b.n].join('|') : null;
+  const wasOwn = !!b.own;
   fn(b);
+  if (b.sid && before !== [b.d, b.s, b.e, b.t, b.c, b.n].join('|')) b.own = true;
   if (b.x) delete b.x;
+  if (!rebuild && b.own !== wasOwn) setTimeout(refreshRepeat, 0);
   commit();
   renderBlocks(); renderDayHeads(); renderFooter(); renderBanner();
   if (rebuild){
@@ -1788,7 +2027,7 @@ els.editor.addEventListener('input', e => {
     editBlock(b => { b.t = v; });
     const sg = suggestions(v), box = $('edSugg');
     box.innerHTML = suggHTML(sg); box.hidden = !sg.length;
-    $('edRepeat').innerHTML = repeatHTML(findBlock(state.editing.id));
+    if (!findBlock(state.editing.id).sid) refreshRepeat();
   } else if (e.target.id === 'edNotes'){
     const v = e.target.value; editBlock(b => { b.n = v; });
   }
@@ -1800,9 +2039,60 @@ els.editor.addEventListener('click', e => {
   const t = e.target.closest('button'); if (!t || !state.editing) return;
   const id = t.id;
   if (id === 'edClose' || id === 'edSave'){ closeEditor(); return; }
-  if (id === 'edDelete'){
+  if (id === 'edFocus'){ const fid = state.editing.id; closeEditor(); openFocus(fid); return; }
+  if (t.dataset.delcancel){ state.editing.askDel = false; buildEditor(); positionEditor(); return; }
+  if (t.dataset.delfuture){
+    const cur = findBlock(state.editing.id), r = cur && seriesById(cur.sid);
+    if (r) endSeriesHere(r);
+    state.editing = null; els.editor.hidden = true; els.scrim.hidden = true;
+    ensureSeries(state.key, state.week); commit(); renderAll();
+    toast('This block no longer repeats from this week on');
+    return;
+  }
+  if (t.dataset.repmode){
+    const ed = state.editing, b = findBlock(ed.id); if (!b) return;
+    if (t.dataset.repmode === 'series' && !b.sid){
+      ed.id = makeSeries(b); ed.isNew = false; ed.snap = null;
+      renderAll(); buildEditor(); positionEditor();
+      toast('Repeats every ' + DAY_FULL[b.d]);
+    } else if (t.dataset.repmode === 'once' && b.sid){
+      const r = seriesById(b.sid); if (r) endSeriesHere(r);
+      delete b.sid; delete b.sv; delete b.sd; delete b.own;
+      ensureSeries(state.key, state.week); commit(); ed.snap = null;
+      renderAll(); buildEditor(); positionEditor();
+    }
+    return;
+  }
+  if (t.dataset.srday != null){
+    const b = findBlock(state.editing.id), r0 = b && seriesById(b.sid); if (!r0) return;
+    const r = seriesFromHere(r0), day = +t.dataset.srday;
+    r.days = r.days.includes(day) ? r.days.filter(x => x !== day) : r.days.concat(day).sort();
+    saveList('series');
+    ensureSeries(state.key, state.week); commit();
+    state.editing.id = seriesBlockId(r.id, state.key, b.sd != null ? b.sd : b.d); state.editing.snap = null;
+    if (!findBlock(state.editing.id)) state.editing.id = b.id;
+    renderAll(); buildEditor(); positionEditor();
+    return;
+  }
+  if (t.dataset.repapply){
+    const b = findBlock(state.editing.id), r0 = b && seriesById(b.sid); if (!r0) return;
+    const r = seriesFromHere(r0);
+    Object.assign(r, {s: b.s, e: b.e, t: b.t || '', c: b.c, n: b.n || ''});
+    const sd = b.sd != null ? b.sd : b.d;
+    state.week.blocks = state.week.blocks.filter(x => x.id !== b.id);
+    saveList('series');
+    ensureSeries(state.key, state.week); commit();
+    state.editing.id = seriesBlockId(r.id, state.key, sd); state.editing.snap = null;
+    renderAll(); buildEditor(); positionEditor();
+    toast('Every week updated from here on');
+    return;
+  }
+  if (id === 'edDelete' || t.dataset.delone){
     const ed = state.editing;
+    const cur = findBlock(ed.id);
+    if (id === 'edDelete' && cur && cur.sid && seriesById(cur.sid)){ ed.askDel = true; buildEditor(); positionEditor(); return; }
     const snap = ed.isNew ? state.undo[state.undo.length - 1] : (ed.snap || snapshot());
+    if (cur && cur.sid){ const sx = new Set(state.week.sx || []); sx.add(cur.sid + ':' + (cur.sd != null ? cur.sd : cur.d)); state.week.sx = [...sx]; }
     state.week.blocks = state.week.blocks.filter(b => b.id !== ed.id);
     state.editing = null;
     if (!ed.isNew) pushUndo(snap);
@@ -1838,7 +2128,7 @@ els.editor.addEventListener('click', e => {
 els.scrim.addEventListener('pointerdown', e => {
   e.preventDefault();
   if (!els.editor.hidden) closeEditor();
-  closePresets(); closeSync(); closeImport();
+  closePresets(); closeSync(); closeImport(); closeSlots(); closeReminders(); closeReview();
   closeMenu(); closeHelp();
 });
 
@@ -1849,6 +2139,8 @@ function openMenu(){
   els.menu.innerHTML =
     '<button class="item" data-m="presets">' + ICON.layers + 'Presets</button>' +
     '<button class="item" data-m="import">' + ICON.calendar + 'Import a calendar</button>' +
+    '<button class="item" data-m="review">' + ICON.check + 'Week review</button>' +
+    '<button class="item" data-m="reminders">' + ICON.clock + 'Reminders</button>' +
     (Store.isNative ? '<button class="item" data-m="sync">' + ICON.cloud + 'iCloud sync</button>' : '') +
     '<button class="item" data-m="help">' + ICON.help + 'How it works</button>' +
     '<hr>' +
@@ -1863,19 +2155,22 @@ function openMenu(){
   els.menu.style.left = Math.round(clamp(btn.right - els.menu.offsetWidth, 12, innerWidth - els.menu.offsetWidth - 12)) + 'px';
   els.scrim.hidden = false; els.scrim.classList.remove('dim');
 }
-function closeMenu(){ if (els.menu.hidden) return; els.menu.hidden = true; scrimCheck(); }
-function scrimCheck(){ if (els.editor.hidden && els.menu.hidden && els.help.hidden && els.presets.hidden && els.sync.hidden && els.imp.hidden){ els.scrim.hidden = true; els.scrim.classList.remove('dim'); } }
+function closeMenu(){ if (els.menu.hidden) return; els.menu.hidden = true; els.menu.dataset.kind = ''; scrimCheck(); }
+function scrimCheck(){ if (els.editor.hidden && els.menu.hidden && els.help.hidden && els.presets.hidden && els.sync.hidden && els.imp.hidden && els.slots.hidden && els.rem.hidden && els.review.hidden){ els.scrim.hidden = true; els.scrim.classList.remove('dim'); } }
 function openHelp(){ closeMenu(); els.help.hidden = false; els.scrim.hidden = false; els.scrim.classList.add('dim'); }
 function closeHelp(){ if (els.help.hidden) return; els.help.hidden = true; scrimCheck(); }
 
 els.menu.addEventListener('click', async e => {
   const t = e.target.closest('button'); if (!t) return;
+  if (t.dataset.view){ closeMenu(); setView(t.dataset.view); return; }
   if (t.dataset.dens){ setDensity(t.dataset.dens); openMenu(); return; }
   const m = t.dataset.m; closeMenu();
   if (m === 'help') openHelp();
   if (m === 'presets') openPresets();
   if (m === 'sync') openSync();
   if (m === 'import') openImport();
+  if (m === 'review') openReview();
+  if (m === 'reminders') openReminders();
   if (m === 'day-save') openPresets({tab: 'day', saveDay: +t.dataset.day});
   if (m === 'day-apply') openPresets({tab: 'day', saveDay: +t.dataset.day, targets: [+t.dataset.day], expandFirst: true});
   if (m === 'day-clear') clearDay(+t.dataset.day);
@@ -1907,6 +2202,7 @@ async function copyLastWeek(){
   pushUndo();
   let added = 0;
   for (const b of prev.blocks){
+    if (b.sid || b.src) continue;
     if (state.week.blocks.some(o => o.d === b.d && sameAs(o, b))) continue;
     state.week.blocks.push({id: uid(), d: b.d, s: b.s, e: b.e, t: b.t, c: b.c, n: b.n || ''});
     added++;
@@ -1947,6 +2243,7 @@ function onListData(kind){
     if (kind === 'todos') renderTodos();
     else if (kind === 'deadlines'){ renderDeadlines(); renderDeadlineStrip(); }
     else if (kind === 'calendars') renderImport();
+    else if (kind === 'series') applySeriesToCurrent();
     else { if (!presetsBusy()) renderPresets(); renderEmpty(); }
   };
 }
@@ -1968,6 +2265,7 @@ function todoItemHTML(t){
   if (state.todoEditing === t.id){
     return '<li class="td-item editing" data-id="' + id + '">' + check +
       '<div class="td-edit"><input id="tdEdit" type="text" enterkeyhint="done" autocomplete="off" value="' + esc(t.t) + '" aria-label="Edit to-do">' +
+      '<button class="td-find" aria-label="Find a time" title="Find a time">' + ICON.clock + '</button>' +
       '<button class="td-del" aria-label="Delete to-do" title="Delete">' + ICON.trash + '</button></div></li>';
   }
   const bs = linkedBlocks(t.id);
@@ -2076,6 +2374,7 @@ els.todo.addEventListener('click', e => {
   if (chk){ const li = chk.closest('.td-item'); if (li) toggleTodo(li.dataset.id); return; }
   if (e.target.closest('#tdDoneToggle')){ state.showDone = !state.showDone; renderTodos(); return; }
   if (e.target.closest('#tdClear')){ clearDoneTodos(); return; }
+  if (e.target.closest('.td-find')){ const tid = state.todoEditing; commitTodoEdit(); if (tid) openSlots({mode: 'todo', id: tid}); return; }
   if (e.target.closest('#tdClose')) setTodoOpen(false);
 });
 els.todo.addEventListener('keydown', e => {
@@ -2457,13 +2756,14 @@ function dlItemHTML(x){
     '<button class="td-check" data-dlcheck="' + id + '" aria-pressed="' + !!x.done + '" aria-label="' + (x.done ? 'Mark not done' : 'Mark done') + '">' + ICON.check + '</button>' +
     '<button class="dl-main" data-dlopen="' + id + '" aria-expanded="' + open + '">' +
       '<span class="dl-date"><b>' + dt.getDate() + '</b><span>' + MON_S[dt.getMonth()] + '</span></span>' +
-      '<span class="dl-body"><span class="dl-title">' + esc(x.t) + '</span><span class="dl-when"><span class="dl-rel">' + (x.done ? 'Done' : relText(diff)) + '</span> · ' + when + '</span></span></button>';
+      '<span class="dl-body"><span class="dl-title">' + esc(x.t) + '</span><span class="dl-when"><span class="dl-rel">' + (x.done ? 'Done' : relText(diff)) + '</span> · ' + when + (x.plan && x.plan.length ? ' · ' + x.plan.length + ' study session' + (x.plan.length === 1 ? '' : 's') : '') + '</span></span></button>';
   if (open){
     h += '<div class="dl-edit">' +
       '<input class="ps-input" data-dlf="t" type="text" autocomplete="off" enterkeyhint="done" value="' + esc(x.t) + '" aria-label="Deadline title">' +
       '<div class="dl-edit-row"><input class="ps-input" data-dlf="date" type="date" value="' + esc(x.date) + '" aria-label="Date"><input class="ps-input" data-dlf="time" type="time" value="' + esc(x.time || '') + '" aria-label="Time (optional)"></div>' +
       '<div class="cats">' + CATS.map(k => '<button class="chip cat-' + k.k + '" data-dlcat="' + k.k + '" aria-pressed="' + ((x.c || 'study') === k.k) + '"><span class="dot"></span><span>' + k.l + '</span></button>').join('') + '</div>' +
       (x.src && calById(x.src) ? '<span class="scribble">' + ICON.calendar + 'From ' + esc(calById(x.src).name) + '</span>' : '') +
+      '<button class="btn dl-plan" data-dlplan="' + id + '">' + ICON.clock + 'Plan study time</button>' +
       '<div class="ed-actions"><button class="btn icon danger" data-dldel="' + id + '" aria-label="Delete deadline" title="Delete">' + ICON.trash + '</button><span class="spacer"></span><button class="btn primary" data-dlclose="1">Done</button></div>' +
       '</div>';
   }
@@ -2529,7 +2829,7 @@ function openDeadline(id){
   const el = $('sideDeadlines').querySelector('.dl-item[data-id="' + CSS.escape(id) + '"]');
   if (el) el.scrollIntoView({block: 'nearest'});
 }
-function saveDeadlines(){ saveList('deadlines'); renderDeadlineStrip(); }
+function saveDeadlines(){ saveList('deadlines'); renderDeadlineStrip(); scheduleReminders(); }
 
 $('dlForm').addEventListener('submit', e => {
   e.preventDefault();
@@ -2550,6 +2850,7 @@ $('sideDeadlines').addEventListener('click', e => {
     x.done = !x.done; x.dt = x.done ? Date.now() : 0;
     saveDeadlines(); renderDeadlines(); return;
   }
+  if (d.dlplan){ openSlots({mode: 'study', id: d.dlplan}); return; }
   if (d.dlopen){ state.dlOpenId = state.dlOpenId === d.dlopen ? null : d.dlopen; renderDeadlines(); return; }
   if (d.dlclose){ if (document.activeElement) document.activeElement.blur(); state.dlOpenId = null; renderDeadlines(); return; }
   if (d.dlcat){ const x = dlById(state.dlOpenId); if (x){ x.c = d.dlcat; saveDeadlines(); renderDeadlines(); } return; }
@@ -2956,22 +3257,838 @@ function hostOf(url){ try { return new URL(url.replace(/^webcal:/i, 'https:')).h
 $('emptyClose').addEventListener('click', () => { state.prefs.hideTip = true; Store.savePrefs(state.prefs); renderEmpty(); });
 $('emptyImport').addEventListener('click', openImport);
 
+/* ================= shared helpers for this batch ================= */
+const nowMin = () => { const n = new Date(); return n.getHours() * 60 + n.getMinutes(); };
+const thisMonday = () => mondayOf(new Date());
+function dayLabel(date){
+  const diff = dayDiff(date);
+  if (diff === 0) return 'Today';
+  if (diff === 1) return 'Tomorrow';
+  return DAY_SHORT[(date.getDay() + 6) % 7] + ' ' + date.getDate() + ' ' + MON_S[date.getMonth()];
+}
+function rangeTitle(a, b){
+  if (a.getMonth() === b.getMonth()) return MON_S[a.getMonth()] + ' ' + a.getDate() + ' – ' + b.getDate() + ', ' + b.getFullYear();
+  return MON_S[a.getMonth()] + ' ' + a.getDate() + ' – ' + MON_S[b.getMonth()] + ' ' + b.getDate() + ', ' + b.getFullYear();
+}
+function blockStartMs(weekStart, b){ const d = addDays(weekStart, b.d); return new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, b.s).getTime(); }
+function blockEndMs(weekStart, b){ const d = addDays(weekStart, b.d); return new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, b.e).getTime(); }
+async function weekWithSeries(key){
+  const doc = normalize(await Store.getWeek(key));
+  ensureSeries(key, doc);
+  return doc;
+}
+/* Adds blocks to any week: the open week directly, other weeks through storage. */
+async function addBlocksAnywhere(list){
+  const byWeek = {};
+  list.forEach(x => { const key = keyOf(mondayOf(x.date)); (byWeek[key] = byWeek[key] || []).push(x); });
+  const made = [];
+  for (const key of Object.keys(byWeek)){
+    const mk = x => Object.assign({id: uid(), d: (x.date.getDay() + 6) % 7, s: x.s, e: x.e, t: x.t || '', c: x.c || state.cat}, x.extra || {});
+    if (key === state.key){
+      pushUndo();
+      byWeek[key].forEach(x => { const b = mk(x); state.week.blocks.push(b); made.push({key, id: b.id}); });
+      commit();
+    } else {
+      const doc = normalize(await Store.getWeek(key));
+      byWeek[key].forEach(x => { const b = mk(x); doc.blocks.push(b); made.push({key, id: b.id}); });
+      doc.t = Date.now(); doc.by = Store.clientId;
+      Store.saveWeek(key, doc);
+    }
+  }
+  renderAll();
+  return made;
+}
+let flashTimer = 0;
+function flashMode(text){
+  const el = $('modeFlash'); if (!el) return;
+  el.textContent = text; el.hidden = false; el.classList.add('show');
+  clearTimeout(flashTimer);
+  flashTimer = setTimeout(() => { el.classList.remove('show'); setTimeout(() => { el.hidden = true; }, 200); }, 900);
+}
+
+/* ================= views: day, 3 days, week, month, my day =================
+   Day and 3-day views keep the same 7-column grid but make each column wider and show
+   only part of it (the grid is scrolled sideways by code). All drawing, dragging and ink
+   keep working because positions are still measured on the full week. */
+const VIEWS = [{k: 'day', l: 'Day'}, {k: '3', l: '3 days'}, {k: 'week', l: 'Week'}, {k: 'month', l: 'Month'}, {k: 'myday', l: 'My day'}];
+const VIEW_ICON = {
+  day: '<svg class="i" viewBox="0 0 24 24"><rect x="4" y="4.5" width="16" height="15.5" rx="2"/><path d="M4 9h16"/><rect x="8" y="12" width="8" height="5" rx="1"/></svg>',
+  '3': '<svg class="i" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="15.5" rx="2"/><path d="M3.5 9h17M9.2 9v11M14.8 9v11"/></svg>',
+  week: '<svg class="i" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="15.5" rx="2"/><path d="M3.5 9h17M7.5 9v11M11.5 9v11M15.5 9v11"/></svg>',
+  month: '<svg class="i" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="15.5" rx="2"/><path d="M3.5 9h17M3.5 13.5h17M8 9v11M12.5 9v11M16.5 9v11"/></svg>',
+  myday: '<svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4"/></svg>',
+};
+const isGridView = v => v === 'day' || v === '3' || v === 'week';
+const viewN = () => state.view === 'day' ? 1 : state.view === '3' ? 3 : 7;
+function applyView(){
+  const v = state.view, grid = isGridView(v);
+  $('board').hidden = !grid;
+  $('monthView').hidden = v !== 'month';
+  $('mydayView').hidden = v !== 'myday';
+  $('app').dataset.view = v;
+  $('viewLabel').textContent = VIEWS.find(x => x.k === v).l;
+  $('viewIcon').innerHTML = VIEW_ICON[v];
+  if (grid){
+    const n = viewN(), sheet = $('sheet');
+    if (n < 7){
+      const W = els.scroller.clientWidth, G = els.gutter.offsetWidth || 54;
+      const colW = Math.max(60, (W - G) / n);
+      sheet.style.width = (G + colW * 7) + 'px'; sheet.style.minWidth = '0';
+      els.scroller.classList.add('windowed');
+      state.dayOffset = clamp(state.dayOffset || 0, 0, 7 - n);
+      els.scroller.scrollLeft = state.dayOffset * colW;
+    } else {
+      sheet.style.width = ''; sheet.style.minWidth = '';
+      els.scroller.classList.remove('windowed');
+    }
+  }
+  if (v === 'month') renderMonth();
+  if (v === 'myday') renderMyDay();
+  renderHeader();
+}
+function setView(v){
+  if (!VIEWS.some(x => x.k === v)) return;
+  const prev = state.view;
+  if (state.editing) closeEditor();
+  state.view = v; state.prefs.view = v; Store.savePrefs(state.prefs);
+  if (isGridView(v)) state.lastGrid = v;
+  if (v === 'myday' && state.key !== keyOf(thisMonday())) openWeek(thisMonday());
+  if ((v === 'day' || v === '3') && !(prev === 'day' || prev === '3')){
+    const ti = todayIndex(); state.dayOffset = ti >= 0 ? ti : 0;
+  }
+  if (v === 'month') state.monthDate = new Date(addDays(state.weekStart, state.dayOffset || 0).getFullYear(), addDays(state.weekStart, state.dayOffset || 0).getMonth(), 1);
+  applyView();
+  if (isGridView(v) && !isGridView(prev)) scrollToStart();
+}
+function showDay(date){
+  const mon = mondayOf(date), idx = (date.getDay() + 6) % 7;
+  if (keyOf(mon) !== state.key) openWeek(mon);
+  state.dayOffset = clamp(idx, 0, 7 - viewN());
+  applyView();
+}
+function navStep(dir){
+  const v = state.view;
+  if (v === 'month'){ state.monthDate = new Date(state.monthDate.getFullYear(), state.monthDate.getMonth() + dir, 1); renderMonth(); renderHeader(); return; }
+  if (v === 'myday') return;
+  if (v === 'week'){ goWeek(dir); applyView(); return; }
+  showDay(addDays(state.weekStart, (state.dayOffset || 0) + dir * viewN()));
+}
+function goToday(){
+  const t = new Date();
+  if (state.view === 'month'){ state.monthDate = new Date(t.getFullYear(), t.getMonth(), 1); renderMonth(); renderHeader(); return; }
+  if (state.view === 'myday'){ renderMyDay(); return; }
+  if (state.key !== keyOf(mondayOf(t))) openWeek(mondayOf(t));
+  if (state.view !== 'week') state.dayOffset = clamp((t.getDay() + 6) % 7, 0, 7 - viewN());
+  applyView(); scrollToStart();
+}
+function renderHeader(){
+  renderWeekHeader();
+  const v = state.view || 'week', t = new Date();
+  if (v === 'day' || v === '3'){
+    const n = viewN(), first = addDays(state.weekStart, state.dayOffset || 0), last = addDays(first, n - 1);
+    els.weekTitle.textContent = n === 1 ? DAY_FULL[(first.getDay() + 6) % 7] + ' ' + first.getDate() + ' ' + MONTHS[first.getMonth()] : rangeTitle(first, last);
+    const ti = todayIndex();
+    els.todayBtn.disabled = ti >= (state.dayOffset || 0) && ti < (state.dayOffset || 0) + n;
+  } else if (v === 'month'){
+    const m = state.monthDate || t;
+    els.weekTitle.textContent = MONTHS[m.getMonth()] + ' ' + m.getFullYear();
+    els.weekEyebrow.textContent = 'Month';
+    els.todayBtn.disabled = m.getMonth() === t.getMonth() && m.getFullYear() === t.getFullYear();
+  } else if (v === 'myday'){
+    els.weekTitle.textContent = DAY_FULL[(t.getDay() + 6) % 7] + ' ' + t.getDate() + ' ' + MONTHS[t.getMonth()];
+    els.weekEyebrow.textContent = 'My day';
+  }
+  const hideNav = v === 'myday';
+  $('prevWeek').hidden = hideNav; $('nextWeek').hidden = hideNav; els.todayBtn.hidden = hideNav;
+  const unit = v === 'month' ? 'month' : v === 'week' ? 'week' : v === 'day' ? 'day' : 'days';
+  $('prevWeek').setAttribute('aria-label', 'Previous ' + unit); $('nextWeek').setAttribute('aria-label', 'Next ' + unit);
+}
+function openViewMenu(){
+  const open = !els.menu.hidden && els.menu.dataset.kind === 'view';
+  closeMenu();
+  if (open) return;
+  els.menu.dataset.kind = 'view';
+  els.menu.innerHTML = '<div class="menu-label">View</div>' + VIEWS.map(v =>
+    '<button class="item' + (state.view === v.k ? ' on' : '') + '" data-view="' + v.k + '">' + VIEW_ICON[v.k] + '<span>' + v.l + '</span>' + (state.view === v.k ? '<span class="tick">' + ICON.check + '</span>' : '') + '</button>').join('');
+  els.menu.hidden = false;
+  const r = $('viewBtn').getBoundingClientRect();
+  els.menu.style.top = Math.round(r.bottom + 8) + 'px';
+  els.menu.style.left = Math.round(clamp(r.left, 12, innerWidth - els.menu.offsetWidth - 12)) + 'px';
+  els.scrim.hidden = false; els.scrim.classList.remove('dim');
+}
+$('viewBtn').addEventListener('click', openViewMenu);
+// swipe sideways through days in the day and 3-day views
+let swipe = null;
+els.scroller.addEventListener('touchstart', e => {
+  const t = e.touches[0];
+  swipe = e.touches.length === 1 && t.touchType !== 'stylus' ? {x: t.clientX, y: t.clientY, at: Date.now()} : null;
+}, {passive: true});
+els.scroller.addEventListener('touchend', e => {
+  const s = swipe; swipe = null;
+  if (!s || drag || !(state.view === 'day' || state.view === '3')) return;
+  const t = e.changedTouches[0], dx = t.clientX - s.x, dy = t.clientY - s.y;
+  if (Math.abs(dx) > 60 && Math.abs(dx) > 2 * Math.abs(dy) && Date.now() - s.at < 700) navStep(dx < 0 ? 1 : -1);
+}, {passive: true});
+new ResizeObserver(() => { if (state.view === 'day' || state.view === '3') applyView(); }).observe(els.scroller);
+
+/* month */
+async function renderMonth(){
+  const box = $('monthView'); if (box.hidden) return;
+  if (!state.monthDate) state.monthDate = new Date(state.weekStart.getFullYear(), state.weekStart.getMonth(), 1);
+  const m0 = state.monthDate, start = mondayOf(m0);
+  const last = new Date(m0.getFullYear(), m0.getMonth() + 1, 0);
+  const weeks = Math.ceil((Math.round((last - start) / 864e5) + 1) / 7);
+  const token = state.monthToken = (state.monthToken || 0) + 1;
+  const data = state.monthCache || {};
+  drawMonth(start, weeks, data);
+  for (let w = 0; w < weeks; w++){
+    const key = keyOf(addDays(start, 7 * w));
+    data[key] = key === state.key ? state.week : await weekWithSeries(key);
+    if (token !== state.monthToken) return;
+  }
+  state.monthCache = data;
+  drawMonth(start, weeks, data);
+}
+function drawMonth(start, weeks, data){
+  const today = keyOf(new Date()), m = state.monthDate.getMonth();
+  let h = '<div class="mo-head">' + DAY_SHORT.map((d, i) => '<span' + (i >= 5 ? ' class="we"' : '') + '>' + d + '</span>').join('') + '</div>' +
+    '<div class="mo-grid" style="grid-template-rows:repeat(' + weeks + ',minmax(96px,1fr))">';
+  for (let i = 0; i < weeks * 7; i++){
+    const date = addDays(start, i), key = keyOf(date), d = i % 7;
+    const doc = data[keyOf(mondayOf(date))];
+    const blocks = doc ? doc.blocks.filter(b => b.d === d) : [];
+    const mins = blocks.reduce((a, b) => a + b.e - b.s, 0);
+    const per = {}; blocks.forEach(b => { per[b.c] = (per[b.c] || 0) + b.e - b.s; });
+    const dls = dlSorted(state.deadlines.items.filter(x => x.date === key));
+    h += '<button class="mo-cell' + (date.getMonth() !== m ? ' out' : '') + (key === today ? ' today' : '') + (d >= 5 ? ' we' : '') + '" data-mday="' + key + '" aria-label="' + DAY_FULL[d] + ' ' + date.getDate() + ' ' + MONTHS[date.getMonth()] + '">' +
+      '<span class="mo-top"><span class="mo-num">' + date.getDate() + '</span>' + (mins ? '<span class="mo-hrs">' + dur(mins) + '</span>' : '') + '</span>' +
+      '<span class="mo-bar">' + CATS.filter(c => per[c.k]).map(c => '<i class="cat-' + c.k + '" style="flex:' + per[c.k] + '"></i>').join('') + '</span>' +
+      '<span class="mo-dls">' + dls.slice(0, 3).map(x => '<span class="mo-dl cat-' + esc(x.c || 'study') + (x.done ? ' done' : '') + (!x.done && key < today ? ' late' : '') + '">' + ICON.flag + '<span>' + esc(x.t) + '</span></span>').join('') +
+      (dls.length > 3 ? '<span class="mo-more">+' + (dls.length - 3) + ' more</span>' : '') + '</span></button>';
+  }
+  $('monthView').innerHTML = h + '</div>';
+}
+$('monthView').addEventListener('click', e => {
+  const c = e.target.closest('[data-mday]'); if (!c) return;
+  const v = state.lastGrid || (innerWidth < 600 ? '3' : 'week');
+  state.view = v; state.prefs.view = v; Store.savePrefs(state.prefs);
+  showDay(parseDay(c.dataset.mday));
+  scrollToStart();
+});
+
+/* my day */
+function renderMyDay(){
+  const box = $('mydayView'); if (box.hidden) return;
+  if (state.key !== keyOf(thisMonday())){ openWeek(thisMonday()); return; }
+  const ti = todayIndex(), nm = nowMin();
+  const blocks = ti >= 0 ? state.week.blocks.filter(b => b.d === ti).sort((a, b) => a.s - b.s) : [];
+  const cur = blocks.find(b => b.s <= nm && nm < b.e && !b.done), next = blocks.find(b => b.s > nm && !b.done);
+  const card = (b, label) => {
+    const left = b.s <= nm ? b.e - nm : b.s - nm;
+    const pct = b.s <= nm ? Math.round((nm - b.s) / (b.e - b.s) * 100) : 0;
+    return '<div class="md-card cat-' + esc(b.c) + '"><span class="md-label">' + label + '</span>' +
+      '<b class="md-title">' + esc(b.t || 'Untitled') + '</b><span class="md-time">' + hhmm(b.s) + ' – ' + hhmm(b.e) + ' · ' + (b.s <= nm ? dur(left) + ' left' : 'in ' + dur(left)) + '</span>' +
+      (b.s <= nm ? '<span class="md-prog"><i style="width:' + pct + '%"></i></span>' : '') +
+      '<span class="md-actions"><button class="btn primary" data-focus="' + esc(b.id) + '">' + ICON.timer + 'Focus</button>' +
+      '<button class="btn" data-mopen="' + esc(b.id) + '">Open</button></span></div>';
+  };
+  let h = '<div class="md-col">';
+  h += cur ? card(cur, 'Now') : '<div class="md-card md-free"><span class="md-label">Now</span><b class="md-title">Nothing planned right now</b>' +
+    '<span class="md-time">' + (next ? 'Next block in ' + dur(next.s - nm) : 'The rest of today is free') + '</span></div>';
+  if (next) h += card(next, 'Next');
+  h += '<section class="md-sec"><h3>Today’s plan</h3>' + (blocks.length ? '<ul class="md-list">' + blocks.map(b =>
+    '<li class="md-row cat-' + esc(b.c) + (b.done ? ' done' : '') + (b.e <= nm ? ' past' : '') + '">' +
+      '<button class="td-check" data-mdone="' + esc(b.id) + '" aria-pressed="' + !!b.done + '" aria-label="Mark done">' + ICON.check + '</button>' +
+      '<button class="md-item" data-mopen="' + esc(b.id) + '"><span class="md-t">' + hhmm(b.s) + '</span><span class="md-dot"></span><span class="md-name">' + esc(b.t || 'Untitled') + '</span><span class="md-len">' + dur(b.e - b.s) + '</span></button></li>').join('') + '</ul>'
+    : '<p class="md-empty">Nothing planned today. Switch to a day or week view to draw some blocks.</p>') + '</section></div>';
+  const todos = state.todos.items.filter(t => !t.done).slice(0, 6);
+  const dls = dlSorted(state.deadlines.items.filter(x => !x.done)).slice(0, 6);
+  h += '<div class="md-col">';
+  h += '<section class="md-sec"><h3>To-do<button class="link" data-mall="todo">All</button></h3>' + (todos.length ? '<ul class="md-list">' + todos.map(t =>
+    '<li class="md-row"><button class="td-check" data-mtd="' + esc(t.id) + '" aria-pressed="false" aria-label="Mark done">' + ICON.check + '</button>' +
+    '<span class="md-name grow">' + esc(t.t) + '</span><button class="btn icon ghost" data-mfind="' + esc(t.id) + '" aria-label="Find a time" title="Find a time">' + ICON.clock + '</button></li>').join('') + '</ul>'
+    : '<p class="md-empty">No open to-dos.</p>') + '</section>';
+  h += '<section class="md-sec"><h3>Deadlines<button class="link" data-mall="deadlines">All</button></h3>' + (dls.length ? '<ul class="md-list">' + dls.map(x => {
+    const dt = parseDay(x.date), diff = dayDiff(dt);
+    return '<li class="md-row"><button class="md-item" data-mdl="' + esc(x.id) + '"><span class="dl-date cat-' + esc(x.c || 'study') + '"><b>' + dt.getDate() + '</b><span>' + MON_S[dt.getMonth()] + '</span></span>' +
+      '<span class="md-name grow">' + esc(x.t) + '</span><span class="md-rel' + (diff < 0 ? ' late' : '') + '">' + relText(diff) + '</span></button></li>';
+  }).join('') + '</ul>' : '<p class="md-empty">No upcoming deadlines.</p>') + '</section></div>';
+  box.innerHTML = h;
+}
+$('mydayView').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  const d = b.dataset;
+  if (d.focus){ openFocus(d.focus); return; }
+  if (d.mopen){ openEditor(d.mopen, {}); return; }
+  if (d.mdone){ const x = findBlock(d.mdone); if (x){ pushUndo(); x.done = !x.done; syncTodoFromBlock(x); commit(); renderAll(); } return; }
+  if (d.mtd){ toggleTodo(d.mtd); renderMyDay(); return; }
+  if (d.mfind){ openSlots({mode: 'todo', id: d.mfind}); return; }
+  if (d.mdl){ openDeadline(d.mdl); return; }
+  if (d.mall) showSide(d.mall, true);
+});
+
+/* ================= repeating blocks =================
+   A series ("every Tue and Thu 16:00, Football") lives in the synced "series" list.
+   Each week gets real blocks for it, with ids worked out from the series, the week and the day,
+   so both devices create the very same blocks. Deleting one week's copy is remembered in that
+   week (week.sx). Changing one copy marks it as its own ("own") until you apply it to every week. */
+const seriesById = id => state.series.items.find(r => r.id === id);
+const seriesBlockId = (sid, key, d) => 'sr' + hashStr(sid + '|' + key + '|' + d);
+const prevWeekKey = key => keyOf(addDays(parseDay(key), -7));
+function ensureSeries(key, doc){
+  let changed = false;
+  const sx = new Set(doc.sx || []);
+  const active = state.series.items.filter(r => r.from <= key && (!r.until || key <= r.until));
+  const want = new Map();
+  for (const r of active) for (const d of r.days) if (!sx.has(r.id + ':' + d)) want.set(seriesBlockId(r.id, key, d), {r, d});
+  const out = [];
+  for (const b of doc.blocks){
+    if (b.sid && !want.has(b.id)){
+      changed = true;
+      if (b.own && seriesById(b.sid) && !sx.has(b.sid + ':' + (b.sd != null ? b.sd : b.d))){ delete b.sid; delete b.sv; delete b.sd; delete b.own; out.push(b); }
+      continue;
+    }
+    out.push(b);
+  }
+  for (const [id, w] of want){
+    const r = w.r, ex = out.find(b => b.id === id);
+    if (!ex){ out.push({id, d: w.d, s: r.s, e: r.e, t: r.t, c: r.c, n: r.n || '', sid: r.id, sd: w.d, sv: r.v}); changed = true; }
+    else if (!ex.own && ex.sv !== r.v){ Object.assign(ex, {d: w.d, s: r.s, e: r.e, t: r.t, c: r.c, n: r.n || '', sd: w.d, sv: r.v}); changed = true; }
+  }
+  doc.blocks = out;
+  return changed;
+}
+function applySeriesToCurrent(){
+  if (!state.loaded) return;
+  if (drag || state.editing || tdrag){ state.seriesPending = true; return; }
+  state.seriesPending = false;
+  if (ensureSeries(state.key, state.week)){ commit(); renderAll(); }
+}
+/* Changes to a series apply from the open week onwards; earlier weeks keep what they had. */
+function seriesFromHere(r){
+  if (r.from >= state.key){ r.v++; return r; }
+  const r2 = Object.assign({}, r, {id: uid(), from: state.key, v: 1, days: r.days.slice()});
+  r.until = prevWeekKey(state.key);
+  state.series.items.push(r2);
+  state.week.blocks.forEach(b => { if (b.sid === r.id && !b.own){ b.sid = r2.id; } });
+  state.week.blocks = state.week.blocks.filter(b => b.sid !== r.id || b.own);
+  return r2;
+}
+function makeSeries(b){
+  const r = {id: uid(), days: [b.d], s: b.s, e: b.e, t: b.t || '', c: b.c, n: b.n || '', from: state.key, until: null, v: 1};
+  state.series.items.push(r); saveList('series');
+  state.week.blocks = state.week.blocks.filter(x => x.id !== b.id);
+  ensureSeries(state.key, state.week); commit();
+  return seriesBlockId(r.id, state.key, b.d);
+}
+function endSeriesHere(r){
+  const until = prevWeekKey(state.key);
+  if (r.from > until) state.series.items = state.series.items.filter(x => x !== r);
+  else { r.until = until; r.v++; }
+  saveList('series');
+}
+function repeatFieldHTML(b){
+  const r = b.sid && seriesById(b.sid);
+  const modes = on => '<div class="seg rep-mode" role="group" aria-label="Repeat"><button data-repmode="once" aria-pressed="' + !on + '">Only this week</button><button data-repmode="series" aria-pressed="' + on + '">Every week</button></div>';
+  if (r){
+    return '<div class="field"><span class="field-label">Repeat</span>' + modes(true) +
+      '<div class="repeat" id="edRepeat">' + DAY_LETTER.map((L, i) => i === (b.sd != null ? b.sd : b.d)
+        ? '<button class="self" aria-label="' + DAY_FULL[i] + ' (this block)" disabled>' + L + '</button>'
+        : '<button data-srday="' + i + '" aria-pressed="' + r.days.includes(i) + '" aria-label="Every ' + DAY_FULL[i] + '">' + L + '</button>').join('') + '</div>' +
+      '<span class="rep-note">Every ' + r.days.slice().sort().map(d => DAY_FULL[d]).join(', ').replace(/, ([^,]*)$/, ' and $1') + '</span>' +
+      (b.own ? '<div class="rep-own"><span>This week is different from the other weeks.</span><button class="btn" data-repapply="1">Apply to every week</button></div>' : '') + '</div>';
+  }
+  return '<div class="field"><span class="field-label">Repeat</span>' + modes(false) + '<div class="repeat" id="edRepeat">' + repeatHTML(b) + '</div><span class="rep-note">Tap days to copy this block within this week.</span></div>';
+}
+function refreshRepeat(){
+  const b = state.editing && findBlock(state.editing.id); if (!b) return;
+  const f = $('edRepeatField'); if (f){ f.innerHTML = repeatFieldHTML(b); positionEditor(); }
+}
+
+/* ================= erase: tap a block to delete it ================= */
+function deleteBlocks(ids, snap){
+  const set = new Set(ids); if (!set.size) return;
+  pushUndo(snap || snapshot());
+  const sx = new Set(state.week.sx || []);
+  state.week.blocks.forEach(b => { if (set.has(b.id) && b.sid) sx.add(b.sid + ':' + (b.sd != null ? b.sd : b.d)); });
+  state.week.sx = [...sx];
+  state.week.blocks = state.week.blocks.filter(b => !set.has(b.id));
+  ids.forEach(id => state.sel.delete(id));
+  commit(); renderAll(); renderPalette();
+  toast(set.size === 1 ? 'Block deleted' : set.size + ' blocks deleted', 'Undo', undo);
+}
+function togglePencilTool(){
+  setMode(state.mode === 'erase' ? 'blocks' : 'erase');
+  flashMode(state.mode === 'erase' ? 'Erase · tap a block to delete it' : 'Blocks');
+}
+
+/* ================= lasso select ================= */
+function drawLasso(pts){ const p = $('lassoPath'); if (p) p.setAttribute('d', pts.length ? 'M' + pts.map(q => q[0].toFixed(1) + ',' + q[1].toFixed(1)).join('L') + 'Z' : ''); }
+function pointInPoly(x, y, pts){
+  let inside = false;
+  for (let i = 0, j = pts.length - 1; i < pts.length; j = i++){
+    const [xi, yi] = pts[i], [xj, yj] = pts[j];
+    if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) inside = !inside;
+  }
+  return inside;
+}
+function blocksInPolygon(pts){
+  const dr = els.days.getBoundingClientRect(), out = [];
+  els.days.querySelectorAll('.block:not(.ghost)').forEach(el => {
+    const r = el.getBoundingClientRect();
+    if (pointInPoly(r.left + r.width / 2 - dr.left, r.top + r.height / 2 - dr.top, pts)) out.push(el.dataset.id);
+  });
+  return out;
+}
+function updateGroupMove(){
+  if (!drag || drag.type !== 'gmove') return;
+  const p = pos(drag.lastX, drag.lastY);
+  const dd = p.day - drag.p0.day, dm = roundSnap(p.min - drag.p0.min);
+  for (const b of state.week.blocks){
+    const o = drag.orig.get(b.id); if (!o) continue;
+    const len = o.e - o.s;
+    b.d = clamp(o.d + dd, 0, 6); b.s = clamp(o.s + dm, 0, DAY_MIN - len); b.e = b.s + len;
+  }
+  scheduleRender();
+}
+function selectedBlocks(){ return state.week.blocks.filter(b => state.sel.has(b.id)); }
+function selAction(kind, cat){
+  const list = selectedBlocks(); if (!list.length) return;
+  if (kind === 'delete'){ deleteBlocks(list.map(b => b.id)); return; }
+  pushUndo();
+  if (kind === 'done'){ const all = list.every(b => b.done); list.forEach(b => { b.done = !all; syncTodoFromBlock(b); }); }
+  if (kind === 'cat') list.forEach(b => { b.c = cat; if (b.sid) b.own = true; });
+  commit(); renderAll(); renderPalette();
+}
+
+/* ================= free time: find a slot for a to-do, plan study time for a deadline ================= */
+async function dayBlocksFor(date, cache){
+  const key = keyOf(mondayOf(date));
+  if (!cache[key]) cache[key] = key === state.key ? state.week : await weekWithSeries(key);
+  const d = (date.getDay() + 6) % 7;
+  return cache[key].blocks.filter(b => b.d === d);
+}
+function gapsIn(blocks, winS, winE, minStart){
+  const busy = blocks.map(b => [b.s, b.e]).sort((a, b) => a[0] - b[0]);
+  const gaps = [];
+  let cur = Math.max(winS, minStart);
+  for (const [s, e] of busy){
+    if (e <= cur) continue;
+    if (s >= winE) break;
+    if (s > cur) gaps.push([cur, Math.min(s, winE)]);
+    cur = Math.max(cur, e);
+  }
+  if (cur < winE) gaps.push([cur, winE]);
+  return gaps;
+}
+async function slotsOnDay(date, len, win, cache){
+  const isToday = dayDiff(date) === 0;
+  const minStart = isToday ? ceilSnap(nowMin() + 5) : 0;
+  const out = [];
+  for (const [s, e] of gapsIn(await dayBlocksFor(date, cache), win[0], win[1], minStart)){
+    let st = ceilSnap(s);
+    while (st + len <= e){ out.push(st); st += len + 15; }
+  }
+  return out;
+}
+async function findTodoSlots(len, win, max){
+  const cache = {}, out = [], start = todayStart();
+  for (let i = 0; i < 21 && out.length < max; i++){
+    const date = addDays(start, i);
+    const slots = await slotsOnDay(date, len, win, cache);
+    for (const s of slots.slice(0, 2)){ out.push({date, s, e: s + len}); if (out.length >= max) break; }
+  }
+  return out;
+}
+/* Spreads study sessions over the free time before a deadline: one per day where possible,
+   evenly spaced and ending the day before it's due. */
+async function planStudy(x, o){
+  const due = parseDay(x.date), start = todayStart();
+  const days = Math.round((due - start) / 864e5);
+  const cache = {}, perDay = [];
+  for (let i = 0; i < days; i++){
+    const date = addDays(start, i);
+    if (!o.weekends && (date.getDay() === 0 || date.getDay() === 6)) continue;
+    const slots = await slotsOnDay(date, o.len, o.win, cache);
+    if (slots.length) perDay.push({date, slots});
+  }
+  const n = perDay.length, k = o.count, order = [];
+  if (!n) return [];
+  if (k <= n) for (let i = 0; i < k; i++) order.push(n - 1 - Math.floor(i * n / k));
+  else { let left = k; for (let round = 0; left > 0 && round < 4; round++) for (let j = n - 1; j >= 0 && left > 0; j--){ order.push(j); left--; } }
+  const used = new Map(), picks = [];
+  for (const j of order){
+    const day = perDay[j], u = used.get(j) || 0;
+    if (u >= day.slots.length) continue;
+    used.set(j, u + 1);
+    picks.push({date: day.date, s: day.slots[u], e: day.slots[u] + o.len});
+  }
+  return picks.sort((a, b) => a.date - b.date || a.s - b.s);
+}
+function openSlots(opts){
+  closeMenu(); if (state.editing) closeEditor();
+  const s = state.slot = Object.assign({mode: 'todo', id: null, busy: true, picks: [], removed: new Set()}, opts);
+  if (s.mode === 'todo'){
+    const t = todoById(s.id); if (!t) return;
+    s.len = t.len || 60; s.win = state.prefs.todoWin || [8 * 60, 22 * 60];
+  } else {
+    const x = dlById(s.id); if (!x) return;
+    s.len = 60; s.count = 3; s.weekends = true; s.win = state.prefs.studyWin || [15 * 60, 21 * 60];
+  }
+  els.slots.hidden = false; els.scrim.hidden = false; els.scrim.classList.add('dim');
+  refreshSlots();
+}
+function closeSlots(){ if (els.slots.hidden) return; els.slots.hidden = true; scrimCheck(); }
+async function refreshSlots(){
+  const s = state.slot; if (!s) return;
+  s.busy = true; renderSlots();
+  const token = s.token = (s.token || 0) + 1;
+  const picks = s.mode === 'todo' ? await findTodoSlots(s.len, s.win, 6) : await planStudy(dlById(s.id), s);
+  if (token !== s.token) return;
+  s.picks = picks; s.removed = new Set(); s.busy = false;
+  renderSlots();
+}
+function renderSlots(){
+  const s = state.slot; if (!s || els.slots.hidden) return;
+  const isTodo = s.mode === 'todo';
+  const item = isTodo ? todoById(s.id) : dlById(s.id);
+  if (!item){ closeSlots(); return; }
+  const lens = [15, 30, 45, 60, 90, 120];
+  const tbox = (k, v, label) => '<div class="tbox"><button data-win="' + k + '-" aria-label="' + label + ' earlier">−</button><span class="tval"><small>' + label + '</small><b>' + hhmm(v) + '</b></span><button data-win="' + k + '+" aria-label="' + label + ' later">+</button></div>';
+  let h = '<div class="ps-head"><div><h2>' + (isTodo ? 'Find a time' : 'Plan study time') + '</h2><p>' + (isTodo ? 'for “' + esc(item.t) + '”' :
+      'for “' + esc(item.t) + '”, due ' + dayLabel(parseDay(item.date)).replace(/^(Today|Tomorrow)$/, m => m.toLowerCase())) + '</p></div>' +
+    '<button class="btn icon ghost" data-sl="close" aria-label="Close">' + ICON.close + '</button></div>';
+  if (!isTodo){
+    h += '<div class="field"><span class="field-label">Sessions</span><div class="stepper"><button data-cnt="-" aria-label="Fewer sessions">−</button><b>' + s.count + '</b><button data-cnt="+" aria-label="More sessions">+</button></div></div>';
+  }
+  h += '<div class="field"><span class="field-label">' + (isTodo ? 'How long it takes' : 'Length of each session') + '</span><div class="len-chips">' +
+    lens.map(l => '<button class="pill" data-len="' + l + '" aria-pressed="' + (s.len === l) + '">' + dur(l) + '</button>').join('') + '</div></div>' +
+    '<div class="field"><span class="field-label">Only between</span><div class="times">' + tbox('s', s.win[0], 'From') + tbox('e', s.win[1], 'Until') + '</div></div>';
+  if (!isTodo) h += '<button class="imp-switch" data-sl="weekends" role="switch" aria-checked="' + s.weekends + '"><span class="sw"></span>Use weekends too</button>';
+  h += '<div class="field"><span class="field-label">' + (isTodo ? 'Free times' : 'Suggested sessions') + '</span>';
+  if (s.busy) h += '<p class="slot-note">Looking at your weeks…</p>';
+  else if (!s.picks.length) h += '<p class="slot-note">' + (isTodo ? 'No free time found in the next three weeks between ' + hhmm(s.win[0]) + ' and ' + hhmm(s.win[1]) + '.'
+      : 'No free time found before the deadline. Try a wider time window, shorter sessions or weekends.') + '</p>';
+  else {
+    h += '<div class="slot-list">' + s.picks.map((p, i) => s.removed.has(i) ? '' :
+      '<div class="slot-row"><span class="slot-day">' + dayLabel(p.date) + '</span><span class="slot-time">' + hhmm(p.s) + ' – ' + hhmm(p.e) + '</span>' +
+      (isTodo ? '<button class="btn primary" data-pick="' + i + '">Schedule</button>' : '<button class="btn icon ghost" data-unpick="' + i + '" aria-label="Leave this one out">' + ICON.close + '</button>') + '</div>').join('') + '</div>';
+    if (!isTodo && s.picks.length < s.count) h += '<p class="slot-note">Only ' + s.picks.length + ' free slot' + (s.picks.length === 1 ? '' : 's') + ' found before the deadline.</p>';
+  }
+  h += '</div>';
+  if (!isTodo){
+    const n = s.picks.length - s.removed.size;
+    h += '<div class="ed-actions"><span class="spacer"></span><button class="btn ghost" data-sl="close">Cancel</button><button class="btn primary" data-sl="add"' + (n && !s.busy ? '' : ' disabled') + '>Add ' + n + ' session' + (n === 1 ? '' : 's') + '</button></div>';
+  }
+  els.slots.className = 'pop presets slots' + (innerWidth < 600 ? ' sheet' : '');
+  els.slots.innerHTML = h;
+}
+els.slots.addEventListener('click', async e => {
+  const b = e.target.closest('button'); if (!b) return;
+  const s = state.slot, d = b.dataset; if (!s) return;
+  if (d.sl === 'close'){ closeSlots(); return; }
+  if (d.len){ s.len = +d.len; if (s.mode === 'todo'){ const t = todoById(s.id); if (t){ t.len = s.len; saveList('todos'); } } refreshSlots(); return; }
+  if (d.cnt){ s.count = clamp(s.count + (d.cnt === '+' ? 1 : -1), 1, 12); refreshSlots(); return; }
+  if (d.win){
+    const k = d.win[0], step = d.win[1] === '+' ? 60 : -60;
+    if (k === 's') s.win = [clamp(s.win[0] + step, 0, s.win[1] - 60), s.win[1]];
+    else s.win = [s.win[0], clamp(s.win[1] + step, s.win[0] + 60, DAY_MIN)];
+    state.prefs[s.mode === 'todo' ? 'todoWin' : 'studyWin'] = s.win; Store.savePrefs(state.prefs);
+    refreshSlots(); return;
+  }
+  if (d.sl === 'weekends'){ s.weekends = !s.weekends; refreshSlots(); return; }
+  if (d.unpick != null){ s.removed.add(+d.unpick); renderSlots(); return; }
+  if (d.pick != null){
+    const p = s.picks[+d.pick], t = todoById(s.id); if (!p || !t) return;
+    await addBlocksAnywhere([{date: p.date, s: p.s, e: p.e, t: t.t, c: state.cat, extra: {td: t.id}}]);
+    closeSlots();
+    toast('Scheduled for ' + dayLabel(p.date).replace(/^(Today|Tomorrow)$/, m => m.toLowerCase()) + ' at ' + hhmm(p.s), 'Show', () => { if (isGridView(state.view)) showDay(p.date); else { setView(state.lastGrid || 'week'); showDay(p.date); } });
+    return;
+  }
+  if (d.sl === 'add'){
+    const x = dlById(s.id); if (!x) return;
+    const list = s.picks.filter((p, i) => !s.removed.has(i));
+    const made = await addBlocksAnywhere(list.map(p => ({date: p.date, s: p.s, e: p.e, t: 'Study: ' + x.t, c: x.c || 'study', extra: {dl: x.id}})));
+    x.plan = (x.plan || []).concat(made);
+    saveDeadlines(); renderDeadlines();
+    closeSlots();
+    toast('Added ' + made.length + ' study session' + (made.length === 1 ? '' : 's') + ' before “' + x.t + '”');
+  }
+});
+
+/* ================= reminders (iOS app) =================
+   The app asks iOS to show notifications at set times, on this device only. They are
+   rescheduled whenever plans change, so a moved block moves its reminder too. */
+var remTimer = 0;
+const remPrefs = () => Object.assign({blocks: false, lead: 10, lessons: false, deadlines: false, dlTime: '19:00'}, state.prefs.rem || {});
+function scheduleReminders(){ if (!Store.isNative) return; clearTimeout(remTimer); remTimer = setTimeout(doScheduleReminders, 1500); }
+async function doScheduleReminders(){
+  const r = remPrefs(), items = [], now = Date.now();
+  try {
+    if (r.blocks){
+      const mon = thisMonday();
+      for (let w = 0; w < 2; w++){
+        const key = keyOf(addDays(mon, 7 * w)), ws = addDays(mon, 7 * w);
+        const doc = key === state.key ? state.week : await weekWithSeries(key);
+        for (const b of doc.blocks){
+          if (b.done || (b.src && !r.lessons)) continue;
+          const at = blockStartMs(ws, b) - r.lead * 60000;
+          if (at <= now + 30000 || at > now + 8 * 864e5) continue;
+          items.push({id: 'b' + hashStr(b.id + '|' + key + '|' + b.s), title: b.t || 'Untitled block', body: (r.lead ? 'In ' + r.lead + ' min · ' : 'Starting now · ') + hhmm(b.s) + ' – ' + hhmm(b.e), at});
+        }
+      }
+    }
+    if (r.deadlines){
+      const [hh, mm] = String(r.dlTime || '19:00').split(':').map(Number);
+      for (const x of state.deadlines.items){
+        if (x.done) continue;
+        const d = addDays(parseDay(x.date), -1);
+        const at = new Date(d.getFullYear(), d.getMonth(), d.getDate(), hh || 0, mm || 0).getTime();
+        if (at <= now + 30000) continue;
+        const due = parseDay(x.date);
+        items.push({id: 'd' + hashStr(x.id + '|' + x.date), title: 'Due tomorrow: ' + x.t, body: DAY_FULL[(due.getDay() + 6) % 7] + ' ' + due.getDate() + ' ' + MON_S[due.getMonth()] + (x.time ? ' · ' + x.time : ''), at});
+      }
+    }
+    items.sort((a, b) => a.at - b.at);
+    await Store.native('notify.schedule', {group: 'rem', items: items.slice(0, 60)});
+  } catch (e){ console.error('Reminders', e); }
+}
+function openReminders(){
+  closeMenu(); if (state.editing) closeEditor();
+  els.rem.hidden = false; els.scrim.hidden = false; els.scrim.classList.add('dim');
+  renderReminders();
+}
+function closeReminders(){ if (els.rem.hidden) return; els.rem.hidden = true; scrimCheck(); }
+function renderReminders(){
+  if (els.rem.hidden) return;
+  const r = remPrefs();
+  const sw = (k, on, label) => '<button class="imp-switch" data-rem="' + k + '" role="switch" aria-checked="' + on + '"><span class="sw"></span>' + label + '</button>';
+  let h = '<div class="ps-head"><div><h2>Reminders</h2><p>Get a notification on this device before what you planned. Each device has its own settings.</p></div>' +
+    '<button class="btn icon ghost" data-rem="close" aria-label="Close">' + ICON.close + '</button></div>';
+  if (!Store.isNative){
+    h += '<p class="slot-note">Reminders work in the iPad and iPhone app.</p>';
+  } else {
+    h += '<section class="ps-save">' + sw('blocks', r.blocks, 'Before blocks start') +
+      (r.blocks ? '<div class="len-chips">' + [0, 5, 10, 15, 30, 60].map(m => '<button class="pill" data-lead="' + m + '" aria-pressed="' + (r.lead === m) + '">' + (m ? m + ' min' : 'At start') + '</button>').join('') + '</div>' +
+        sw('lessons', r.lessons, 'Also for imported lessons') : '') + '</section>' +
+      '<section class="ps-save">' + sw('deadlines', r.deadlines, 'The evening before a deadline') +
+      (r.deadlines ? '<label class="rem-time"><span>At</span><input class="ps-input" id="remDlTime" type="time" value="' + esc(r.dlTime) + '"></label>' : '') + '</section>' +
+      (state.remDenied ? '<p class="sync-warn">Notifications are turned off for Pencilled In. Turn them on in Settings › Notifications › Pencilled In.</p>' : '');
+  }
+  els.rem.className = 'pop presets rem' + (innerWidth < 600 ? ' sheet' : '');
+  els.rem.innerHTML = h;
+}
+async function setRem(patch){
+  const r = Object.assign(remPrefs(), patch);
+  if ((patch.blocks || patch.deadlines) && Store.isNative){
+    let ok = false;
+    try { ok = await Store.native('notify.request'); } catch {}
+    if (!ok){ state.remDenied = true; renderReminders(); return; }
+    state.remDenied = false;
+  }
+  state.prefs.rem = r; Store.savePrefs(state.prefs);
+  renderReminders(); scheduleReminders();
+}
+els.rem.addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  const d = b.dataset, r = remPrefs();
+  if (d.rem === 'close'){ closeReminders(); return; }
+  if (d.rem === 'blocks') setRem({blocks: !r.blocks});
+  if (d.rem === 'lessons') setRem({lessons: !r.lessons});
+  if (d.rem === 'deadlines') setRem({deadlines: !r.deadlines});
+  if (d.lead != null) setRem({lead: +d.lead});
+});
+els.rem.addEventListener('change', e => { if (e.target.id === 'remDlTime' && e.target.value) setRem({dlTime: e.target.value}); });
+
+/* ================= focus timer =================
+   Runs from timestamps, so it keeps counting while the app is in the background.
+   Minutes spent focusing are saved on the block (block.f). */
+var focusTimer = 0;
+const POMO_WORK = 25 * 60000, POMO_BREAK = 5 * 60000;
+function openFocus(id){
+  const b = findBlock(id); if (!b) return;
+  if (state.editing) closeEditor();
+  const f = state.prefs.focus;
+  if (f && f.bid !== id && (f.running || f.workMs > 0)){ showFocus(); toast('Finish the current focus session first'); return; }
+  if (!f || f.bid !== id){
+    const ti = todayIndex(), nm = nowMin();
+    const live = state.key === keyOf(thisMonday()) && b.d === ti && b.s <= nm && nm < b.e;
+    const mins = Math.max(5, live ? b.e - nm : b.e - b.s);
+    state.prefs.focus = {bid: b.id, key: state.key, t: b.t || 'Focus', c: b.c, mode: 'timer', blockMs: mins * 60000,
+      phase: 'work', running: false, started: false, phaseStart: 0, phaseLeft: mins * 60000, workMs: 0, cycle: 1};
+    Store.savePrefs(state.prefs);
+  }
+  showFocus();
+}
+function showFocus(){ els.focus.hidden = false; renderFocus(); clearInterval(focusTimer); focusTimer = setInterval(focusTick, 500); }
+function hideFocus(){ els.focus.hidden = true; renderFocusPill(); }
+function focusRemaining(f){ return f.running ? f.phaseLeft - (Date.now() - f.phaseStart) : f.phaseLeft; }
+function focusWorked(f){ return f.workMs + (f.running && f.phase === 'work' ? Date.now() - f.phaseStart : 0); }
+function focusTick(){
+  const f = state.prefs.focus;
+  if (!f){ clearInterval(focusTimer); renderFocusPill(); return; }
+  let guard = 0;
+  while (f.running && focusRemaining(f) <= 0 && guard++ < 50){
+    const boundary = f.phaseStart + f.phaseLeft;
+    if (f.phase === 'work') f.workMs += f.phaseLeft;
+    if (f.mode === 'timer'){ f.running = false; f.phaseLeft = 0; finishFocus(true); return; }
+    f.phase = f.phase === 'work' ? 'break' : 'work';
+    if (f.phase === 'work') f.cycle++;
+    f.phaseStart = boundary; f.phaseLeft = f.phase === 'work' ? POMO_WORK : POMO_BREAK;
+    Store.savePrefs(state.prefs); focusNotify();
+    flashMode(f.phase === 'work' ? 'Back to focus' : 'Break time');
+  }
+  if (!els.focus.hidden) renderFocus(); else renderFocusPill();
+}
+function focusNotify(){
+  const f = state.prefs.focus;
+  if (!Store.isNative) return;
+  const items = [];
+  if (f && f.running){
+    const at = Date.now() + focusRemaining(f);
+    items.push({id: 'f' + Math.round(at / 1000), title: f.mode === 'timer' ? 'Focus session done' : f.phase === 'work' ? 'Time for a break' : 'Break is over',
+      body: f.t, at});
+  }
+  Store.native('notify.schedule', {group: 'focus', items}).catch(() => {});
+}
+function renderFocus(){
+  const f = state.prefs.focus; if (!f){ hideFocus(); return; }
+  const left = Math.max(0, focusRemaining(f)), total = f.mode === 'timer' ? f.blockMs : (f.phase === 'work' ? POMO_WORK : POMO_BREAK);
+  const secs = Math.ceil(left / 1000), mm = Math.floor(secs / 60), ss = secs % 60;
+  const frac = total ? 1 - left / total : 0, R = 92, C = 2 * Math.PI * R;
+  const label = f.mode === 'timer' ? (f.running ? 'Focusing' : f.started ? 'Paused' : 'Ready') : f.phase === 'work' ? 'Focus · round ' + f.cycle : 'Break';
+  els.focus.innerHTML = '<div class="fo-card cat-' + esc(f.c || 'work') + (f.phase === 'break' ? ' brk' : '') + '">' +
+    '<div class="fo-top"><span class="fo-dot"></span><b>' + esc(f.t) + '</b><button class="btn icon ghost" data-fo="min" aria-label="Minimise" title="Keep running in the background">' + ICON.chev + '</button></div>' +
+    (!f.started ? '<div class="seg fo-mode" role="group"><button data-fo="timer" aria-pressed="' + (f.mode === 'timer') + '">Block length · ' + dur(Math.round(f.blockMs / 60000)) + '</button><button data-fo="pomo" aria-pressed="' + (f.mode === 'pomo') + '">Pomodoro 25 / 5</button></div>' : '') +
+    '<div class="fo-ring"><svg viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="' + R + '" class="track"/><circle cx="100" cy="100" r="' + R + '" class="prog" style="stroke-dasharray:' + C.toFixed(1) + ';stroke-dashoffset:' + (C * (1 - frac)).toFixed(1) + '"/></svg>' +
+      '<div class="fo-time"><b>' + String(mm).padStart(2, '0') + ':' + String(ss).padStart(2, '0') + '</b><span>' + label + '</span></div></div>' +
+    '<p class="fo-worked">' + (Math.round(focusWorked(f) / 60000) ? 'Focused ' + dur(Math.round(focusWorked(f) / 60000)) + ' so far' : 'Time spent focusing is saved on the block') + '</p>' +
+    '<div class="fo-actions">' + (f.running ? '<button class="btn" data-fo="pause">Pause</button>' : '<button class="btn primary" data-fo="start">' + (f.started ? 'Resume' : 'Start') + '</button>') +
+      '<button class="btn" data-fo="stop">' + (f.started ? 'Stop and save' : 'Cancel') + '</button></div></div>';
+}
+function renderFocusPill(){
+  const f = state.prefs.focus, pill = $('focusPill');
+  if (!f || !els.focus.hidden){ pill.hidden = true; return; }
+  const secs = Math.ceil(Math.max(0, focusRemaining(f)) / 1000);
+  pill.hidden = false;
+  pill.innerHTML = ICON.timer + '<span>' + (f.running ? '' : 'Paused · ') + String(Math.floor(secs / 60)).padStart(2, '0') + ':' + String(secs % 60).padStart(2, '0') + '</span>';
+}
+async function finishFocus(complete){
+  const f = state.prefs.focus; if (!f) return;
+  const mins = Math.round(focusWorked(f) / 60000);
+  state.prefs.focus = null; Store.savePrefs(state.prefs);
+  clearInterval(focusTimer); focusNotify(); hideFocus();
+  if (mins > 0){
+    if (f.key === state.key){ const b = findBlock(f.bid); if (b){ b.f = (b.f || 0) + mins; commit(); renderAll(); } }
+    else { const doc = normalize(await Store.getWeek(f.key)); const b = doc.blocks.find(x => x.id === f.bid); if (b){ b.f = (b.f || 0) + mins; doc.t = Date.now(); doc.by = Store.clientId; Store.saveWeek(f.key, doc); } }
+  }
+  toast(complete ? 'Session complete · ' + dur(mins) + ' of focus saved' : mins ? dur(mins) + ' of focus saved on “' + f.t + '”' : 'Focus session cancelled');
+}
+els.focus.addEventListener('click', e => {
+  const b = e.target.closest('[data-fo]'); if (!b) return;
+  const f = state.prefs.focus; if (!f) return;
+  const a = b.dataset.fo;
+  if (a === 'timer' || a === 'pomo'){ f.mode = a; f.phase = 'work'; f.phaseLeft = a === 'pomo' ? POMO_WORK : f.blockMs; }
+  if (a === 'start'){ f.running = true; f.started = true; f.phaseStart = Date.now(); }
+  if (a === 'pause'){ f.phaseLeft = focusRemaining(f); if (f.phase === 'work') f.workMs += Date.now() - f.phaseStart; f.running = false; }
+  if (a === 'stop'){ finishFocus(false); return; }
+  if (a === 'min'){ hideFocus(); return; }
+  Store.savePrefs(state.prefs); focusNotify(); renderFocus();
+});
+$('focusPill').addEventListener('click', showFocus);
+
+/* ================= week review ================= */
+function openReview(){
+  closeMenu(); if (state.editing) closeEditor();
+  els.review.hidden = false; els.scrim.hidden = false; els.scrim.classList.add('dim');
+  renderReview();
+}
+function closeReview(){ if (els.review.hidden) return; els.review.hidden = true; scrimCheck(); }
+function renderReview(){
+  if (els.review.hidden) return;
+  const ws = state.weekStart, we = addDays(ws, 7), blocks = state.week.blocks, now = Date.now();
+  const planned = blocks.reduce((a, b) => a + b.e - b.s, 0);
+  const done = blocks.reduce((a, b) => a + (b.done ? b.e - b.s : 0), 0);
+  const focus = blocks.reduce((a, b) => a + (b.f || 0), 0);
+  const todosDone = state.todos.items.filter(t => t.done && t.dt >= ws.getTime() && t.dt < we.getTime()).length;
+  const wkDl = state.deadlines.items.filter(x => { const d = parseDay(x.date); return d >= ws && d < we; });
+  const missed = blocks.filter(b => !b.done && !b.src && blockEndMs(ws, b) < now).sort((a, b) => a.d - b.d || a.s - b.s);
+  const nextDl = dlSorted(state.deadlines.items.filter(x => { const d = parseDay(x.date); return !x.done && d >= we && d < addDays(we, 7); }));
+  const per = {};
+  blocks.forEach(b => { const p = per[b.c] = per[b.c] || {plan: 0, done: 0}; p.plan += b.e - b.s; if (b.done) p.done += b.e - b.s; });
+  const maxPlan = Math.max(1, ...Object.values(per).map(p => p.plan));
+  const tile = (v, l) => '<div class="rv-tile"><b>' + v + '</b><span>' + l + '</span></div>';
+  let h = '<div class="ps-head"><div><h2>Week review</h2><p>Week ' + isoWeek(ws) + ' · ' + rangeTitle(ws, addDays(ws, 6)) + '</p></div><button class="btn icon ghost" data-rv="close" aria-label="Close">' + ICON.close + '</button></div>' +
+    '<div class="rv-tiles">' + tile(dur(planned), 'planned') + tile(dur(done), 'marked done') + tile(dur(focus), 'focus time') + tile(todosDone, 'to-dos finished') +
+      tile(wkDl.filter(x => x.done).length + ' / ' + wkDl.length, 'deadlines done') + '</div>';
+  if (Object.keys(per).length){
+    h += '<div class="field"><span class="field-label">Planned and done per category</span><div class="rv-bars">' + CATS.filter(c => per[c.k]).map(c => {
+      const p = per[c.k];
+      return '<div class="rv-bar cat-' + c.k + '"><span class="rv-name">' + c.l + '</span><span class="rv-track"><i class="plan" style="width:' + (p.plan / maxPlan * 100).toFixed(1) + '%"></i><i class="done" style="width:' + (p.done / maxPlan * 100).toFixed(1) + '%"></i></span><span class="rv-num">' + dur(p.done) + ' / ' + dur(p.plan) + '</span></div>';
+    }).join('') + '</div></div>';
+  }
+  h += '<div class="field"><span class="field-label">Not marked done' + (missed.length ? '<em>' + missed.length + '</em>' : '') + '</span>';
+  if (missed.length){
+    h += '<ul class="rv-list">' + missed.slice(0, 8).map(b => '<li class="cat-' + esc(b.c) + '"><span class="md-dot"></span><span class="grow">' + esc(b.t || 'Untitled') + '</span><span class="rv-when">' + DAY_SHORT[b.d] + ' ' + hhmm(b.s) + '</span></li>').join('') +
+      (missed.length > 8 ? '<li class="more">and ' + (missed.length - 8) + ' more</li>' : '') + '</ul><button class="btn" data-rv="todo">' + ICON.list + 'Add these to my to-do list</button>';
+  } else h += '<p class="slot-note">Everything that has already happened is marked done. Nice work.</p>';
+  h += '</div><div class="field"><span class="field-label">Due next week</span>' + (nextDl.length ? '<ul class="rv-list">' + nextDl.map(x => '<li class="cat-' + esc(x.c || 'study') + '">' + ICON.flag + '<span class="grow">' + esc(x.t) + '</span><span class="rv-when">' + dayLabel(parseDay(x.date)) + '</span></li>').join('') + '</ul>' : '<p class="slot-note">No deadlines next week.</p>') + '</div>' +
+    '<div class="ed-actions"><span class="spacer"></span><button class="btn primary" data-rv="next">Plan next week</button></div>';
+  els.review.className = 'pop presets review' + (innerWidth < 600 ? ' sheet' : '');
+  els.review.innerHTML = h;
+}
+els.review.addEventListener('click', e => {
+  const b = e.target.closest('[data-rv]'); if (!b) return;
+  const a = b.dataset.rv;
+  if (a === 'close'){ closeReview(); return; }
+  if (a === 'next'){ closeReview(); if (!isGridView(state.view)) setView(state.lastGrid || 'week'); openWeek(addDays(state.weekStart, 7)); applyView(); return; }
+  if (a === 'todo'){
+    const ws = state.weekStart, now = Date.now();
+    const open = new Set(state.todos.items.filter(t => !t.done).map(t => t.t.trim().toLowerCase()));
+    let n = 0;
+    state.week.blocks.filter(x => !x.done && !x.src && blockEndMs(ws, x) < now).forEach(x => {
+      const t = (x.t || '').trim(); if (!t || open.has(t.toLowerCase())) return;
+      open.add(t.toLowerCase()); state.todos.items.unshift({id: uid(), t, done: false, at: Date.now()}); n++;
+    });
+    saveList('todos'); renderTodos();
+    toast(n ? 'Added ' + n + ' to-do' + (n === 1 ? '' : 's') : 'They’re already on your to-do list');
+  }
+});
+function maybeOfferReview(){
+  const n = new Date();
+  if (n.getDay() !== 0 || n.getHours() < 17) return;
+  const key = keyOf(thisMonday());
+  if (state.prefs.reviewOffered === key || !state.loaded) return;
+  state.prefs.reviewOffered = key; Store.savePrefs(state.prefs);
+  toast('Your week review is ready', 'Open', () => { if (state.key !== key) openWeek(thisMonday()); openReview(); });
+}
+
+/* ================= native events ================= */
+Store.onEvent(type => {
+  if (type === 'pencilTap') togglePencilTool();
+  if (type === 'active'){ scheduleReminders(); focusTick(); maybeOfferReview(); if (state.view === 'myday') renderMyDay(); }
+});
+
 /* ================= toolbar & header wiring ================= */
 function setMode(m){
+  if (m !== 'select' && state.sel.size){ state.sel.clear(); renderBlocks(); }
   state.mode = m; renderPalette();
   els.eraserDot.style.display = 'none';
 }
-['blocks','ink','erase'].forEach(m => $('mode-' + m).addEventListener('click', () => setMode(m)));
+['blocks','ink','erase','select'].forEach(m => $('mode-' + m).addEventListener('click', () => setMode(m)));
 els.palette.addEventListener('click', e => {
   const t = e.target.closest('button'); if (!t) return;
   if (t.dataset.cat){ state.cat = t.dataset.cat; state.prefs.cat = state.cat; Store.savePrefs(state.prefs); renderPalette(); }
   if (t.dataset.ink){ state.ink = t.dataset.ink; state.prefs.ink = state.ink; Store.savePrefs(state.prefs); renderPalette(); }
   if (t.dataset.size){ state.size = +t.dataset.size; state.prefs.size = state.size; Store.savePrefs(state.prefs); renderPalette(); }
   if (t.dataset.act === 'clear-ink') clearInk();
+  if (t.dataset.sel === 'clear'){ state.sel.clear(); renderBlocks(); renderPalette(); }
+  else if (t.dataset.sel) selAction(t.dataset.sel);
+  if (t.dataset.selcat) selAction('cat', t.dataset.selcat);
 });
-$('prevWeek').addEventListener('click', () => goWeek(-1));
-$('nextWeek').addEventListener('click', () => goWeek(1));
-els.todayBtn.addEventListener('click', () => { openWeek(mondayOf(new Date())); scrollToStart(); });
+$('prevWeek').addEventListener('click', () => navStep(-1));
+$('nextWeek').addEventListener('click', () => navStep(1));
+els.todayBtn.addEventListener('click', goToday);
 els.undoBtn.addEventListener('click', undo);
 els.redoBtn.addEventListener('click', redo);
 $('moreBtn').addEventListener('click', () => { if (els.menu.hidden) openMenu(); else closeMenu(); });
@@ -3008,17 +4125,18 @@ function scrollToStart(){
 }
 
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape'){ if (!els.imp.hidden) closeImport(); else if (!els.sync.hidden) closeSync(); else if (!els.presets.hidden) closePresets(); else if (!els.help.hidden) closeHelp(); else if (!els.menu.hidden) closeMenu(); else closeEditor(); return; }
+  if (e.key === 'Escape'){ if (!els.focus.hidden) hideFocus(); else if (!els.slots.hidden) closeSlots(); else if (!els.rem.hidden) closeReminders(); else if (!els.review.hidden) closeReview(); else if (state.sel.size){ state.sel.clear(); renderBlocks(); renderPalette(); } else if (!els.imp.hidden) closeImport(); else if (!els.sync.hidden) closeSync(); else if (!els.presets.hidden) closePresets(); else if (!els.help.hidden) closeHelp(); else if (!els.menu.hidden) closeMenu(); else closeEditor(); return; }
   if (isEditable(e.target)) return;
   const mod = e.metaKey || e.ctrlKey;
   if (mod && e.key.toLowerCase() === 'z'){ e.preventDefault(); e.shiftKey ? redo() : undo(); return; }
   if (mod && e.key.toLowerCase() === 'y'){ e.preventDefault(); redo(); return; }
   if (mod || e.altKey) return;
   if (!els.editor.hidden && (e.key === 'Backspace' || e.key === 'Delete')){ $('edDelete').click(); return; }
-  if (!els.editor.hidden || !els.presets.hidden || !els.help.hidden || !els.imp.hidden || !els.sync.hidden) return;
+  if (!els.editor.hidden || !els.presets.hidden || !els.help.hidden || !els.imp.hidden || !els.sync.hidden || !els.slots.hidden || !els.rem.hidden || !els.review.hidden || !els.focus.hidden) return;
   const k = e.key.toLowerCase();
-  if (e.key === 'ArrowLeft') goWeek(-1);
-  else if (e.key === 'ArrowRight') goWeek(1);
+  if (e.key === 'ArrowLeft') navStep(-1);
+  else if (e.key === 'ArrowRight') navStep(1);
+  else if (k === 's') setMode('select');
   else if (k === 't') els.todayBtn.click();
   else if (k === 'b') setMode('blocks');
   else if (k === 'i') setMode('ink');
@@ -3100,7 +4218,7 @@ new ResizeObserver(() => {
   if (state.editing) positionEditor();
 }).observe(els.days);
 addEventListener('resize', () => { if (state.editing){ const b = findBlock(state.editing.id); if (b) { buildEditor(); positionEditor(); } } closeMenu(); });
-setInterval(() => { renderNow(); if (state.key !== keyOf(mondayOf(new Date())) || todayIndex() < 0) renderHeader(); }, 30000);
+setInterval(() => { renderNow(); if (state.key !== keyOf(mondayOf(new Date())) || todayIndex() < 0) renderHeader(); if (state.view === 'myday') renderMyDay(); }, 30000);
 document.addEventListener('visibilitychange', () => { if (!document.hidden){ renderNow(); renderHeader(); } });
 
 Store.cloud.setBusyCheck(name =>
@@ -3132,6 +4250,14 @@ Store.cloud.setBusyCheck(name =>
   Store.watch('deadlines', onListData('deadlines'));
   Store.watch('calendars', onListData('calendars'));
   setTimeout(() => refreshCalendars(false), 4000);
+  Store.watch('series', onListData('series'));
+  state.view = VIEWS.some(v => v.k === state.prefs.view) ? state.prefs.view : (innerWidth < 600 ? '3' : 'week');
+  state.lastGrid = isGridView(state.view) ? state.view : (innerWidth < 600 ? '3' : 'week');
+  if (state.view === 'day' || state.view === '3'){ const ti = todayIndex(); state.dayOffset = ti >= 0 ? ti : 0; }
+  applyView();
+  if (state.prefs.focus){ renderFocusPill(); clearInterval(focusTimer); focusTimer = setInterval(focusTick, 1000); }
+  scheduleReminders();
+  setTimeout(maybeOfferReview, 5000); setInterval(maybeOfferReview, 60000);
   openWeek(state.weekStart);
   scrollToStart();
 })();

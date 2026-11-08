@@ -1,6 +1,7 @@
 import UIKit
 import WebKit
 import UniformTypeIdentifiers
+import UserNotifications
 
 /// Shows the planner (Web/index.html) full screen and answers its storage requests.
 ///
@@ -42,6 +43,11 @@ final class PlannerViewController: UIViewController, WKScriptMessageHandlerWithR
         if let index = Bundle.main.url(forResource: "index", withExtension: "html", subdirectory: "Web") {
             webView.loadFileURL(index, allowingReadAccessTo: index.deletingLastPathComponent())
         }
+        // Apple Pencil double-tap switches between Erase and Blocks in the page.
+        let pencil = UIPencilInteraction()
+        pencil.delegate = self
+        view.addInteraction(pencil)
+
         let center = NotificationCenter.default
         center.addObserver(self, selector: #selector(appBecameActive), name: UIApplication.didBecomeActiveNotification, object: nil)
         center.addObserver(self, selector: #selector(appWillResign), name: UIApplication.willResignActiveNotification, object: nil)
@@ -69,6 +75,10 @@ final class PlannerViewController: UIViewController, WKScriptMessageHandlerWithR
 
         if cmd == "cloud.pick" {
             presentFolderPicker(reply: replyHandler)
+            return
+        }
+        if cmd.hasPrefix("notify.") {
+            handleNotify(cmd, body: body, reply: replyHandler)
             return
         }
         if cmd == "net.fetch" {
@@ -134,6 +144,45 @@ final class PlannerViewController: UIViewController, WKScriptMessageHandlerWithR
         }.resume()
     }
 
+    // MARK: - Reminders: local notifications scheduled by the page (no push server, works with a free Apple ID)
+
+    private func handleNotify(_ cmd: String, body: [String: Any], reply: @escaping (Any?, String?) -> Void) {
+        let center = UNUserNotificationCenter.current()
+        switch cmd {
+        case "notify.request":
+            center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, _ in
+                DispatchQueue.main.async { reply(granted, nil) }
+            }
+        case "notify.schedule":
+            // Replaces every pending notification of one group ("rem" for reminders, "focus" for the timer).
+            let group = (body["group"] as? String) ?? "rem"
+            let items = (body["items"] as? [[String: Any]]) ?? []
+            center.getPendingNotificationRequests { requests in
+                let old = requests.map { $0.identifier }.filter { $0.hasPrefix(group + ".") }
+                center.removePendingNotificationRequests(withIdentifiers: old)
+                var added = 0
+                for item in items.prefix(60) {
+                    guard let id = item["id"] as? String, let at = item["at"] as? Double else { continue }
+                    let date = Date(timeIntervalSince1970: at / 1000)
+                    if date <= Date() { continue }
+                    let content = UNMutableNotificationContent()
+                    content.title = (item["title"] as? String) ?? "Pencilled In"
+                    content.body = (item["body"] as? String) ?? ""
+                    content.sound = .default
+                    let parts = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
+                    let trigger = UNCalendarNotificationTrigger(dateMatching: parts, repeats: false)
+                    let request = UNNotificationRequest(identifier: group + "." + id, content: content, trigger: trigger)
+                    center.add(request, withCompletionHandler: nil)
+                    added += 1
+                }
+                let count = added
+                DispatchQueue.main.async { reply(count, nil) }
+            }
+        default:
+            reply(nil, "Unknown command \(cmd)")
+        }
+    }
+
     // MARK: - Choosing the iCloud folder
 
     private func presentFolderPicker(reply: @escaping (Any?, String?) -> Void) {
@@ -183,5 +232,20 @@ final class PlannerViewController: UIViewController, WKScriptMessageHandlerWithR
             return
         }
         decisionHandler(.allow)
+    }
+}
+
+// MARK: - Apple Pencil double-tap
+
+extension PlannerViewController: UIPencilInteractionDelegate {
+    // iOS 16 to 17.4
+    func pencilInteractionDidTap(_ interaction: UIPencilInteraction) {
+        sendEvent("pencilTap")
+    }
+
+    // iOS 17.5 and later call this one instead
+    @available(iOS 17.5, *)
+    func pencilInteraction(_ interaction: UIPencilInteraction, didReceiveTap tap: UIPencilInteraction.Tap) {
+        sendEvent("pencilTap")
     }
 }

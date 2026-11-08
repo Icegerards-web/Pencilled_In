@@ -20,7 +20,7 @@ Do the same on the other device and pick the same folder. You can change or stop
 Changes usually arrive within a minute; the app checks every 20 seconds while it is open and whenever you switch back to it. If you edit on both devices at the same time, both edits are kept.
 
 ### Why a folder, not "real" iCloud
-Apps installed with a free Apple ID can't use Apple's iCloud app storage (CloudKit or iCloud containers); that needs the paid developer program. Any app can, however, keep access to a folder you pick in the Files picker, and iCloud Drive syncs that folder. The data is plain JSON: one file per week (`w2026-11-02.json`), plus `todos.json`, `presets.json`, `deadlines.json` and `calendars.json`.
+Apps installed with a free Apple ID can't use Apple's iCloud app storage (CloudKit or iCloud containers); that needs the paid developer program. Any app can, however, keep access to a folder you pick in the Files picker, and iCloud Drive syncs that folder. The data is plain JSON: one file per week (`w2026-11-02.json`), plus `todos.json`, `presets.json`, `deadlines.json`, `calendars.json` and `series.json` (repeating blocks).
 
 ## Importing a calendar
 **⋯ › Import a calendar** reads the standard iCalendar format (.ics), which school systems like Zermelo, Somtoday and Magister, and Google, Outlook and Apple Calendar can all export.
@@ -32,9 +32,20 @@ Timed events become blocks in the right week (this week up to 26 weeks ahead) in
 ## Deadlines
 The **Deadlines** tab sits next to **To-do** in the side panel. Deadlines are listed in date order under Overdue, This week, Next week and Later, with a countdown, and show in a **Due** row above the week they fall in. The toolbar badge counts what's due within a week and turns red when something is overdue.
 
+## Planning features
+- **Views** (button next to the arrows): Day, 3 days, Week, Month and My day. The phone starts in 3 days; swipe sideways to move through days. Month shows planned hours and deadlines per day; tap a day to open it. My day shows what's on now and next, today's plan, to-dos and deadlines.
+- **Repeating blocks**: in the block editor, *Repeat → Every week* on the days you pick. Changing one week's copy keeps it separate until you tap *Apply to every week*. Deleting asks whether to remove only this week or stop repeating from here.
+- **Find a time** (to-do, clock button while editing): lists the next free slots of the length you pick; tap one to schedule it.
+- **Plan study time** (deadline, while editing): spreads the sessions you choose over free time before the deadline, one per day where possible, ending the day before it's due.
+- **Reminders** (⋯ › Reminders, app only, per device): before blocks start, and the evening before deadlines. These are local notifications, so they work with a free Apple ID.
+- **Focus timer** (block editor › Focus, or My day): block-length countdown or Pomodoro 25/5. Minutes focused are saved on the block and shown in the week review.
+- **Week review** (⋯ › Week review, offered on Sunday evening): planned vs. done per category, focus time, finished to-dos and deadlines, and a button to turn unfinished blocks into to-dos.
+- **Select** tool: circle blocks with the Pencil, then drag one to move them all, or mark done, recolour or delete them.
+- **Erase**: rub out ink or tap a block to delete it. **Double-tap the Apple Pencil** to switch between Erase and Blocks.
+
 ## How it's put together
 - `Web/index.html`: the whole planner (UI, Pencil handling, presets, to-dos, and the sync and merge logic).
-- `App/Sources/PlannerViewController.swift`: shows the page full screen in a `WKWebView`, answers its storage requests and downloads calendar links (`net.fetch`).
+- `App/Sources/PlannerViewController.swift`: shows the page full screen in a `WKWebView`, answers its storage requests, downloads calendar links (`net.fetch`), schedules reminders (`notify.*`) and forwards Apple Pencil double-taps.
 - `App/Sources/DocumentStore.swift`: reads and writes the JSON files on the device and in the chosen iCloud Drive folder, using `NSFileCoordinator` so iCloud sees every change.
 - `project.yml`: XcodeGen spec; Codemagic generates the Xcode project from it.
 - `codemagic.yaml`: the build. It also downloads the two fonts (Hanken Grotesk and Bricolage Grotesque, both open source) into `Web/fonts`; if that fails, the app uses Avenir Next.
