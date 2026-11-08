@@ -1,0 +1,2485 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><meta name="color-scheme" content="light dark"><style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0;font:14px system-ui;-webkit-user-select:none;user-select:none}input,textarea{-webkit-user-select:text;user-select:text}img{max-width:100%}[hidden]{display:none!important}html{touch-action:manipulation}</style></head><body><title>Pencilled In</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:"Hanken Grotesk";src:url("fonts/HankenGrotesk.ttf") format("truetype");font-weight:100 900;font-display:swap}
+@font-face{font-family:"Bricolage Grotesque";src:url("fonts/BricolageGrotesque.ttf") format("truetype");font-weight:200 800;font-display:swap}
+</style>
+<style>
+/* Layout: one-screen planner. Top bar (week + actions), tool strip (Blocks / Ink / Erase + palette),
+   one scroll surface holding the week grid with sticky day headers and a sticky hour gutter, slim totals footer. */
+:root{
+  --paper:#F4F5F7; --surface:#FFFFFF; --surface-2:#EEF0F3; --raised:#FFFFFF;
+  --ink:#141A24; --ink-2:#465061; --muted:#768092;
+  --line:#E1E4EA; --line-faint:#EFF1F4; --line-strong:#C9CED7;
+  --weekend:#F8F9FA; --today:#FBFCFF;
+  --primary:#1F47C4; --on-primary:#FFFFFF; --primary-soft:#E6ECFC;
+  --accent:#F2B300; --on-accent:#221A00; --accent-soft:#FFF5D6; --accent-line:#F1DC93;
+  --now:#E0393F;
+  --shadow:0 18px 48px rgba(16,24,40,.18),0 2px 6px rgba(16,24,40,.08);
+
+  --work-bg:#E2EAFE; --work-fg:#1A3A93; --work-solid:#3B63DD;
+  --study-bg:#ECE5FD; --study-fg:#4E2CA0; --study-solid:#7A55D6;
+  --health-bg:#DCF2E4; --health-fg:#1B623C; --health-solid:#2A955A;
+  --personal-bg:#FEEDD3; --personal-fg:#7E4800; --personal-solid:#D9830A;
+  --social-bg:#FDE2E9; --social-fg:#952045; --social-solid:#D6476F;
+  --errands-bg:#E5EAEF; --errands-fg:#333F4C; --errands-solid:#617080;
+
+  --ink-ink:#1B2230; --ink-blue:#2754D8; --ink-red:#D9363E; --ink-green:#23894F; --ink-amber:#D97A00; --ink-purple:#7446D0;
+
+  --font-display:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --font-body:"Hanken Grotesk","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --hour:64px; --gutter-w:54px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --paper:#0E1116; --surface:#161A21; --surface-2:#1F242D; --raised:#1C2129;
+  --ink:#E9ECF1; --ink-2:#B4BCC8; --muted:#848E9D;
+  --line:#272D37; --line-faint:#1D222A; --line-strong:#3A414D;
+  --weekend:#13171D; --today:#171C26;
+  --primary:#7A97FF; --on-primary:#0B1230; --primary-soft:#1E2846;
+  --accent:#F5C22E; --on-accent:#221A00; --accent-soft:#2B2410; --accent-line:#4A3D12;
+  --now:#FF5A5F;
+  --shadow:0 18px 48px rgba(0,0,0,.5),0 2px 6px rgba(0,0,0,.3);
+  --work-bg:#1C2A50; --work-fg:#C3D2FF; --work-solid:#6E8DFF;
+  --study-bg:#2A1F4A; --study-fg:#D9CBFF; --study-solid:#9D7CF0;
+  --health-bg:#16352A; --health-fg:#B8EBCB; --health-solid:#4CC283;
+  --personal-bg:#3A2A12; --personal-fg:#FFD9A0; --personal-solid:#F0A33A;
+  --social-bg:#3F1D2A; --social-fg:#FFC6D6; --social-solid:#F06B92;
+  --errands-bg:#252C36; --errands-fg:#CBD3DD; --errands-solid:#8E9BAB;
+  --ink-ink:#E6EAF0; --ink-blue:#7F9CFF; --ink-red:#FF6B70; --ink-green:#5BD08F; --ink-amber:#F7AE45; --ink-purple:#B494FF;
+  color-scheme:dark }}
+:root[data-theme="dark"]{
+  --paper:#0E1116; --surface:#161A21; --surface-2:#1F242D; --raised:#1C2129;
+  --ink:#E9ECF1; --ink-2:#B4BCC8; --muted:#848E9D;
+  --line:#272D37; --line-faint:#1D222A; --line-strong:#3A414D;
+  --weekend:#13171D; --today:#171C26;
+  --primary:#7A97FF; --on-primary:#0B1230; --primary-soft:#1E2846;
+  --accent:#F5C22E; --on-accent:#221A00; --accent-soft:#2B2410; --accent-line:#4A3D12;
+  --now:#FF5A5F;
+  --shadow:0 18px 48px rgba(0,0,0,.5),0 2px 6px rgba(0,0,0,.3);
+  --work-bg:#1C2A50; --work-fg:#C3D2FF; --work-solid:#6E8DFF;
+  --study-bg:#2A1F4A; --study-fg:#D9CBFF; --study-solid:#9D7CF0;
+  --health-bg:#16352A; --health-fg:#B8EBCB; --health-solid:#4CC283;
+  --personal-bg:#3A2A12; --personal-fg:#FFD9A0; --personal-solid:#F0A33A;
+  --social-bg:#3F1D2A; --social-fg:#FFC6D6; --social-solid:#F06B92;
+  --errands-bg:#252C36; --errands-fg:#CBD3DD; --errands-solid:#8E9BAB;
+  --ink-ink:#E6EAF0; --ink-blue:#7F9CFF; --ink-red:#FF6B70; --ink-green:#5BD08F; --ink-amber:#F7AE45; --ink-purple:#B494FF;
+  color-scheme:dark }
+
+html,body{height:100%}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--font-body); font-size:14px; line-height:1.4;
+  overflow:hidden; overscroll-behavior:none;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0;
+  -webkit-tap-highlight-color:transparent; -webkit-text-size-adjust:100%;
+}
+button{font-family:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+svg.i{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+
+.app{height:100%;display:flex;flex-direction:column;min-width:0}
+
+/* ---------- top bar ---------- */
+.topbar{display:flex;align-items:center;gap:14px;padding-block:12px 6px;min-width:0}
+.brand{display:flex;align-items:center;gap:9px;flex:none}
+.brand-mark{width:30px;height:30px;border-radius:9px;background:var(--accent);color:var(--on-accent);display:grid;place-items:center}
+.brand-mark svg{width:18px;height:18px;stroke-width:2}
+.brand-name{font-family:var(--font-display);font-weight:650;font-size:16px;letter-spacing:-.01em;white-space:nowrap}
+.divider{width:1px;height:28px;background:var(--line);flex:none}
+.weekinfo{display:flex;flex-direction:column;min-width:0}
+.weekinfo .eyebrow{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-variant-numeric:tabular-nums}
+.weekinfo h1{margin:0;font-family:var(--font-display);font-weight:600;font-size:22px;line-height:1.15;letter-spacing:-.015em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums}
+.nav{display:flex;align-items:center;gap:4px;flex:none}
+.spacer{flex:1;min-width:0}
+.btn{height:38px;padding:0 13px;border-radius:11px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:600 13.5px/1 var(--font-body);display:inline-flex;align-items:center;justify-content:center;gap:7px;white-space:nowrap;transition:background .15s,border-color .15s,opacity .15s;flex:none}
+.btn:hover{background:var(--surface-2)}
+.btn:active{transform:translateY(1px)}
+.btn.icon{width:38px;padding:0}
+.btn.primary{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
+.btn.primary:hover{filter:brightness(1.06);background:var(--primary)}
+.btn.ghost{background:transparent;border-color:transparent}
+.btn.ghost:hover{background:var(--surface-2)}
+.btn:disabled{opacity:.35;pointer-events:none}
+.btn.today-on{border-color:var(--line)}
+.group{display:inline-flex;gap:2px;flex:none}
+
+/* ---------- tool strip ---------- */
+.toolbar{display:flex;align-items:center;gap:12px;padding-block:6px 10px;min-width:0}
+.seg{display:inline-flex;background:var(--surface-2);border-radius:13px;padding:3px;gap:2px;flex:none}
+.seg button{height:36px;padding:0 13px;border:0;background:transparent;border-radius:10px;font:600 13.5px var(--font-body);color:var(--ink-2);display:inline-flex;align-items:center;gap:7px;transition:background .15s,color .15s}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(16,24,40,.1),0 0 0 1px var(--line)}
+.palette{display:flex;align-items:center;gap:6px;overflow-x:auto;min-width:0;scrollbar-width:none;padding:2px}
+.palette::-webkit-scrollbar{display:none}
+.palette .label{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-right:2px;white-space:nowrap}
+.chip{height:34px;border-radius:999px;padding:0 13px 0 9px;border:1px solid var(--line);background:var(--surface);display:inline-flex;align-items:center;gap:7px;font:600 13px var(--font-body);color:var(--ink-2);white-space:nowrap;flex:none;transition:background .15s,border-color .15s,color .15s}
+.chip .dot{width:13px;height:13px;border-radius:50%;background:var(--c-solid);flex:none}
+.chip[aria-pressed="true"]{border-color:var(--c-solid);background:var(--c-bg);color:var(--c-fg)}
+.swatch{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;flex:none}
+.swatch span{width:16px;height:16px;border-radius:50%}
+.swatch[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 2px var(--surface)}
+.sizes{display:inline-flex;gap:2px;background:var(--surface-2);border-radius:999px;padding:3px;margin-left:6px;flex:none}
+.sizes button{width:34px;height:30px;border:0;border-radius:999px;background:transparent;display:grid;place-items:center}
+.sizes button span{border-radius:999px;background:var(--ink-2);width:16px}
+.sizes button[aria-pressed="true"]{background:var(--surface);box-shadow:0 0 0 1px var(--line)}
+.tool-hint{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.cat-work{--c-bg:var(--work-bg);--c-fg:var(--work-fg);--c-solid:var(--work-solid)}
+.cat-study{--c-bg:var(--study-bg);--c-fg:var(--study-fg);--c-solid:var(--study-solid)}
+.cat-health{--c-bg:var(--health-bg);--c-fg:var(--health-fg);--c-solid:var(--health-solid)}
+.cat-personal{--c-bg:var(--personal-bg);--c-fg:var(--personal-fg);--c-solid:var(--personal-solid)}
+.cat-social{--c-bg:var(--social-bg);--c-fg:var(--social-fg);--c-solid:var(--social-solid)}
+.cat-errands{--c-bg:var(--errands-bg);--c-fg:var(--errands-fg);--c-solid:var(--errands-solid)}
+
+/* ---------- banner ---------- */
+.banner{display:flex;align-items:center;gap:10px;background:var(--accent-soft);border:1px solid var(--accent-line);border-radius:12px;padding:7px 8px 7px 14px;margin-bottom:10px;font-size:13.5px;color:var(--ink);min-width:0}
+.banner p{margin:0;flex:1;min-width:0}
+.banner .btn{height:32px;font-size:13px}
+
+/* ---------- board ---------- */
+.board{flex:1;min-height:0;background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;position:relative;display:flex}
+.scroller{flex:1;min-width:0;overflow:auto;position:relative;touch-action:pan-x pan-y;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.sheet-grid{min-width:700px;position:relative}
+.dayheads{position:sticky;top:0;z-index:8;display:grid;grid-template-columns:var(--gutter-w) repeat(7,minmax(0,1fr));background:var(--surface);border-bottom:1px solid var(--line)}
+.corner{position:sticky;left:0;background:var(--surface);z-index:2;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--muted)}
+.dh{display:flex;align-items:center;gap:8px;padding:10px 10px 9px;border-left:1px solid var(--line);min-width:0;overflow:hidden}
+.dh-name,.dh-hrs{overflow:hidden;text-overflow:ellipsis}
+.dh-name{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.dh-num{font-family:var(--font-display);font-weight:600;font-size:20px;line-height:1;min-width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font-variant-numeric:tabular-nums;margin-left:-4px}
+.dh-text{display:flex;flex-direction:column;gap:1px;min-width:0}
+.dh-hrs{font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.dh.today .dh-num{background:var(--accent);color:var(--on-accent)}
+.dh.today .dh-name{color:var(--ink)}
+.dh.we{background:var(--weekend)}
+
+.body{display:grid;grid-template-columns:var(--gutter-w) 1fr;position:relative}
+.gutter{position:sticky;left:0;z-index:7;background:var(--surface);height:calc(var(--hour) * 24);border-right:1px solid var(--line)}
+.gutter span{position:absolute;right:8px;transform:translateY(-50%);font-size:11px;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums}
+.gutter span.now-label{color:#fff;background:var(--now);padding:1px 5px;border-radius:5px;right:5px;font-size:10.5px;z-index:2}
+.days{position:relative;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));height:calc(var(--hour) * 24);touch-action:pan-x pan-y;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.days.mode-blocks{cursor:crosshair}
+.days.mode-ink{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12'%3E%3Ccircle cx='6' cy='6' r='2.5' fill='%23141A24' stroke='white' stroke-width='1.5'/%3E%3C/svg%3E") 6 6,crosshair}
+.days.mode-erase{cursor:cell}
+.col{position:relative;border-left:1px solid var(--line);
+  background-image:linear-gradient(to bottom,var(--line) 1px,transparent 1px),linear-gradient(to bottom,var(--line-faint) 1px,transparent 1px);
+  background-size:100% var(--hour),100% var(--hour);background-position:0 0,0 calc(var(--hour) / 2)}
+.col.we{background-color:var(--weekend)}
+.col.today{background-color:var(--today)}
+.ink-layer{position:absolute;inset:0;z-index:5;pointer-events:none;overflow:visible}
+.now{position:absolute;left:-1px;right:0;height:2px;background:var(--now);z-index:6;pointer-events:none}
+.now::before{content:"";position:absolute;left:-4px;top:-4px;width:10px;height:10px;border-radius:50%;background:var(--now)}
+
+.block{position:absolute;box-sizing:border-box;border-radius:8px;background:var(--c-bg);color:var(--c-fg);
+  border:1px solid var(--c-solid);border-color:color-mix(in srgb,var(--c-solid) 38%,transparent);
+  padding:5px 8px;overflow:hidden;z-index:3;font-size:12.5px;line-height:1.25;display:flex;flex-direction:column;gap:2px;
+  transition:box-shadow .15s,transform .12s,opacity .15s;touch-action:pan-x pan-y}
+.b-title{font-weight:700;overflow:hidden;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow-wrap:break-word;-webkit-hyphens:auto;hyphens:auto}
+.b-title.untitled{font-weight:600;opacity:.65;font-style:italic}
+.b-time{font-size:11.5px;font-weight:500;opacity:.85;font-variant-numeric:tabular-nums;white-space:nowrap}
+.block.short{flex-direction:row;align-items:center;gap:6px;padding-block:0}
+.block.short .b-title{display:block;white-space:nowrap;text-overflow:ellipsis;min-width:0;flex:0 1 auto}
+.block.short .b-time{flex:none}
+.block.tiny .b-time{display:none}
+.block.tiny{font-size:11px}
+.block.narrow .b-time{display:none}
+.block .b-check{display:none}
+.block.done{opacity:.6}
+.block.done .b-title{text-decoration:line-through;text-decoration-thickness:1.5px}
+.block.selected{box-shadow:0 0 0 2px var(--c-solid),0 8px 20px rgba(16,24,40,.16);z-index:5}
+.block.dragging{box-shadow:0 0 0 2px var(--c-solid),0 14px 30px rgba(16,24,40,.24);transform:scale(1.02);z-index:6;opacity:.95}
+.block.ghost{border:1.5px dashed var(--c-solid);background:color-mix(in srgb,var(--c-bg) 80%,transparent);z-index:6}
+.handle{position:absolute;left:0;right:0;height:12px;cursor:ns-resize;z-index:2}
+.handle.top{top:-3px}
+.handle.bottom{bottom:-3px}
+.handle::after{content:"";position:absolute;left:50%;width:22px;height:3px;border-radius:2px;background:var(--c-solid);transform:translateX(-50%);opacity:0;transition:opacity .15s}
+.handle.top::after{top:5px}
+.handle.bottom::after{bottom:5px}
+.block.selected .handle::after,.block.dragging .handle::after{opacity:.7}
+@media (hover:hover){.block:hover .handle::after{opacity:.55}}
+
+.eraser-dot{position:absolute;width:22px;height:22px;margin:-11px 0 0 -11px;border-radius:50%;border:1.5px solid var(--ink-2);background:color-mix(in srgb,var(--surface) 50%,transparent);pointer-events:none;z-index:9;display:none}
+
+.empty-hint{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:9;pointer-events:none;
+  background:var(--raised);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:18px 20px;max-width:min(360px,calc(100% - 32px));text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px}
+.empty-hint h2{margin:0;font-family:var(--font-display);font-size:18px;font-weight:600;text-wrap:balance}
+.empty-hint p{margin:0;color:var(--ink-2);font-size:13.5px;text-wrap:pretty}
+.empty-hint .btn{pointer-events:auto;margin-top:4px}
+.empty-demo{width:120px;height:62px}
+
+/* ---------- footer ---------- */
+.footer{display:flex;align-items:center;gap:16px;padding-block:8px 10px;min-height:22px;font-size:12.5px;color:var(--ink-2);min-width:0}
+.totals{display:flex;align-items:center;gap:14px;overflow-x:auto;min-width:0;scrollbar-width:none}
+.totals::-webkit-scrollbar{display:none}
+.tot{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.tot .dot{width:9px;height:9px;border-radius:3px;background:var(--c-solid)}
+.tot b{font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+.tot.sum b{font-family:var(--font-display);font-size:14px}
+.status{margin-left:auto;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;color:var(--muted);flex:none}
+.status i{width:7px;height:7px;border-radius:50%;background:var(--health-solid)}
+.status.busy i{background:var(--accent)}
+.status.warn i{background:var(--now)}
+
+/* ---------- popovers ---------- */
+.scrim{position:fixed;inset:0;z-index:40;background:transparent}
+.scrim.dim{background:rgba(10,14,22,.32)}
+.pop{position:fixed;z-index:41;background:var(--raised);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);color:var(--ink)}
+.editor{width:344px;max-width:calc(100vw - 32px);max-height:calc(100% - 24px);overflow:auto;padding:16px;display:flex;flex-direction:column;gap:14px;box-sizing:border-box;overscroll-behavior:contain}
+.editor.sheet{left:0 !important;right:0;bottom:0;top:auto !important;width:auto;max-width:none;max-height:82%;border-radius:20px 20px 0 0;
+  padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.ed-head{display:flex;align-items:flex-start;gap:8px}
+.ed-titlewrap{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px}
+.ed-title{width:100%;box-sizing:border-box;font:600 21px/1.25 var(--font-display);letter-spacing:-.01em;color:var(--ink);background:var(--surface-2);border:1.5px solid transparent;border-radius:12px;padding:12px 12px;outline:none;transition:border-color .15s,background .15s}
+.ed-title:focus{border-color:var(--primary);background:var(--surface)}
+.ed-title::placeholder{color:var(--muted);font-weight:500}
+.scribble{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
+.scribble svg{width:14px;height:14px}
+.sugg{display:flex;flex-wrap:wrap;gap:6px}
+.sugg button{height:30px;border-radius:999px;border:1px solid var(--line);background:var(--surface);padding:0 11px 0 8px;font:600 12.5px var(--font-body);color:var(--ink-2);display:inline-flex;align-items:center;gap:6px;max-width:100%}
+.sugg button .dot{width:9px;height:9px;border-radius:50%;background:var(--c-solid);flex:none}
+.sugg button span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.field{display:flex;flex-direction:column;gap:7px}
+.field-label{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between;gap:8px}
+.field-label em{font-style:normal;letter-spacing:0;text-transform:none;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ink-2)}
+.cats{display:flex;flex-wrap:wrap;gap:6px}
+.cats .chip{height:32px;font-size:12.5px}
+.times{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tbox{display:flex;align-items:center;background:var(--surface-2);border-radius:12px;height:44px;overflow:hidden}
+.tbox button{width:36px;height:44px;border:0;background:transparent;color:var(--ink-2);font:600 18px var(--font-body);flex:none;display:grid;place-items:center}
+.tbox button:active{background:var(--line)}
+.tbox .tval{flex:1;text-align:center;display:flex;flex-direction:column;line-height:1.1}
+.tbox .tval small{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.tbox .tval b{font-size:16px;font-variant-numeric:tabular-nums}
+.repeat{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.repeat button{height:36px;border-radius:10px;border:1px solid var(--line);background:var(--surface);font:700 12px var(--font-body);color:var(--ink-2);padding:0}
+.repeat button[aria-pressed="true"]{background:var(--c-bg);color:var(--c-fg);border-color:var(--c-solid)}
+.repeat button.self{background:var(--c-solid);border-color:var(--c-solid);color:var(--surface);cursor:default}
+.ed-notes{width:100%;box-sizing:border-box;min-height:64px;resize:vertical;border:1.5px solid transparent;background:var(--surface-2);border-radius:12px;padding:10px 12px;font:500 16px/1.4 var(--font-body);color:var(--ink);outline:none}
+.ed-notes:focus{border-color:var(--primary);background:var(--surface)}
+.ed-actions{display:flex;align-items:center;gap:6px;padding-top:2px}
+.ed-actions .btn.danger{color:var(--now)}
+.toggle-done[aria-pressed="true"]{background:var(--health-bg);color:var(--health-fg);border-color:var(--health-solid)}
+
+.menu{width:270px;padding:6px;display:flex;flex-direction:column;gap:1px}
+.menu button.item{display:flex;align-items:center;gap:10px;height:42px;padding:0 12px;border:0;background:transparent;border-radius:11px;font:600 14px var(--font-body);color:var(--ink);text-align:left}
+.menu button.item:hover{background:var(--surface-2)}
+.menu button.item.danger{color:var(--now)}
+.menu hr{border:0;height:1px;background:var(--line);margin:5px 8px}
+.menu .menu-label{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);padding:6px 12px 4px}
+.menu .seg{margin:0 6px 6px;display:flex}
+.menu .seg button{flex:1;justify-content:center;padding:0 6px;font-size:12.5px}
+
+.help{left:50%;top:50%;transform:translate(-50%,-50%);width:min(520px,calc(100vw - 32px));max-height:calc(100% - 40px);overflow:auto;padding:22px;box-sizing:border-box}
+.help h2{margin:0 0 4px;font-family:var(--font-display);font-size:22px;font-weight:600}
+.help > p{margin:0 0 16px;color:var(--ink-2)}
+.help-grid{display:grid;grid-template-columns:auto 1fr;gap:12px 14px;align-items:start}
+.help-grid .hi{width:36px;height:36px;border-radius:10px;background:var(--surface-2);display:grid;place-items:center;color:var(--ink-2)}
+.help-grid b{display:block;font-size:14px}
+.help-grid span{color:var(--ink-2);font-size:13.5px}
+.help .btn{margin-top:18px;width:100%}
+
+.toast{position:fixed;left:50%;bottom:calc(52px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;z-index:60;background:var(--ink);color:var(--surface);border-radius:12px;padding:10px 10px 10px 16px;display:flex;align-items:center;gap:12px;font-weight:600;font-size:13.5px;box-shadow:var(--shadow);transition:opacity .2s,transform .2s;pointer-events:none;max-width:calc(100vw - 32px)}
+.toast.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.toast button{border:0;background:transparent;color:var(--accent);font:700 13.5px var(--font-body);padding:4px 8px;border-radius:8px}
+.toast button[hidden]{display:none}
+
+/* ---------- workspace: board + to-do panel ---------- */
+.workspace{flex:1;min-height:0;display:flex;gap:12px;position:relative;min-width:0}
+.board{min-width:0}
+.tool-actions{display:flex;gap:6px;flex:none}
+.btn{position:relative}
+.btn[aria-pressed="true"]{background:var(--primary-soft);border-color:var(--primary);color:var(--primary)}
+.count{min-width:20px;height:20px;box-sizing:border-box;border-radius:999px;background:var(--accent);color:var(--on-accent);font:700 11.5px/20px var(--font-body);padding:0 6px;text-align:center;font-variant-numeric:tabular-nums}
+.dh{cursor:pointer;position:relative;transition:background .15s}
+.dh:hover{background:var(--surface-2)}
+.dh-chev{width:14px;height:14px;color:var(--muted);margin-left:auto;flex:none;opacity:.7}
+.dayheads.tight .dh-chev{display:none}
+.dayheads.tight .dh{gap:6px;padding-inline:8px}
+.field .ps-input{flex:none}
+
+.todo{width:284px;flex:none;background:var(--surface);border:1px solid var(--line);border-radius:16px;display:flex;flex-direction:column;min-height:0;overflow:hidden;transition:opacity .18s,transform .18s}
+.todo.away{opacity:0;transform:translateX(28px)}
+.td-head{display:flex;align-items:center;gap:8px;padding:12px 8px 6px 16px}
+.td-head h2{margin:0;font:600 18px/1.2 var(--font-display);letter-spacing:-.01em}
+.td-count{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.td-add{display:flex;gap:6px;padding:4px 12px 10px}
+.td-add input,.td-edit input,.ps-input{flex:1;min-width:0;height:44px;box-sizing:border-box;border:1.5px solid transparent;background:var(--surface-2);border-radius:12px;padding:0 12px;font:500 16px var(--font-body);color:var(--ink);outline:none;transition:border-color .15s,background .15s}
+.td-add input:focus,.td-edit input:focus,.ps-input:focus{border-color:var(--primary);background:var(--surface)}
+.td-add input::placeholder,.ps-input::placeholder{color:var(--muted)}
+.td-add .btn{height:44px;width:44px}
+.td-scroll{flex:1;min-height:0;overflow:auto;padding:0 6px 8px;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.td-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:1px}
+.td-item{display:flex;align-items:flex-start;gap:10px;padding:9px 8px;border-radius:12px;touch-action:pan-y;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;cursor:grab;transition:background .15s,opacity .15s}
+@media (hover:hover){.td-item:hover{background:var(--surface-2)}}
+.td-item.lifted{opacity:.35}
+.td-item.editing{cursor:default;align-items:center;padding-block:5px}
+.td-item.fresh{animation:fresh 1.2s ease-out}
+@keyframes fresh{from{background:var(--accent-soft)}to{background:transparent}}
+.td-check{width:24px;height:24px;border-radius:50%;border:2px solid var(--line-strong);background:transparent;flex:none;display:grid;place-items:center;padding:0;margin-top:-1px;color:var(--surface);transition:background .15s,border-color .15s}
+.td-check svg{width:14px;height:14px;stroke-width:3;opacity:0}
+.td-check[aria-pressed="true"]{background:var(--health-solid);border-color:var(--health-solid)}
+.td-check[aria-pressed="true"] svg{opacity:1}
+.td-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.td-text{font-size:14.5px;font-weight:500;line-height:1.35;overflow-wrap:anywhere}
+.td-item.done .td-text{color:var(--muted);text-decoration:line-through}
+.td-meta{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:var(--c-fg);background:var(--c-bg);border-radius:6px;padding:2px 7px 2px 6px;align-self:flex-start;font-variant-numeric:tabular-nums}
+.td-meta .dot{width:7px;height:7px;border-radius:50%;background:var(--c-solid)}
+.td-grip{color:var(--line-strong);flex:none;margin-top:1px}
+.td-grip svg{width:16px;height:16px}
+.td-edit{flex:1;min-width:0;display:flex;gap:4px;align-items:center}
+.td-edit input{height:40px;font-size:15px}
+.td-del{width:40px;height:40px;border:0;border-radius:10px;background:transparent;color:var(--now);display:grid;place-items:center;flex:none}
+.td-empty{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;padding:28px 18px;color:var(--ink-2)}
+.td-empty svg{width:30px;height:30px;color:var(--line-strong);stroke-width:1.6}
+.td-empty b{color:var(--ink);font-size:14.5px}
+.td-empty span{font-size:13px;text-wrap:pretty}
+.td-done-head{display:flex;align-items:center;gap:4px;padding:10px 4px 2px 6px;margin-top:6px;border-top:1px solid var(--line)}
+.td-done-toggle{flex:1;display:flex;align-items:center;gap:6px;height:34px;border:0;background:transparent;border-radius:9px;font:700 11px var(--font-body);letter-spacing:.09em;text-transform:uppercase;color:var(--muted);padding:0 6px;text-align:left}
+.td-done-toggle svg{width:14px;height:14px;transition:transform .15s}
+.td-done-toggle[aria-expanded="false"] svg{transform:rotate(-90deg)}
+.td-done-toggle b{color:var(--ink-2)}
+.td-done-head .btn{height:32px;font-size:13px}
+.td-hint{margin:0;padding:10px 16px 12px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted);display:flex;gap:7px;align-items:center}
+.td-hint svg{width:15px;height:15px;flex:none}
+.todo-ghost{position:fixed;left:0;top:0;z-index:70;pointer-events:none;transform:translate(-50%,calc(-100% - 18px));background:var(--ink);color:var(--surface);border-radius:12px;padding:8px 12px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:1px;max-width:240px}
+.todo-ghost b{font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.todo-ghost span{font-size:11.5px;opacity:.75;font-variant-numeric:tabular-nums}
+.todo-ghost.over span{opacity:1;color:var(--accent);font-weight:700}
+
+/* ---------- presets ---------- */
+.presets{left:50%;top:50%;transform:translate(-50%,-50%);width:min(540px,calc(100vw - 32px));max-height:calc(100% - 40px);overflow:auto;padding:18px;box-sizing:border-box;display:flex;flex-direction:column;gap:14px;overscroll-behavior:contain}
+.presets.sheet{left:0;right:0;top:auto;bottom:0;transform:none;width:auto;max-height:90%;border-radius:20px 20px 0 0;padding-bottom:calc(18px + env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.ps-head{display:flex;align-items:flex-start;gap:8px}
+.ps-head div{flex:1;min-width:0}
+.ps-head h2{margin:0;font:600 22px/1.2 var(--font-display);letter-spacing:-.015em}
+.ps-head p{margin:3px 0 0;color:var(--ink-2);font-size:13.5px}
+.ps-tabs{display:flex}
+.ps-tabs button{flex:1;justify-content:center}
+.ps-save{background:var(--surface-2);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.ps-save .ps-input{background:var(--surface)}
+.ps-sum{font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.ps-name-row{display:flex;gap:8px}
+.ps-name-row .btn{height:44px}
+.daypick{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.daypick button{height:38px;border-radius:10px;border:1px solid var(--line);background:var(--surface);font:700 12.5px var(--font-body);color:var(--ink-2);padding:0}
+.daypick button[aria-pressed="true"]{background:var(--primary-soft);color:var(--primary);border-color:var(--primary)}
+.daypick button.has{position:relative}
+.daypick button.has::after{content:"";position:absolute;left:50%;bottom:4px;width:4px;height:4px;border-radius:50%;background:currentColor;transform:translateX(-50%);opacity:.6}
+.ps-list-head{display:flex;justify-content:space-between;align-items:baseline}
+.ps-list{display:flex;flex-direction:column;gap:8px}
+.ps-row{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--raised);transition:border-color .15s}
+.ps-row.open{border-color:var(--line-strong)}
+.ps-row.fresh{animation:fresh 1.4s ease-out}
+.ps-main{width:100%;display:flex;align-items:center;gap:12px;padding:10px 12px;border:0;background:transparent;text-align:left;font:inherit;color:inherit}
+.ps-mini{position:relative;height:46px;flex:none;background:var(--surface-2);border-radius:8px;display:flex;gap:2px;padding:3px;box-sizing:border-box}
+.ps-mini.day{width:30px}
+.ps-mini.week{width:82px}
+.ps-mini .mc{position:relative;flex:1}
+.ps-mini i{position:absolute;left:0;right:0;border-radius:2px;background:var(--c-solid);opacity:.9}
+.ps-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.ps-info b{font-size:15px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ps-info span{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.ps-go{flex:none;height:32px;padding:0 13px;border-radius:999px;background:var(--primary-soft);color:var(--primary);font-weight:700;font-size:13px;display:inline-flex;align-items:center}
+.ps-row.open .ps-go{background:transparent;color:var(--muted);padding:0 6px}
+.ps-panel{padding:12px;display:flex;flex-direction:column;gap:12px;border-top:1px solid var(--line)}
+.ps-quick{display:flex;gap:6px;flex-wrap:wrap}
+.ps-quick button{height:30px;border-radius:999px;border:1px solid var(--line);background:var(--surface);padding:0 12px;font:600 12.5px var(--font-body);color:var(--ink-2)}
+.ps-mode{display:flex}
+.ps-mode button{flex:1;justify-content:center}
+.ps-empty{display:flex;flex-direction:column;gap:4px;padding:18px;border:1.5px dashed var(--line-strong);border-radius:14px;color:var(--ink-2);font-size:13.5px;text-wrap:pretty}
+.ps-empty b{color:var(--ink);font-size:14.5px}
+.menu button.item:disabled{opacity:.4;pointer-events:none}
+.empty-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:4px}
+.empty-actions .btn{margin-top:0}
+
+/* ---------- iCloud sync sheet ---------- */
+.sync{left:50%;top:50%;transform:translate(-50%,-50%);width:min(440px,calc(100vw - 32px));max-height:calc(100% - 40px);overflow:auto;padding:24px 22px 20px;box-sizing:border-box;display:flex;flex-direction:column;gap:12px}
+.sync h2{margin:0;font:600 22px/1.2 var(--font-display);letter-spacing:-.015em}
+.sync p{margin:0;color:var(--ink-2);font-size:14px;text-wrap:pretty}
+.sync-close{position:absolute;top:10px;right:10px}
+.sync-icon{width:46px;height:46px;border-radius:14px;background:var(--surface-2);color:var(--muted);display:grid;place-items:center}
+.sync-icon svg{width:26px;height:26px}
+.sync-icon.on{background:var(--primary-soft);color:var(--primary)}
+.sync-steps{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;color:var(--ink);font-size:14px}
+.sync-folder{display:flex;align-items:center;gap:10px;background:var(--surface-2);border-radius:12px;padding:12px 14px;font-weight:600;font-size:14.5px;min-width:0}
+.sync-folder span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.sync-folder svg{color:var(--primary)}
+.sync-warn{background:var(--accent-soft);border:1px solid var(--accent-line);border-radius:10px;padding:10px 12px;color:var(--ink) !important}
+.sync-state{font-weight:600;color:var(--ink) !important;font-variant-numeric:tabular-nums}
+.sync-state.bad{color:var(--now) !important}
+.sync-note{font-size:13px !important;color:var(--muted) !important}
+.sync-actions{display:flex;gap:8px;align-items:center;justify-content:flex-end;flex-wrap:wrap;margin-top:6px}
+.sync-actions .danger{color:var(--now)}
+.status.tappable{cursor:pointer;border-radius:8px;padding:4px 8px;margin:-4px -8px -4px auto}
+.status.tappable:hover{background:var(--surface-2)}
+.status.off i{background:var(--muted)}
+@media (max-width:999px){
+  .todo{position:absolute;right:0;top:0;bottom:0;width:min(330px,100%);z-index:20;box-shadow:var(--shadow)}
+}
+@media (max-width:1399px){ .tool-hint{display:none} }
+@media (max-width:1279px){
+  .chip .lbl{display:none}
+  .chip{padding:0;width:34px;justify-content:center}
+  .chip[aria-pressed="true"]{width:auto;padding:0 12px 0 9px}
+  .chip[aria-pressed="true"] .lbl{display:inline}
+  .palette .label{display:none}
+}
+@media (max-width:860px){
+  .brand-name,.divider.d1{display:none}
+  .tool-hint{display:none}
+  .btn .txt{display:none}
+  .btn.has-txt{width:38px;padding:0}
+  .btn .count{position:absolute;top:-7px;right:-7px;min-width:18px;height:18px;line-height:18px;font-size:10.5px;padding:0 5px}
+  .seg button .txt{display:none}
+}
+@media (max-width:600px){
+  .topbar{flex-wrap:wrap;gap:8px 6px}
+  .weekinfo{flex:1 1 calc(100% - 50px);order:0}
+  .weekinfo h1{font-size:19px}
+  .topbar > .spacer{display:none}
+  .nav{order:1}
+  .topbar .group{order:2;margin-left:auto}
+  #addBtn{order:3}
+  .btn{height:36px}.btn.icon,.btn.has-txt{width:36px}
+  .group .btn.icon{width:34px}
+  .hide-sm{display:none}
+  .board{border-radius:12px}
+}
+.block.slim{font-size:11px;padding:4px 5px}
+.block.slim .b-time{font-size:10.5px}
+.block.short.compact .b-time{display:none}
+.editor .cats .chip{width:auto;padding:0 12px 0 9px}
+.editor .cats .chip span{display:inline}
+@media (prefers-reduced-motion:reduce){*{transition:none !important}}
+</style>
+
+<div class="app" id="app" lang="en">
+  <header class="topbar">
+    <div class="brand" aria-hidden="true">
+      <div class="brand-mark"><svg class="i" viewBox="0 0 24 24"><path d="M5 19l1.1-4.3L15.4 5.4a1.9 1.9 0 0 1 2.7 0l.5.5a1.9 1.9 0 0 1 0 2.7L9.3 17.9z"/><path d="M13.8 7l3.2 3.2"/></svg></div>
+      <span class="brand-name">Pencilled In</span>
+    </div>
+    <div class="divider d1"></div>
+    <div class="weekinfo">
+      <span class="eyebrow" id="weekEyebrow">Week</span>
+      <h1 id="weekTitle">&nbsp;</h1>
+    </div>
+    <div class="spacer"></div>
+    <div class="nav">
+      <button class="btn icon" id="prevWeek" aria-label="Previous week" title="Previous week (←)"><svg class="i" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <button class="btn" id="todayBtn" title="Jump to this week (T)">Today</button>
+      <button class="btn icon" id="nextWeek" aria-label="Next week" title="Next week (→)"><svg class="i" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+    </div>
+    <div class="group">
+      <button class="btn icon ghost" id="undoBtn" aria-label="Undo" title="Undo (⌘Z)" disabled><svg class="i" viewBox="0 0 24 24"><path d="M9 14L4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-3"/></svg></button>
+      <button class="btn icon ghost" id="redoBtn" aria-label="Redo" title="Redo (⇧⌘Z)" disabled><svg class="i" viewBox="0 0 24 24"><path d="M15 14l5-5-5-5"/><path d="M20 9H9a5 5 0 0 0 0 10h3"/></svg></button>
+      <button class="btn icon ghost" id="moreBtn" aria-label="More options" aria-haspopup="menu"><svg class="i" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="19" cy="12" r="1.3"/></svg></button>
+    </div>
+    <button class="btn primary has-txt" id="addBtn" title="New block (N)"><svg class="i" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span class="txt">New block</span></button>
+  </header>
+
+  <div class="toolbar">
+    <div class="seg" role="group" aria-label="Pencil tool">
+      <button id="mode-blocks" aria-pressed="true" title="Blocks (B)"><svg class="i" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="9" rx="2"/><rect x="13" y="9" width="7" height="11" rx="2"/></svg><span class="txt">Blocks</span></button>
+      <button id="mode-ink" aria-pressed="false" title="Ink (I)"><svg class="i" viewBox="0 0 24 24"><path d="M4 20c3-1 4.5-3 6-6"/><path d="M13.5 4.5l6 6-7 7-6-6z"/><path d="M10 13l1 1"/></svg><span class="txt">Ink</span></button>
+      <button id="mode-erase" aria-pressed="false" title="Erase ink (E)"><svg class="i" viewBox="0 0 24 24"><path d="M15.5 4l4.5 4.5-9.5 9.5H6l-2-2a1.8 1.8 0 0 1 0-2.5z"/><path d="M10 9.5l4.5 4.5"/><path d="M12 20h8"/></svg><span class="txt">Erase</span></button>
+    </div>
+    <div class="palette" id="palette"></div>
+    <div class="spacer"></div>
+    <div class="tool-hint" id="toolHint"></div>
+    <div class="tool-actions">
+      <button class="btn has-txt" id="presetsBtn" title="Presets (P)"><svg class="i" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 12.5l9 5 9-5"/><path d="M3 17l9 5 9-5"/></svg><span class="txt">Presets</span></button>
+      <button class="btn has-txt" id="todoBtn" aria-pressed="false" title="To-do list (D)"><svg class="i" viewBox="0 0 24 24"><path d="M4 6.5l1.6 1.6L8.5 5"/><path d="M4 12.5l1.6 1.6L8.5 11"/><path d="M4 18.5l1.6 1.6L8.5 17"/><path d="M12 6.5h8M12 12.5h8M12 18.5h8"/></svg><span class="txt">To-do</span><span class="count" id="todoCount" hidden></span></button>
+    </div>
+  </div>
+
+  <div class="banner" id="banner" hidden>
+    <p><b>This is a sample week.</b> <span class="hide-sm">Try drawing a block on Saturday afternoon with your Pencil.</span></p>
+    <button class="btn ghost hide-sm" id="bannerHelp">How it works</button>
+    <button class="btn" id="bannerClear">Clear examples</button>
+  </div>
+
+  <div class="workspace" id="workspace">
+  <main class="board" id="board">
+    <div class="scroller" id="scroller">
+      <div class="sheet-grid" id="sheet">
+        <div class="dayheads" id="dayheads"><div class="corner" id="corner">24H</div></div>
+        <div class="body">
+          <div class="gutter" id="gutter"></div>
+          <div class="days mode-blocks" id="days">
+            <svg class="ink-layer" id="ink" aria-hidden="true"></svg>
+            <div class="eraser-dot" id="eraserDot"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="empty-hint" id="emptyHint" hidden>
+      <svg class="empty-demo" viewBox="0 0 120 62" aria-hidden="true">
+        <rect x="1" y="1" width="118" height="60" rx="10" fill="var(--surface-2)"/>
+        <path d="M30 1v60M60 1v60M90 1v60" stroke="var(--line-strong)" stroke-width="1"/>
+        <rect x="33" y="12" width="24" height="36" rx="5" fill="var(--work-bg)" stroke="var(--work-solid)" stroke-dasharray="3 3"/>
+        <path d="M57 46l10 10" stroke="var(--ink-2)" stroke-width="3" stroke-linecap="round"/>
+        <path d="M56 45l3 1-2 2z" fill="var(--ink-2)"/>
+      </svg>
+      <h2>Draw your week</h2>
+      <p>Drag down a day with Apple Pencil to block out time. Fingers scroll; press and hold with a finger to add.</p>
+      <div class="empty-actions"><button class="btn" id="emptyCopy">Copy last week</button><button class="btn" id="emptyPreset" hidden>Use a week preset</button></div>
+    </div>
+  </main>
+  <aside class="todo" id="todo" aria-label="To-do list" hidden>
+    <div class="td-head"><h2>To-do</h2><span class="td-count" id="tdCount"></span><span class="spacer"></span>
+      <button class="btn icon ghost" id="tdClose" aria-label="Close to-do list"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <form class="td-add" id="tdForm" autocomplete="off">
+      <input id="tdInput" type="text" placeholder="Add a to-do" enterkeyhint="done" aria-label="New to-do">
+      <button class="btn icon primary" type="submit" aria-label="Add to-do"><svg class="i" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+    </form>
+    <div class="td-scroll" id="tdScroll"><ul class="td-list" id="tdList"></ul><div id="tdDone"></div></div>
+    <p class="td-hint" id="tdHint"><svg class="i" viewBox="0 0 24 24"><path d="M5 12h12M13 8l4 4-4 4"/><rect x="18" y="4" width="3" height="16" rx="1.5"/></svg>Drag a to-do onto the week to give it a time.</p>
+  </aside>
+  </div>
+
+  <footer class="footer">
+    <div class="totals" id="totals"></div>
+    <div class="status busy" id="status"><i></i><span>Loading…</span></div>
+  </footer>
+</div>
+
+<div class="scrim" id="scrim" hidden></div>
+<div class="pop editor" id="editor" role="dialog" aria-label="Edit block" hidden></div>
+<div class="pop menu" id="menu" role="menu" hidden></div>
+<div class="pop help" id="help" role="dialog" aria-label="How it works" hidden>
+  <h2>How it works</h2>
+  <p>Pencil plans, fingers navigate. Everything saves automatically.</p>
+  <div class="help-grid">
+    <div class="hi"><svg class="i" viewBox="0 0 24 24"><rect x="7" y="4" width="10" height="16" rx="2"/><path d="M12 8v8"/></svg></div>
+    <div><b>Draw a block</b><span>In Blocks mode, drag your Pencil down a day. A quick tap adds a one-hour block. Times snap to 15 minutes.</span></div>
+    <div class="hi"><svg class="i" viewBox="0 0 24 24"><path d="M4 20c3-1 4.5-3 6-6"/><path d="M13.5 4.5l6 6-7 7-6-6z"/></svg></div>
+    <div><b>Write the title</b><span>Just write in the title field with your Pencil. iPad turns handwriting into text (Scribble).</span></div>
+    <div class="hi"><svg class="i" viewBox="0 0 24 24"><path d="M12 3v18M3 12h18M12 3l-3 3M12 3l3 3M12 21l-3-3M12 21l3-3"/></svg></div>
+    <div><b>Move and resize</b><span>Drag a block with the Pencil to move it, even to another day. Drag its top or bottom edge to change the time.</span></div>
+    <div class="hi"><svg class="i" viewBox="0 0 24 24"><path d="M8 13V5.5a1.5 1.5 0 0 1 3 0V12M11 11.5v-2a1.5 1.5 0 0 1 3 0V12M14 10.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-.5a6 6 0 0 1-4.6-2.2L4 16.5a1.6 1.6 0 0 1 2.4-2.1L8 16"/></svg></div>
+    <div><b>Fingers</b><span>Swipe to scroll. Tap a block to edit it. Press and hold a block to pick it up, or an empty slot to add one.</span></div>
+    <div class="hi"><svg class="i" viewBox="0 0 24 24"><path d="M3 17c3-4 5 2 8-2s4-6 7-3 2 6 3 5"/></svg></div>
+    <div><b>Ink and Erase</b><span>Switch to Ink to handwrite notes anywhere on the week. Erase removes ink, never blocks.</span></div>
+    <div class="hi"><svg class="i" viewBox="0 0 24 24"><rect x="4" y="9" width="7" height="6" rx="1.5"/><rect x="13" y="9" width="7" height="6" rx="1.5"/></svg></div>
+    <div><b>Repeat on other days</b><span>Open a block and tap days under “Repeat on” to copy it, like a gym session on Mon, Wed and Fri.</span></div>
+    <div class="hi"><svg class="i" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 12.5l9 5 9-5"/><path d="M3 17l9 5 9-5"/></svg></div>
+    <div><b>Presets</b><span>Save a day or a whole week you like and apply it again in one tap, for example your office day on Mon to Thu. Tap a day’s name for quick options.</span></div>
+    <div class="hi"><svg class="i" viewBox="0 0 24 24"><path d="M4 6.5l1.6 1.6L8.5 5"/><path d="M4 12.5l1.6 1.6L8.5 11"/><path d="M4 18.5l1.6 1.6L8.5 17"/><path d="M12 6.5h8M12 12.5h8M12 18.5h8"/></svg></div>
+    <div><b>To-do list</b><span>Write tasks in the to-do panel. Drag one onto the week with your Pencil to schedule it. Ticking off either the to-do or its block marks both done.</span></div>
+  </div>
+  <button class="btn primary" id="helpClose">Got it</button>
+</div>
+<div class="pop presets" id="presets" role="dialog" aria-label="Presets" hidden></div>
+<div class="pop sync" id="sync" role="dialog" aria-label="iCloud sync" hidden></div>
+<div class="todo-ghost" id="todoGhost" hidden><b></b><span></span></div>
+<div class="toast" id="toast" role="status" aria-live="polite"><span id="toastMsg"></span><button id="toastAction" hidden>Undo</button></div>
+
+<script>
+(() => {
+'use strict';
+
+/* ================= constants ================= */
+const DAY_SHORT = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const DAY_FULL = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+const DAY_LETTER = ['M','T','W','T','F','S','S'];
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MON_S = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const CATS = [
+  {k:'work',l:'Work'},{k:'study',l:'Study'},{k:'health',l:'Health'},
+  {k:'personal',l:'Personal'},{k:'social',l:'Social'},{k:'errands',l:'Errands'}];
+const INKS = [{k:'ink',l:'Graphite'},{k:'blue',l:'Blue'},{k:'red',l:'Red'},{k:'green',l:'Green'},{k:'amber',l:'Amber'},{k:'purple',l:'Purple'}];
+const SIZES = [{k:1,l:'Fine',px:2.2},{k:2,l:'Medium',px:3.4},{k:3,l:'Bold',px:5.4}];
+const DENSITY = {compact:48, comfortable:64, spacious:84};
+const SNAP = 15, DAY_MIN = 1440;
+
+/* ================= helpers ================= */
+const $ = id => document.getElementById(id);
+const clamp = (v,a,b) => Math.min(b, Math.max(a, v));
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
+const clone = o => JSON.parse(JSON.stringify(o));
+function mondayOf(d){ const x = new Date(d.getFullYear(), d.getMonth(), d.getDate()); x.setDate(x.getDate() - (x.getDay() + 6) % 7); return x; }
+function addDays(d, n){ const x = new Date(d); x.setDate(x.getDate() + n); return x; }
+function keyOf(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
+function isoWeek(d){
+  const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  t.setUTCDate(t.getUTCDate() + 4 - (t.getUTCDay() || 7));
+  const y0 = new Date(Date.UTC(t.getUTCFullYear(), 0, 1));
+  return Math.ceil(((t - y0) / 864e5 + 1) / 7);
+}
+function hhmm(m){ m = Math.round(m); return String(Math.floor(m/60)).padStart(2,'0') + ':' + String(m%60).padStart(2,'0'); }
+function dur(min){
+  min = Math.round(min); if (min <= 0) return '0h';
+  const h = Math.floor(min/60), m = min % 60;
+  if (!h) return m + 'm'; if (!m) return h + 'h'; return h + 'h ' + m + 'm';
+}
+const floorSnap = m => Math.floor(m / SNAP) * SNAP;
+const ceilSnap = m => Math.ceil(m / SNAP) * SNAP;
+const roundSnap = m => Math.round(m / SNAP) * SNAP;
+function isEditable(el){ return el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable); }
+
+const ICON = {
+  trash:'<svg class="i" viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 13h10l1-13"/><path d="M9 7V4h6v3"/></svg>',
+  check:'<svg class="i" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+  list:'<svg class="i" viewBox="0 0 24 24"><path d="M4 6.5l1.6 1.6L8.5 5"/><path d="M4 12.5l1.6 1.6L8.5 11"/><path d="M4 18.5l1.6 1.6L8.5 17"/><path d="M12 6.5h8M12 12.5h8M12 18.5h8"/></svg>',
+  layers:'<svg class="i" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 12.5l9 5 9-5"/><path d="M3 17l9 5 9-5"/></svg>',
+  bookmark:'<svg class="i" viewBox="0 0 24 24"><path d="M7 4h10a1 1 0 0 1 1 1v15l-6-4-6 4V5a1 1 0 0 1 1-1z"/></svg>',
+  grip:'<svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="6" r="1.2"/><circle cx="15" cy="6" r="1.2"/><circle cx="9" cy="12" r="1.2"/><circle cx="15" cy="12" r="1.2"/><circle cx="9" cy="18" r="1.2"/><circle cx="15" cy="18" r="1.2"/></svg>',
+  chev:'<svg class="i" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>',
+  chevUp:'<svg class="i" viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg>',
+  pen:'<svg class="i" viewBox="0 0 24 24"><path d="M5 19l1.1-4.3L15.4 5.4a1.9 1.9 0 0 1 2.7 0l.5.5a1.9 1.9 0 0 1 0 2.7L9.3 17.9z"/></svg>',
+  copy:'<svg class="i" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg>',
+  cloud:'<svg class="i" viewBox="0 0 24 24"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.1 4.75 4.75 0 0 0 7 18.5z"/></svg>',
+  help:'<svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6v.6"/><path d="M12 17.2v.1"/></svg>',
+  sparkle:'<svg class="i" viewBox="0 0 24 24"><path d="M12 4l1.8 4.6L18 10.5l-4.2 1.9L12 17l-1.8-4.6L6 10.5l4.2-1.9z"/></svg>',
+  erase:'<svg class="i" viewBox="0 0 24 24"><path d="M15.5 4l4.5 4.5-9.5 9.5H6l-2-2a1.8 1.8 0 0 1 0-2.5z"/><path d="M12 20h8"/></svg>',
+  clear:'<svg class="i" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M9 10l6 6M15 10l-6 6"/></svg>',
+  close:'<svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+};
+
+/* ================= storage =================
+   Two layers: localStorage on this device (instant, always works) and, when the
+   page runs inside Claude with a signed-in viewer, a private per-person store
+   (data/users/<id>/...) that syncs across devices. */
+const Store = (() => {
+  const clientId = uid();
+  const LS = 'pencilledin:';
+  let db = null, me = null, mode = 'local';
+  const q = {};
+  let statusCb = () => {};
+  const ls = {
+    get(k){ try { const v = localStorage.getItem(LS + k); return v ? JSON.parse(v) : null; } catch { return null; } },
+    set(k, v){ try { localStorage.setItem(LS + k, JSON.stringify(v)); } catch {} },
+  };
+  /* ---------- iOS app: files on this device, synced through a folder in iCloud Drive ----------
+     The Swift side only reads and writes files. All merging happens here:
+     each document is compared with the last version both devices agreed on (the "base"),
+     so an edit on one device and a different edit on the other are combined instead of overwritten. */
+  const bridge = (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.pencilled) || null;
+  const call = (cmd, extra) => bridge.postMessage(Object.assign({cmd}, extra || {}));
+  const SYNCED = /^(w\d{4}-\d{2}-\d{2}|todos|presets)$/;
+  const nat = {cache: {}, base: {}, seen: {}, watchers: {}, dirty: new Set(), writeTimer: 0,
+               cloud: {linked: false}, syncing: false, again: false, timer: 0, lastSync: 0, error: '', status: 'local'};
+  let isBusy = () => false;
+  const parseDoc = t => { try { const d = t ? JSON.parse(t) : null; return d && typeof d === 'object' ? d : null; } catch { return null; } };
+  const ver = d => d ? (d.t || 0) + '|' + (d.by || '') : '';
+  function stable(v){
+    if (Array.isArray(v)) return '[' + v.map(stable).join(',') + ']';
+    if (v && typeof v === 'object') return '{' + Object.keys(v).sort().filter(k => v[k] !== undefined).map(k => JSON.stringify(k) + ':' + stable(v[k])).join(',') + '}';
+    return JSON.stringify(v === undefined ? null : v);
+  }
+  const isIdList = a => Array.isArray(a) && a.every(x => x && typeof x === 'object' && typeof x.id === 'string');
+  function mergeList(base, l, r, preferL){
+    const bm = base ? new Map(base.map(x => [x.id, x])) : null;
+    const lm = new Map(l.map(x => [x.id, x])), rm = new Map(r.map(x => [x.id, x]));
+    const same = (a, b) => stable(a) === stable(b);
+    const pick = id => {
+      const a = lm.get(id), b = rm.get(id), o = bm ? bm.get(id) : undefined;
+      if (a && b){ if (same(a, b)) return a; if (o && same(a, o)) return b; if (o && same(b, o)) return a; return preferL ? a : b; }
+      const only = a || b;
+      if (!o) return only;                      // added on one device
+      return same(only, o) ? null : only;       // deleted on the other device, unless edited here since
+    };
+    const backbone = preferL ? l : r, other = preferL ? r : l;
+    const ids = backbone.map(x => x.id), have = new Set(ids);
+    let prev = null;
+    for (const x of other){
+      if (!have.has(x.id)){ ids.splice(prev ? ids.indexOf(prev) + 1 : 0, 0, x.id); have.add(x.id); }
+      prev = x.id;
+    }
+    return ids.map(pick).filter(Boolean);
+  }
+  function mergeDocs(B, L, R){
+    const newer = (L.t || 0) >= (R.t || 0) ? L : R;
+    const out = Object.assign({}, newer === L ? R : L, newer);
+    for (const k of Object.keys(out)){
+      if (isIdList(L[k]) && isIdList(R[k])) out[k] = mergeList(B && isIdList(B[k]) ? B[k] : null, L[k], R[k], newer === L);
+    }
+    out.t = Math.max(L.t || 0, R.t || 0, Date.now()); out.by = clientId;
+    return out;
+  }
+  function setStatus(v){ nat.status = v; statusCb(v); }
+  function notify(name, d){ (nat.watchers[name] || []).forEach(cb => { try { cb(clone(d), 'sync'); } catch (e) { console.error(e); } }); }
+  async function writeLocal(name){
+    nat.dirty.delete(name);
+    const d = nat.cache[name];
+    if (d) await call('local.write', {name, text: JSON.stringify(d)});
+  }
+  async function flushLocal(){ clearTimeout(nat.writeTimer); for (const n of [...nat.dirty]) await writeLocal(n); }
+  function scheduleSync(ms){
+    clearTimeout(nat.timer);
+    nat.timer = setTimeout(sync, ms == null ? 1500 : ms);
+  }
+  async function sync(){
+    if (nat.syncing){ nat.again = true; return; }
+    if (!nat.cloud.linked){ setStatus('nocloud'); return; }
+    nat.syncing = true; setStatus('syncing');
+    let failed = 0;
+    try {
+      await flushLocal();
+      const list = await call('cloud.list') || [];
+      const remote = {};
+      list.forEach(f => { if (f && SYNCED.test(f.name)) remote[f.name] = f; });
+      const names = new Set(Object.keys(nat.cache).filter(n => SYNCED.test(n)).concat(Object.keys(remote)));
+      for (const name of names){
+        try { await syncOne(name, remote[name]); }
+        catch (e){ failed++; nat.error = String((e && e.message) || e); }
+      }
+      if (!failed){ nat.lastSync = Date.now(); nat.error = ''; }
+    } catch (e){ failed++; nat.error = String((e && e.message) || e); }
+    nat.syncing = false;
+    setStatus(failed ? 'cloudError' : 'icloud');
+    if (nat.again){ nat.again = false; scheduleSync(400); }
+    else if (failed) scheduleSync(15000);
+  }
+  async function syncOne(name, rinfo){
+    if (isBusy(name)){ nat.again = true; return; }       // never merge under someone's Pencil
+    const L = nat.cache[name] || null, B = nat.base[name] || null;
+    let R = null, conflicts = [];
+    if (rinfo){
+      if (B && nat.seen[name] === rinfo.mtime) R = B;      // unchanged since we last synced it
+      else {
+        const res = await call('cloud.read', {name});
+        if (res && typeof res.text === 'string'){
+          R = parseDoc(res.text);
+          conflicts = (res.conflicts || []).map(parseDoc).filter(Boolean);
+        } else if (res && res.pending) throw new Error('Still downloading from iCloud');
+      }
+    }
+    for (const C of conflicts) R = R ? mergeDocs(B, R, C) : C;
+    let X;
+    if (!R) X = L;
+    else if (!L) X = R;
+    else if (ver(R) === ver(L)) X = L;
+    else if (B && ver(R) === ver(B)) X = L;               // only this device changed it
+    else if (B && ver(L) === ver(B)) X = R;               // only the other device changed it
+    else X = mergeDocs(B, L, R);                          // both changed it, or first sync
+    if (!X) return;
+    // Something may have changed while we waited for iCloud; try this one again next round.
+    if (ver(nat.cache[name] || null) !== ver(L) || isBusy(name)){ nat.again = true; return; }
+    if (ver(X) !== ver(L)){ nat.cache[name] = X; notify(name, X); await call('local.write', {name, text: JSON.stringify(X)}); }
+    if (ver(nat.base[name] || null) !== ver(X)){ nat.base[name] = X; await call('local.write', {name: '_base.' + name, text: JSON.stringify(X)}); }
+    if (!R || ver(X) !== ver(R) || conflicts.length){
+      const w = await call('cloud.write', {name, text: JSON.stringify(X), resolve: conflicts.length > 0});
+      nat.seen[name] = w && w.mtime;
+    } else nat.seen[name] = rinfo.mtime;
+  }
+  async function nativeBoot(){
+    const all = await call('local.readAll') || {};
+    for (const n of Object.keys(all)){
+      const d = parseDoc(all[n]); if (!d) continue;
+      if (n.startsWith('_base.')) nat.base[n.slice(6)] = d; else nat.cache[n] = d;
+    }
+    try { nat.cloud = await call('cloud.status') || {linked: false}; } catch { nat.cloud = {linked: false}; }
+    window.__pencilledNative = {
+      event(type){
+        if (type === 'active') scheduleSync(300);
+        if (type === 'inactive') { flushLocal(); scheduleSync(0); }
+      },
+    };
+    document.addEventListener('visibilitychange', () => { if (document.hidden){ flushLocal(); } else scheduleSync(300); });
+    setInterval(() => { if (!document.hidden) scheduleSync(0); }, 20000);
+    setStatus(nat.cloud.linked ? 'syncing' : 'nocloud');
+    scheduleSync(600);
+  }
+  function nativeSave(name, data, doSync){
+    nat.cache[name] = clone(data);
+    nat.dirty.add(name);
+    clearTimeout(nat.writeTimer);
+    nat.writeTimer = setTimeout(flushLocal, 150);
+    if (doSync && SYNCED.test(name) && nat.cloud.linked){ setStatus('syncing'); scheduleSync(1500); }
+  }
+  const cloudApi = {
+    info(){ return Object.assign({}, nat.cloud, {lastSync: nat.lastSync, error: nat.error, syncing: nat.syncing, status: nat.status}); },
+    async pick(){
+      const r = await call('cloud.pick');
+      if (!r) return null;                  // cancelled
+      nat.cloud = r; nat.seen = {}; scheduleSync(0);
+      return r;
+    },
+    async unlink(){ nat.cloud = await call('cloud.unlink') || {linked: false}; nat.base = {}; nat.seen = {}; setStatus('nocloud'); },
+    syncNow(){ scheduleSync(0); },
+    setBusyCheck(fn){ isBusy = fn; },
+    _merge: mergeDocs,
+  };
+
+  async function init(){
+    if (bridge){
+      try { await nativeBoot(); mode = 'native'; return mode; }
+      catch (e){ console.error('Native storage failed', e); }
+    }
+    try {
+      if (!window.claude || typeof window.claude.use !== 'function') return mode;
+      const [d, u] = await Promise.all([window.claude.use('db'), window.claude.use('user')]);
+      if (!d || !u) return mode;
+      const id = await u.id();
+      if (!id) return mode;
+      db = d; me = id; mode = 'cloud';
+    } catch { mode = 'local'; }
+    return mode;
+  }
+  const coll = () => db.collection('data/users/' + me);
+  async function loadPrefs(){
+    if (mode === 'native') return {ok: true, data: nat.cache.prefs ? clone(nat.cache.prefs) : null};
+    const local = ls.get('prefs');
+    if (mode !== 'cloud') return {ok:true, data: local};
+    try {
+      const snap = await coll().doc('prefs').get();
+      const cloud = snap.exists ? clone(snap.data()) : null;
+      return {ok:true, data: Object.assign({}, local || {}, cloud || {}, {seeded: !!((local && local.seeded) || (cloud && cloud.seeded))})};
+    } catch { return {ok:false, data: local}; }
+  }
+  let prefTimer = null, prefBusy = false, prefPending = null;
+  function savePrefs(p){
+    if (mode === 'native'){ nativeSave('prefs', p, false); return; }   // per-device settings, not synced
+    ls.set('prefs', p);
+    if (mode !== 'cloud') return;
+    prefPending = clone(p);
+    clearTimeout(prefTimer);
+    prefTimer = setTimeout(flushPrefs, 900);
+  }
+  async function flushPrefs(){
+    if (prefBusy || !prefPending) return;
+    prefBusy = true; const data = prefPending; prefPending = null;
+    try { await coll().doc('prefs').set(data); } catch {}
+    prefBusy = false; if (prefPending) flushPrefs();
+  }
+  /* One live document per name: "w2026-11-02" for a week, "todos", "presets".
+     Reads come from this device first, then the synced copy replaces them when newer. */
+  function watch(name, onData, withStatus){
+    if (mode === 'native'){
+      (nat.watchers[name] = nat.watchers[name] || []).push(onData);
+      setTimeout(() => { const d = nat.cache[name]; onData(d ? clone(d) : null, d ? 'data' : 'empty'); if (withStatus) statusCb(nat.status); }, 0);
+      return () => { nat.watchers[name] = (nat.watchers[name] || []).filter(f => f !== onData); };
+    }
+    const local = ls.get(name);
+    const st = v => { if (withStatus) statusCb(v); };
+    if (mode !== 'cloud'){
+      setTimeout(() => onData(local, local ? 'data' : 'empty'), 0);
+      st('local');
+      return () => {};
+    }
+    if (local) setTimeout(() => onData(local, 'data'), 0);
+    st('syncing');
+    let settled = false;
+    const timer = setTimeout(() => { if (!settled) st('slow'); }, 10000);
+    let unsub = () => {};
+    try {
+      unsub = coll().doc(name).onSnapshot(snap => {
+        if (!snap.metadata.fromCache && !settled){ settled = true; clearTimeout(timer); st('cloud'); }
+        if (snap.exists){
+          const d = clone(snap.data());
+          if (d.by === clientId) return;           // our own write coming back
+          ls.set(name, d);
+          onData(d, 'data');
+        } else if (!snap.metadata.fromCache){
+          onData(null, 'empty');
+        }
+      }, err => { settled = true; clearTimeout(timer); st(err && err.code === 'revoked' ? 'local' : 'slow'); onData(local, local ? 'data' : 'empty'); });
+    } catch { clearTimeout(timer); st('slow'); setTimeout(() => onData(local, local ? 'data' : 'empty'), 0); }
+    return () => { clearTimeout(timer); try { unsub(); } catch {} };
+  }
+  function save(name, data){
+    if (mode === 'native'){ nativeSave(name, data, true); return; }
+    ls.set(name, data);
+    if (mode !== 'cloud') { statusCb('local'); return; }
+    const size = JSON.stringify(data).length;
+    if (size > 240000){ statusCb('toolarge'); return; }
+    const e = q[name] || (q[name] = {});
+    e.data = data; e.dirty = true;
+    statusCb('syncing');
+    clearTimeout(e.timer);
+    e.timer = setTimeout(() => flush(name), 650);
+  }
+  async function flush(name){
+    const e = q[name];
+    if (!e || e.busy || !e.dirty) return;
+    e.busy = true; e.dirty = false;
+    const data = e.data;
+    try { await coll().doc(name).set(data); statusCb('cloud'); }
+    catch (err){
+      if (err && err.code === 'unavailable'){ e.dirty = true; setTimeout(() => flush(name), 1200 + Math.random()*1200); }
+      else statusCb('slow');
+    }
+    e.busy = false;
+    if (e.dirty) flush(name);
+  }
+  async function get(name){
+    if (mode === 'native') return nat.cache[name] ? clone(nat.cache[name]) : null;
+    if (mode === 'cloud'){
+      try { const s = await coll().doc(name).get(); if (s.exists) return clone(s.data()); } catch {}
+    }
+    return ls.get(name);
+  }
+  return { init, loadPrefs, savePrefs, watch, save, get, clientId, cloud: cloudApi,
+           get isNative(){ return mode === 'native'; },
+           watchWeek(key, cb){ return watch('w' + key, (d, k) => cb(key, d, k), true); },
+           saveWeek(key, d){ save('w' + key, d); },
+           getWeek(key){ return get('w' + key); },
+           onStatus(cb){ statusCb = cb; }, get mode(){ return mode; } };
+})();
+
+/* ================= state ================= */
+const state = {
+  weekStart: mondayOf(new Date()),
+  key: '',
+  week: emptyWeek(),
+  loaded: false,
+  mode: 'blocks',
+  cat: 'work',
+  ink: 'ink',
+  size: 2,
+  density: 'comfortable',
+  prefs: {seeded:false, recent:[]},
+  prefsAuthoritative: false,
+  undo: [], redo: [],
+  editing: null,
+  dragId: null,
+  ghost: null,
+  pendingRemote: null,
+  unwatch: () => {},
+  todos: {items: [], t: 0},
+  presets: {items: [], t: 0},
+  todoOpen: false, todoEditing: null, pendingTodos: null, showDone: false, freshTodo: null,
+  presetTab: 'day', presetSaveDay: 0, presetOpenId: null, presetTargets: [], presetReplace: false, presetDraft: '', freshPreset: null,
+};
+function emptyWeek(){ return {v:1, blocks:[], strokes:[], t:0}; }
+function normalize(d){
+  const w = emptyWeek();
+  if (d && typeof d === 'object'){
+    w.blocks = Array.isArray(d.blocks) ? d.blocks.filter(b => b && b.id) : [];
+    w.strokes = Array.isArray(d.strokes) ? d.strokes.filter(s => s && s.id && Array.isArray(s.p)) : [];
+    w.t = d.t || 0;
+  }
+  return w;
+}
+
+/* ================= DOM ================= */
+const els = {
+  weekTitle: $('weekTitle'), weekEyebrow: $('weekEyebrow'),
+  dayheads: $('dayheads'), gutter: $('gutter'), days: $('days'), ink: $('ink'),
+  scroller: $('scroller'), palette: $('palette'), toolHint: $('toolHint'),
+  totals: $('totals'), status: $('status'), banner: $('banner'),
+  editor: $('editor'), scrim: $('scrim'), menu: $('menu'), help: $('help'),
+  emptyHint: $('emptyHint'), eraserDot: $('eraserDot'),
+  undoBtn: $('undoBtn'), redoBtn: $('redoBtn'), todayBtn: $('todayBtn'),
+  sync: $('sync'), todo: $('todo'), tdList: $('tdList'), tdDone: $('tdDone'), presets: $('presets'), todoGhost: $('todoGhost'),
+};
+const cols = [];
+const dhCells = [];
+(function buildSkeleton(){
+  for (let i = 0; i < 7; i++){
+    const c = document.createElement('div');
+    c.className = 'col' + (i >= 5 ? ' we' : '');
+    c.dataset.day = i;
+    els.days.insertBefore(c, els.ink);
+    cols.push(c);
+    const h = document.createElement('div');
+    h.className = 'dh' + (i >= 5 ? ' we' : '');
+    h.innerHTML = '<span class="dh-num"></span><span class="dh-text"><span class="dh-name">' + DAY_SHORT[i] + '</span><span class="dh-hrs"></span></span><svg class="i dh-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+    h.tabIndex = 0; h.setAttribute('role', 'button'); h.setAttribute('aria-label', DAY_FULL[i] + ' options');
+    els.dayheads.appendChild(h);
+    dhCells.push(h);
+  }
+  let g = '';
+  for (let h = 1; h < 24; h++) g += '<span data-h="' + h + '" style="top:calc(var(--hour) * ' + h + ')">' + String(h).padStart(2,'0') + ':00</span>';
+  els.gutter.innerHTML = g;
+  const now = document.createElement('div'); now.className = 'now'; now.id = 'nowLine'; now.hidden = true;
+  els.days.appendChild(now);
+})();
+
+const hourPx = () => DENSITY[state.density] || 64;
+const mpx = () => hourPx() / 60;
+
+/* ================= rendering ================= */
+function weekDates(){ return [0,1,2,3,4,5,6].map(i => addDays(state.weekStart, i)); }
+function todayIndex(){
+  const t = new Date(); const ds = weekDates();
+  return ds.findIndex(d => d.getFullYear() === t.getFullYear() && d.getMonth() === t.getMonth() && d.getDate() === t.getDate());
+}
+
+function renderHeader(){
+  const ds = weekDates(), a = ds[0], b = ds[6];
+  let title;
+  if (a.getMonth() === b.getMonth()) title = MONTHS[a.getMonth()] + ' ' + a.getDate() + ' – ' + b.getDate() + ', ' + b.getFullYear();
+  else if (a.getFullYear() === b.getFullYear()) title = MON_S[a.getMonth()] + ' ' + a.getDate() + ' – ' + MON_S[b.getMonth()] + ' ' + b.getDate() + ', ' + b.getFullYear();
+  else title = MON_S[a.getMonth()] + ' ' + a.getDate() + ', ' + a.getFullYear() + ' – ' + MON_S[b.getMonth()] + ' ' + b.getDate() + ', ' + b.getFullYear();
+  els.weekTitle.textContent = title;
+  const ti = todayIndex();
+  const thisWeek = keyOf(mondayOf(new Date()));
+  const diff = Math.round((state.weekStart - mondayOf(new Date())) / (7 * 864e5));
+  let rel = diff === 0 ? 'This week' : diff === 1 ? 'Next week' : diff === -1 ? 'Last week' : (diff > 0 ? 'In ' + diff + ' weeks' : Math.abs(diff) + ' weeks ago');
+  els.weekEyebrow.textContent = 'Week ' + isoWeek(a) + ' · ' + rel;
+  els.todayBtn.disabled = state.key === thisWeek;
+  document.title = 'Pencilled In';
+  cols.forEach((c, i) => c.classList.toggle('today', i === ti));
+}
+
+function renderDayHeads(){
+  const ds = weekDates(), ti = todayIndex();
+  const perDay = [0,0,0,0,0,0,0];
+  const colW = els.days.clientWidth / 7;
+  const roomy = colW >= 175;
+  els.dayheads.classList.toggle('tight', colW < 165);
+  state.week.blocks.forEach(b => { perDay[b.d] += (b.e - b.s); });
+  dhCells.forEach((h, i) => {
+    h.classList.toggle('today', i === ti);
+    h.querySelector('.dh-num').textContent = ds[i].getDate();
+    h.querySelector('.dh-hrs').textContent = perDay[i] ? dur(perDay[i]) + (roomy ? ' planned' : '') : 'Free';
+  });
+}
+
+function layoutDay(list){
+  const arr = list.slice().sort((a, b) => a.s - b.s || (b.e - b.s) - (a.e - a.s));
+  const out = new Map();
+  let cluster = [], clusterEnd = -1, lanesEnd = [];
+  const flush = () => {
+    const n = cluster.reduce((m, c) => Math.max(m, c.lane), 0) + 1;
+    cluster.forEach(c => out.set(c.b.id, {lane: c.lane, n}));
+    cluster = []; lanesEnd = []; clusterEnd = -1;
+  };
+  for (const b of arr){
+    if (cluster.length && b.s >= clusterEnd) flush();
+    let lane = lanesEnd.findIndex(e => e <= b.s);
+    if (lane < 0){ lane = lanesEnd.length; lanesEnd.push(b.e); } else lanesEnd[lane] = b.e;
+    cluster.push({b, lane});
+    clusterEnd = Math.max(clusterEnd, b.e);
+  }
+  if (cluster.length) flush();
+  return out;
+}
+
+function blockHTML(b, lay, extraCls){
+  const px = mpx();
+  const top = b.s * px, h = Math.max(14, (b.e - b.s) * px - 2);
+  const w = 100 / lay.n, left = lay.lane * w;
+  const colW = els.days.clientWidth / 7 || 120;
+  const pxW = colW * w / 100;
+  let cls = 'block cat-' + (b.c || 'work');
+  if (h < 36) cls += ' short';
+  if (h < 22) cls += ' tiny';
+  if (pxW < 52) cls += ' narrow';
+  if (pxW < 84) cls += ' slim';
+  if (pxW < 190) cls += ' compact';
+  if (b.done) cls += ' done';
+  if (extraCls) cls += ' ' + extraCls;
+  const title = b.t ? esc(b.t) : 'Untitled';
+  const narrow = pxW < 112;
+  const lines = Math.max(1, Math.floor((h - 10 - (h >= 36 ? 15 : 0)) / 15.6));
+  const time = narrow ? hhmm(b.s) : hhmm(b.s) + ' – ' + hhmm(b.e);
+  return '<div class="' + cls + '" data-id="' + esc(b.id) + '" style="top:' + top + 'px;height:' + h + 'px;left:calc(' + left + '% + 3px);width:calc(' + w + '% - 6px)">' +
+    '<div class="handle top" data-h="top"></div>' +
+    '<div class="b-title' + (b.t ? '' : ' untitled') + '" style="-webkit-line-clamp:' + lines + '">' + title + '</div>' +
+    '<div class="b-time">' + time + '</div>' +
+    '<div class="handle bottom" data-h="bottom"></div></div>';
+}
+
+function renderBlocks(){
+  const byDay = [[],[],[],[],[],[],[]];
+  state.week.blocks.forEach(b => { if (b.d >= 0 && b.d < 7) byDay[b.d].push(b); });
+  cols.forEach((c, i) => {
+    const lay = layoutDay(byDay[i]);
+    let html = '';
+    for (const b of byDay[i]){
+      let extra = '';
+      if (state.dragId === b.id) extra = 'dragging';
+      else if (state.editing && state.editing.id === b.id) extra = 'selected';
+      html += blockHTML(b, lay.get(b.id), extra);
+    }
+    if (state.ghost && state.ghost.d === i){
+      const g = Object.assign({id:'__ghost', t:'', c: state.cat}, state.ghost);
+      html += blockHTML(g, {lane:0, n:1}, 'ghost').replace('Untitled', 'New block');
+    }
+    c.innerHTML = html;
+  });
+}
+
+function renderFooter(){
+  const sums = {}; let total = 0;
+  state.week.blocks.forEach(b => { sums[b.c] = (sums[b.c] || 0) + (b.e - b.s); total += b.e - b.s; });
+  let html = '<span class="tot sum"><b>' + dur(total) + '</b> planned</span>';
+  CATS.forEach(c => { if (sums[c.k]) html += '<span class="tot cat-' + c.k + '"><span class="dot"></span>' + c.l + ' <b>' + dur(sums[c.k]) + '</b></span>'; });
+  els.totals.innerHTML = html;
+}
+
+function renderNow(){
+  const line = $('nowLine'), ti = todayIndex();
+  const old = els.gutter.querySelector('.now-label'); if (old) old.remove();
+  els.gutter.querySelectorAll('span[data-h]').forEach(s => s.style.visibility = '');
+  if (ti < 0){ line.hidden = true; return; }
+  const n = new Date(), m = n.getHours() * 60 + n.getMinutes();
+  line.hidden = false;
+  line.style.top = (m * mpx() - 1) + 'px';
+  line.style.left = 'calc(' + (ti * 100 / 7) + '% - 1px)';
+  line.style.width = 'calc(' + (100 / 7) + '% + 1px)';
+  const lab = document.createElement('span'); lab.className = 'now-label';
+  lab.style.top = (m * mpx()) + 'px'; lab.textContent = hhmm(m);
+  els.gutter.appendChild(lab);
+  els.gutter.querySelectorAll('span[data-h]').forEach(s => { if (Math.abs(+s.dataset.h * 60 - m) < 16) s.style.visibility = 'hidden'; });
+}
+
+function renderBanner(){ els.banner.hidden = !state.week.blocks.some(b => b.x); }
+function renderEmpty(){
+  const ep = $('emptyPreset'); if (ep) ep.hidden = !state.presets.items.some(p => p.kind === 'week');
+  els.emptyHint.hidden = !state.loaded || state.week.blocks.length > 0 || state.week.strokes.length > 0 || !!state.ghost;
+}
+function renderUndo(){ els.undoBtn.disabled = !state.undo.length; els.redoBtn.disabled = !state.redo.length; }
+
+/* ---------- ink: strokes are anchored to (day, minute) and keep their shape ---------- */
+const strokeCache = new Map();
+function strokeAbs(s){
+  const colW = els.days.clientWidth / 7, k = mpx();
+  const x0 = s.ax * colW, y0 = s.ay * k;
+  const pts = [];
+  for (let i = 0; i + 2 < s.p.length; i += 3) pts.push({x: x0 + s.p[i] / 10 * k, y: y0 + s.p[i+1] / 10 * k, p: s.p[i+2] / 100});
+  return pts;
+}
+function outline(pts, size){
+  if (!pts.length) return '';
+  const k = mpx() / (64/60);
+  size = size * k;
+  if (pts.length < 3){
+    const p = pts[0], r = Math.max(0.8, size * (0.4 + 0.6 * p.p) * 0.5);
+    return 'M' + (p.x - r).toFixed(1) + ',' + p.y.toFixed(1) + 'a' + r.toFixed(2) + ',' + r.toFixed(2) + ' 0 1,0 ' + (2*r).toFixed(2) + ',0a' + r.toFixed(2) + ',' + r.toFixed(2) + ' 0 1,0 ' + (-2*r).toFixed(2) + ',0Z';
+  }
+  const s = [pts[0]];
+  for (let i = 1; i < pts.length; i++){ const a = s[s.length-1], b = pts[i]; s.push({x: a.x + (b.x - a.x) * .55, y: a.y + (b.y - a.y) * .55, p: a.p + (b.p - a.p) * .55}); }
+  s.push(pts[pts.length-1]);
+  const n = s.length, L = [], R = [];
+  for (let i = 0; i < n; i++){
+    const a = s[Math.max(0, i-1)], b = s[Math.min(n-1, i+1)];
+    let dx = b.x - a.x, dy = b.y - a.y; const len = Math.hypot(dx, dy) || 1; dx /= len; dy /= len;
+    const taper = Math.min(1, (i + 1.5) / 4, (n - i + .5) / 4);
+    const r = Math.max(0.45, size * (0.4 + 0.6 * s[i].p) * 0.5 * taper);
+    L.push([s[i].x - dy * r, s[i].y + dx * r]); R.push([s[i].x + dy * r, s[i].y - dx * r]);
+  }
+  const poly = L.concat(R.reverse());
+  const m = poly.length, f = v => v.toFixed(1);
+  let d = 'M' + f((poly[m-1][0] + poly[0][0]) / 2) + ',' + f((poly[m-1][1] + poly[0][1]) / 2);
+  for (let i = 0; i < m; i++){ const p = poly[i], q2 = poly[(i+1) % m]; d += 'Q' + f(p[0]) + ',' + f(p[1]) + ' ' + f((p[0] + q2[0]) / 2) + ',' + f((p[1] + q2[1]) / 2); }
+  return d + 'Z';
+}
+function sizePx(k){ return (SIZES.find(s => s.k === k) || SIZES[1]).px; }
+function renderInk(){
+  strokeCache.clear();
+  let html = '';
+  for (const s of state.week.strokes){
+    const pts = strokeAbs(s);
+    strokeCache.set(s.id, pts);
+    html += '<path d="' + outline(pts, sizePx(s.w)) + '" style="fill:var(--ink-' + (s.c || 'ink') + ')"/>';
+  }
+  html += '<path id="liveInk"/>';
+  els.ink.innerHTML = html;
+  els.ink.setAttribute('width', els.days.clientWidth);
+  els.ink.setAttribute('height', els.days.clientHeight);
+}
+
+function renderPalette(){
+  let html = '';
+  if (state.mode === 'blocks'){
+    html = '<span class="label">New blocks</span>' + CATS.map(c =>
+      '<button class="chip cat-' + c.k + '" data-cat="' + c.k + '" aria-pressed="' + (state.cat === c.k) + '" title="' + c.l + '"><span class="dot"></span><span class="lbl">' + c.l + '</span></button>').join('');
+    els.toolHint.textContent = 'Pencil draws · fingers scroll';
+  } else if (state.mode === 'ink'){
+    html = INKS.map(c => '<button class="swatch" data-ink="' + c.k + '" aria-pressed="' + (state.ink === c.k) + '" aria-label="' + c.l + ' ink" title="' + c.l + '"><span style="background:var(--ink-' + c.k + ')"></span></button>').join('') +
+      '<div class="sizes" role="group" aria-label="Pen size">' + SIZES.map(s => '<button data-size="' + s.k + '" aria-pressed="' + (state.size === s.k) + '" aria-label="' + s.l + '" title="' + s.l + '"><span style="height:' + (s.k * 2 + 1) + 'px"></span></button>').join('') + '</div>';
+    els.toolHint.textContent = 'Write anywhere on the week';
+  } else {
+    html = '<button class="btn" data-act="clear-ink">' + ICON.clear + '<span>Clear all ink</span></button>';
+    els.toolHint.textContent = 'Drag across ink to erase it';
+  }
+  els.palette.innerHTML = html;
+  ['blocks','ink','erase'].forEach(m => $('mode-' + m).setAttribute('aria-pressed', state.mode === m));
+  els.days.className = 'days mode-' + state.mode;
+}
+
+let rafPending = false;
+function scheduleRender(){
+  if (rafPending) return; rafPending = true;
+  requestAnimationFrame(() => { rafPending = false; renderBlocks(); renderDayHeads(); renderFooter(); renderEmpty(); });
+}
+function renderAll(){
+  renderTodos();
+  renderHeader(); renderDayHeads(); renderBlocks(); renderInk(); renderFooter();
+  renderNow(); renderBanner(); renderEmpty(); renderUndo(); renderPalette();
+}
+
+/* ================= mutations, undo, saving ================= */
+const snapshot = () => JSON.stringify({blocks: state.week.blocks, strokes: state.week.strokes});
+function pushUndo(snap){
+  state.undo.push(snap || snapshot());
+  if (state.undo.length > 80) state.undo.shift();
+  state.redo = [];
+  renderUndo();
+}
+function restore(json){ const o = JSON.parse(json); state.week.blocks = o.blocks; state.week.strokes = o.strokes; }
+function commit(){
+  state.week.t = Date.now();
+  state.week.by = Store.clientId;
+  Store.saveWeek(state.key, state.week);
+}
+function undo(){
+  if (!state.undo.length) return;
+  closeEditor(true);
+  state.redo.push(snapshot()); restore(state.undo.pop());
+  commit(); renderAll();
+}
+function redo(){
+  if (!state.redo.length) return;
+  closeEditor(true);
+  state.undo.push(snapshot()); restore(state.redo.pop());
+  commit(); renderAll();
+}
+const findBlock = id => state.week.blocks.find(b => b.id === id);
+
+/* ================= week navigation & loading ================= */
+function openWeek(monday){
+  closeEditor(true);
+  state.unwatch();
+  state.weekStart = monday;
+  state.key = keyOf(monday);
+  state.week = emptyWeek();
+  state.loaded = false;
+  state.undo = []; state.redo = [];
+  state.pendingRemote = null;
+  renderAll();
+  state.unwatch = Store.watchWeek(state.key, onWeekData);
+}
+function onWeekData(key, data, kind){
+  if (key !== state.key) return;
+  if (kind === 'empty'){
+    const first = !state.loaded;
+    state.loaded = true;
+    if (state.week.t){ Store.saveWeek(key, state.week); }
+    else if (first) maybeSeed();
+    renderAll();
+    return;
+  }
+  if (drag || state.editing || tdrag){ state.pendingRemote = data; return; }
+  const incoming = normalize(data);
+  if (kind === 'sync' || !state.week.t || incoming.t >= state.week.t){ state.week = incoming; }
+  else { Store.saveWeek(key, state.week); }
+  state.loaded = true;
+  renderAll();
+}
+function applyPendingRemote(){
+  if (!state.pendingRemote) return;
+  const d = state.pendingRemote; state.pendingRemote = null;
+  onWeekData(state.key, d, 'data');
+}
+function goWeek(delta){ openWeek(addDays(state.weekStart, 7 * delta)); }
+
+/* ================= sample week (first visit only, clearly marked) ================= */
+function maybeSeed(){
+  if (Store.isNative) return;   // the iOS app starts empty: no sample week mixed into real plans
+  if (state.prefs.seeded || !state.prefsAuthoritative) return;
+  if (state.key !== keyOf(mondayOf(new Date()))) return;
+  state.prefs.seeded = true; Store.savePrefs(state.prefs);
+  const S = (d, s, e, t, c, extra) => Object.assign({id: uid(), d, s: toM(s), e: toM(e), t, c, x: 1}, extra || {});
+  function toM(str){ const [h, m] = str.split(':').map(Number); return h * 60 + m; }
+  state.week.blocks = [
+    S(0,'07:00','07:45','Morning run','health',{done:true}), S(0,'09:00','12:00','Deep work: project plan','work'),
+    S(0,'12:30','13:15','Lunch with Sam','social'), S(0,'14:00','15:00','Team sync','work'), S(0,'19:00','20:30','Spanish course','study'),
+    S(1,'08:30','09:00','Inbox & planning','errands'), S(1,'09:00','12:30','Client workshop','work'),
+    S(1,'13:30','17:00','Focus block','work'), S(1,'15:00','15:30','Call the bank','errands'), S(1,'18:00','19:00','Gym','health'),
+    S(2,'07:00','07:45','Morning run','health'), S(2,'09:00','11:00','Design review','work'), S(2,'11:00','12:00','1:1 with Noor','work'),
+    S(2,'15:00','16:00','Dentist','personal'), S(2,'20:00','22:00','Dinner with friends','social'),
+    S(3,'09:00','12:00','Deep work','work'), S(3,'13:00','14:00','Groceries','errands'), S(3,'14:00','17:30','Project sprint','work'),
+    S(3,'18:00','19:00','Gym','health'), S(3,'19:00','20:30','Spanish course','study'),
+    S(4,'07:00','07:45','Morning run','health'), S(4,'09:00','12:00','Write the report','work'), S(4,'16:00','17:00','Weekly review','personal'),
+    S(4,'18:00','20:00','Drinks with the team','social'),
+    S(5,'10:00','11:30','Football','health'), S(5,'13:00','15:00','Clean & laundry','errands'),
+    S(6,'11:00','13:00','Brunch with family','social'), S(6,'17:00','18:00','Plan next week','personal'),
+  ];
+  commit();
+}
+
+/* ================= pointer interaction =================
+   Pencil (pointerType "pen") and mouse draw; fingers ("touch") scroll.
+   Fingers can still edit: tap a block, or press-and-hold to pick up / add. */
+let drag = null;
+let autoScrollV = 0, autoScrollRaf = 0;
+
+function pos(clientX, clientY){
+  const r = els.days.getBoundingClientRect();
+  const x = clientX - r.left, y = clientY - r.top;
+  const colW = r.width / 7;
+  return {x, y, day: clamp(Math.floor(x / colW), 0, 6), min: clamp(y / mpx(), 0, DAY_MIN)};
+}
+function capture(e){ try { els.days.setPointerCapture(e.pointerId); } catch {} }
+
+els.days.addEventListener('pointerdown', e => {
+  if (e.button > 0 || drag) return;
+  if (els.editor.hidden === false) return;
+  const isTouch = e.pointerType === 'touch';
+  const p = pos(e.clientX, e.clientY);
+  const base = {pointerId: e.pointerId, kind: e.pointerType, cx0: e.clientX, cy0: e.clientY, p0: p, lastX: e.clientX, lastY: e.clientY};
+
+  if (state.mode === 'ink' || state.mode === 'erase'){
+    if (isTouch) return;            // fingers scroll in ink mode, so a resting palm never draws
+    e.preventDefault(); capture(e);
+    if (state.mode === 'ink'){
+      drag = Object.assign(base, {type:'ink', pts: [{x: p.x, y: p.y, p: pressure(e)}]});
+      drawLive();
+    } else {
+      drag = Object.assign(base, {type:'erase', snap: snapshot(), removed: 0});
+      eraseAt(p.x, p.y); showEraser(p.x, p.y);
+    }
+    return;
+  }
+
+  const bEl = e.target.closest('.block');
+  if (bEl && bEl.dataset.id !== '__ghost'){
+    const b = findBlock(bEl.dataset.id);
+    if (!b) return;
+    const h = e.target.closest('.handle');
+    drag = Object.assign(base, {type:'pending-block', id: b.id, handle: h ? h.dataset.h : null, orig: {d: b.d, s: b.s, e: b.e}, offset: p.min - b.s});
+    if (isTouch){ drag.timer = setTimeout(liftBlock, 420); }
+    else { e.preventDefault(); capture(e); }
+  } else {
+    drag = Object.assign(base, {type:'pending-create'});
+    if (isTouch){ drag.timer = setTimeout(touchCreate, 480); }
+    else { e.preventDefault(); capture(e); }
+  }
+});
+
+function pressure(e){
+  if (e.pointerType === 'pen'){ const p = e.pressure; return clamp(p > 0 ? p : 0.5, 0.08, 1); }
+  return 0.55;
+}
+
+els.days.addEventListener('pointermove', e => {
+  if (state.mode === 'erase' && e.pointerType !== 'touch'){ const p = pos(e.clientX, e.clientY); showEraser(p.x, p.y); }
+  if (!drag || e.pointerId !== drag.pointerId) return;
+  drag.lastX = e.clientX; drag.lastY = e.clientY;
+  const dist = Math.hypot(e.clientX - drag.cx0, e.clientY - drag.cy0);
+
+  if (drag.type === 'ink'){
+    const evs = (e.getCoalescedEvents && e.getCoalescedEvents().length) ? e.getCoalescedEvents() : [e];
+    for (const ev of evs){
+      const p = pos(ev.clientX, ev.clientY), last = drag.pts[drag.pts.length - 1];
+      if (Math.hypot(p.x - last.x, p.y - last.y) >= 1.2) drag.pts.push({x: p.x, y: p.y, p: pressure(ev)});
+    }
+    drawLive(); return;
+  }
+  if (drag.type === 'erase'){ const p = pos(e.clientX, e.clientY); eraseAt(p.x, p.y); return; }
+
+  if (drag.type === 'pending-block' || drag.type === 'pending-create'){
+    if (drag.kind === 'touch'){
+      if (dist > 10){ clearTimeout(drag.timer); drag = null; }   // the finger is scrolling
+      return;
+    }
+    if (dist < 5) return;
+    if (drag.type === 'pending-block') beginBlockDrag();
+    else { drag.type = 'create'; drag.snap = snapshot(); }
+  }
+  e.preventDefault();
+  updateDrag();
+  updateAutoScroll();
+});
+
+function beginBlockDrag(){
+  drag.type = drag.handle === 'top' ? 'resize-s' : drag.handle === 'bottom' ? 'resize-e' : 'move';
+  drag.snap = snapshot();
+  state.dragId = drag.id;
+  scheduleRender();
+}
+function updateDrag(){
+  if (!drag) return;
+  const p = pos(drag.lastX, drag.lastY);
+  if (drag.type === 'create'){
+    const a = drag.p0.min, c = p.min;
+    let s = floorSnap(Math.min(a, c)), e = ceilSnap(Math.max(a, c));
+    if (e - s < SNAP) e = s + SNAP;
+    e = Math.min(e, DAY_MIN); s = Math.min(s, e - SNAP);
+    state.ghost = {d: drag.p0.day, s, e};
+  } else {
+    const b = findBlock(drag.id); if (!b) return;
+    if (drag.type === 'move'){
+      const len = drag.orig.e - drag.orig.s;
+      const s = clamp(roundSnap(p.min - drag.offset), 0, DAY_MIN - len);
+      b.s = s; b.e = s + len; b.d = p.day;
+    } else if (drag.type === 'resize-e'){
+      b.e = clamp(roundSnap(p.min), b.s + SNAP, DAY_MIN);
+    } else if (drag.type === 'resize-s'){
+      b.s = clamp(roundSnap(p.min), 0, b.e - SNAP);
+    }
+  }
+  scheduleRender();
+}
+
+function endDrag(e, cancelled){
+  if (!drag || (e && e.pointerId !== drag.pointerId)) return;
+  const d = drag; drag = null;
+  clearTimeout(d.timer); stopAutoScroll();
+  switch (d.type){
+    case 'pending-block':
+      if (!cancelled) openEditor(d.id, {via: d.kind});
+      break;
+    case 'pending-create':
+      if (cancelled) break;
+      if (d.kind === 'touch'){ fingerHint(); break; }
+      createBlock(d.p0.day, floorSnap(d.p0.min), floorSnap(d.p0.min) + 60, d.kind);
+      break;
+    case 'create': {
+      const g = state.ghost; state.ghost = null;
+      if (g && !cancelled) createBlock(g.d, g.s, g.e, d.kind, d.snap);
+      else scheduleRender();
+      break;
+    }
+    case 'move': case 'resize-s': case 'resize-e': {
+      state.dragId = null;
+      const b = findBlock(d.id);
+      if (cancelled && b){ Object.assign(b, d.orig); }
+      else if (b && (b.d !== d.orig.d || b.s !== d.orig.s || b.e !== d.orig.e)){
+        if (b.x) delete b.x;
+        pushUndo(d.snap); commit();
+      }
+      scheduleRender();
+      break;
+    }
+    case 'ink':
+      finishStroke(d);
+      break;
+    case 'erase':
+      if (d.removed){ pushUndo(d.snap); commit(); }
+      break;
+  }
+  applyPendingRemote();
+}
+els.days.addEventListener('pointerup', e => endDrag(e, false));
+els.days.addEventListener('pointercancel', e => endDrag(e, true));
+els.days.addEventListener('pointerleave', e => { if (e.pointerType !== 'touch' && !drag) els.eraserDot.style.display = 'none'; });
+els.days.addEventListener('contextmenu', e => e.preventDefault());
+
+// Stop the Pencil from scrolling the page, and stop a finger from scrolling once it has picked something up.
+els.scroller.addEventListener('touchstart', e => {
+  const t = e.touches[0];
+  if (t && t.touchType === 'stylus' && e.target.closest && e.target.closest('#days')) e.preventDefault();
+}, {passive: false});
+els.scroller.addEventListener('touchmove', e => {
+  const t = e.touches[0];
+  if (drag && ['move','resize-s','resize-e','create','ink','erase'].includes(drag.type)) e.preventDefault();
+  else if (t && t.touchType === 'stylus' && e.target.closest && e.target.closest('#days')) e.preventDefault();
+}, {passive: false});
+
+function liftBlock(){
+  if (!drag || drag.type !== 'pending-block') return;
+  capture({pointerId: drag.pointerId});
+  beginBlockDrag();
+  if (navigator.vibrate) try { navigator.vibrate(8); } catch {}
+}
+function touchCreate(){
+  if (!drag || drag.type !== 'pending-create') return;
+  const p = drag.p0; drag = null;
+  createBlock(p.day, floorSnap(p.min), floorSnap(p.min) + 60, 'touch');
+}
+let hintShown = false;
+function fingerHint(){
+  if (hintShown) return; hintShown = true;
+  toast('Draw with Apple Pencil, or press and hold with a finger to add a block');
+}
+
+function createBlock(d, s, e, via, snap){
+  s = clamp(s, 0, DAY_MIN - SNAP); e = clamp(e, s + SNAP, DAY_MIN);
+  pushUndo(snap || snapshot());
+  const b = {id: uid(), d, s, e, t: '', c: state.cat};
+  state.week.blocks.push(b);
+  commit();
+  renderBlocks(); renderDayHeads(); renderFooter(); renderEmpty();
+  openEditor(b.id, {isNew: true, via});
+}
+
+/* auto-scroll while dragging near the top/bottom edge */
+let autoCb = null;
+function autoScroll(y, cb){
+  const r = els.scroller.getBoundingClientRect();
+  const top = r.top + els.dayheads.offsetHeight + 28, bottom = r.bottom - 28;
+  autoScrollV = y < top ? -Math.min(18, (top - y) / 2 + 2) : y > bottom ? Math.min(18, (y - bottom) / 2 + 2) : 0;
+  autoCb = cb;
+  if (autoScrollV && !autoScrollRaf) autoScrollRaf = requestAnimationFrame(autoStep);
+}
+function updateAutoScroll(){ if (drag) autoScroll(drag.lastY, updateDrag); }
+function autoStep(){
+  autoScrollRaf = 0;
+  if (!autoScrollV || !autoCb) return;
+  els.scroller.scrollTop += autoScrollV;
+  autoCb();
+  if (autoScrollV) autoScrollRaf = requestAnimationFrame(autoStep);
+}
+function stopAutoScroll(){ autoScrollV = 0; if (autoScrollRaf) cancelAnimationFrame(autoScrollRaf); autoScrollRaf = 0; }
+
+/* ink */
+function drawLive(){
+  const live = $('liveInk'); if (!live || !drag) return;
+  live.setAttribute('d', outline(drag.pts, sizePx(state.size)));
+  live.setAttribute('style', 'fill:var(--ink-' + state.ink + ')');
+}
+function finishStroke(d){
+  const colW = els.days.clientWidth / 7, k = mpx();
+  const p0 = d.pts[0];
+  const flat = [];
+  for (const p of d.pts){ flat.push(Math.round((p.x - p0.x) / k * 10), Math.round((p.y - p0.y) / k * 10), Math.round(p.p * 100)); }
+  const s = {id: uid(), c: state.ink, w: state.size, ax: +(p0.x / colW).toFixed(4), ay: +(p0.y / k).toFixed(2), p: flat};
+  pushUndo(); state.week.strokes.push(s); commit();
+  renderInk(); renderEmpty();
+}
+function eraseAt(x, y){
+  const R = 11 * Math.max(1, mpx() / (64/60));
+  const keep = [];
+  let removed = 0;
+  for (const s of state.week.strokes){
+    const pts = strokeCache.get(s.id) || strokeAbs(s);
+    let hit = false;
+    for (let i = 0; i < pts.length; i++){
+      if (Math.abs(pts[i].x - x) < R && Math.abs(pts[i].y - y) < R && Math.hypot(pts[i].x - x, pts[i].y - y) < R){ hit = true; break; }
+      if (i && segDist(x, y, pts[i-1], pts[i]) < R){ hit = true; break; }
+    }
+    if (hit) removed++; else keep.push(s);
+  }
+  if (removed){ state.week.strokes = keep; if (drag) drag.removed += removed; renderInk(); }
+}
+function segDist(x, y, a, b){
+  const dx = b.x - a.x, dy = b.y - a.y, l = dx*dx + dy*dy;
+  let t = l ? ((x - a.x) * dx + (y - a.y) * dy) / l : 0; t = clamp(t, 0, 1);
+  return Math.hypot(x - (a.x + t * dx), y - (a.y + t * dy));
+}
+function showEraser(x, y){
+  const dot = els.eraserDot; dot.style.display = 'block'; dot.style.left = x + 'px'; dot.style.top = y + 'px';
+}
+
+/* ================= editor ================= */
+function openEditor(id, opts){
+  opts = opts || {};
+  const b = findBlock(id); if (!b) return;
+  state.editing = {id, isNew: !!opts.isNew, snap: opts.isNew ? null : snapshot(), via: opts.via || 'mouse'};
+  renderBlocks();
+  buildEditor();
+  els.scrim.hidden = false; els.scrim.classList.remove('dim');
+  els.editor.hidden = false;
+  positionEditor();
+  const title = $('edTitle');
+  // With the Pencil we leave the field unfocused: writing into it with Scribble works without the keyboard popping up.
+  if (opts.via !== 'pen' && opts.via !== 'touch') setTimeout(() => { title.focus({preventScroll: true}); if (!opts.isNew) title.select(); }, 30);
+}
+
+function buildEditor(){
+  const ed = state.editing; const b = findBlock(ed.id); if (!b) return;
+  const ds = weekDates();
+  const sugg = suggestions(b.t);
+  els.editor.className = 'pop editor cat-' + b.c + (innerWidth < 600 ? ' sheet' : '');
+  els.editor.innerHTML =
+    '<div class="ed-head"><div class="ed-titlewrap">' +
+      '<input class="ed-title" id="edTitle" type="text" autocomplete="off" enterkeyhint="done" placeholder="What are you planning?" value="' + esc(b.t || '') + '" aria-label="Title">' +
+      (b.td && todoById(b.td) ? '<span class="scribble">' + ICON.list + 'From your to-do list</span>' : '<span class="scribble">' + ICON.pen + 'Write here with Apple Pencil, or type</span>') +
+    '</div><button class="btn icon ghost" id="edClose" aria-label="Close">' + ICON.close + '</button></div>' +
+    '<div class="sugg" id="edSugg"' + (sugg.length ? '' : ' hidden') + '>' + suggHTML(sugg) + '</div>' +
+    '<div class="field"><span class="field-label">Category</span><div class="cats">' +
+      CATS.map(c => '<button class="chip cat-' + c.k + '" data-edcat="' + c.k + '" aria-pressed="' + (b.c === c.k) + '"><span class="dot"></span><span>' + c.l + '</span></button>').join('') +
+    '</div></div>' +
+    '<div class="field"><span class="field-label">' + DAY_SHORT[b.d] + ' ' + ds[b.d].getDate() + ' ' + MON_S[ds[b.d].getMonth()] + '<em id="edDur">' + dur(b.e - b.s) + '</em></span>' +
+      '<div class="times">' +
+        '<div class="tbox"><button data-t="s-" aria-label="Start 15 minutes earlier">−</button><span class="tval"><small>Start</small><b id="edS">' + hhmm(b.s) + '</b></span><button data-t="s+" aria-label="Start 15 minutes later">+</button></div>' +
+        '<div class="tbox"><button data-t="e-" aria-label="End 15 minutes earlier">−</button><span class="tval"><small>End</small><b id="edE">' + hhmm(b.e) + '</b></span><button data-t="e+" aria-label="End 15 minutes later">+</button></div>' +
+      '</div></div>' +
+    '<div class="field"><span class="field-label">Repeat on</span><div class="repeat" id="edRepeat">' + repeatHTML(b) + '</div></div>' +
+    '<div class="field"><span class="field-label">Notes</span><textarea class="ed-notes" id="edNotes" rows="2" placeholder="Details, location, links">' + esc(b.n || '') + '</textarea></div>' +
+    '<div class="ed-actions">' +
+      '<button class="btn icon danger" id="edDelete" aria-label="Delete block" title="Delete">' + ICON.trash + '</button>' +
+      '<button class="btn toggle-done" id="edDone" aria-pressed="' + !!b.done + '">' + ICON.check + '<span>' + (b.done ? 'Completed' : 'Mark done') + '</span></button>' +
+      '<div class="spacer"></div>' +
+      '<button class="btn primary" id="edSave">Done</button>' +
+    '</div>';
+}
+function suggestions(cur){
+  const seen = new Set(), out = [];
+  const q = (cur || '').trim().toLowerCase();
+  const pool = (state.prefs.recent || []).concat(state.week.blocks.slice().reverse().map(b => ({t: b.t, c: b.c})));
+  for (const r of pool){
+    if (!r || !r.t) continue;
+    const k = r.t.trim().toLowerCase();
+    if (seen.has(k) || k === q) continue;
+    if (q && !k.startsWith(q)) continue;
+    seen.add(k); out.push(r);
+    if (out.length >= 6) break;
+  }
+  return out;
+}
+function suggHTML(list){
+  return list.map(r => '<button class="cat-' + esc(r.c || 'work') + '" data-sugg="' + esc(r.t) + '" data-sc="' + esc(r.c || 'work') + '"><span class="dot"></span><span>' + esc(r.t) + '</span></button>').join('');
+}
+function sameAs(a, b){ return a.s === b.s && a.e === b.e && (a.t || '') === (b.t || '') && a.c === b.c; }
+function repeatHTML(b){
+  return DAY_LETTER.map((L, i) => {
+    if (i === b.d) return '<button class="self" aria-label="' + DAY_SHORT[i] + ' (this block)" disabled>' + L + '</button>';
+    const on = state.week.blocks.some(o => o.id !== b.id && o.d === i && sameAs(o, b));
+    return '<button data-rep="' + i + '" aria-pressed="' + on + '" aria-label="Repeat on ' + DAY_SHORT[i] + '">' + L + '</button>';
+  }).join('');
+}
+
+function positionEditor(){
+  const ed = els.editor;
+  if (!state.editing) return;
+  if (innerWidth < 600){ ed.classList.add('sheet'); ed.style.left = ''; ed.style.top = ''; return; }
+  ed.classList.remove('sheet');
+  const el = els.days.querySelector('.block[data-id="' + CSS.escape(state.editing.id) + '"]');
+  const W = ed.offsetWidth, H = ed.offsetHeight, M = 12;
+  let left = innerWidth / 2 - W / 2, top = innerHeight / 2 - H / 2;
+  if (el){
+    const r = el.getBoundingClientRect();
+    if (r.right + 12 + W <= innerWidth - M) left = r.right + 12;
+    else if (r.left - 12 - W >= M) left = r.left - 12 - W;
+    else left = clamp(r.left + r.width / 2 - W / 2, M, innerWidth - W - M);
+    top = clamp(r.top - 8, M, innerHeight - H - M);
+  }
+  ed.style.left = Math.round(left) + 'px';
+  ed.style.top = Math.round(top) + 'px';
+}
+
+function closeEditor(silent){
+  const ed = state.editing;
+  if (!ed) return;
+  state.editing = null;
+  const b = findBlock(ed.id);
+  if (b){
+    if (b.t && b.t.trim()){
+      b.t = b.t.trim();
+      const rec = (state.prefs.recent || []).filter(r => r.t.toLowerCase() !== b.t.toLowerCase());
+      rec.unshift({t: b.t, c: b.c});
+      state.prefs.recent = rec.slice(0, 12);
+      Store.savePrefs(state.prefs);
+    }
+    if (!ed.isNew && ed.snap && ed.snap !== snapshot()){ pushUndo(ed.snap); }
+    commit();
+  }
+  els.editor.hidden = true; els.scrim.hidden = true;
+  if (document.activeElement && els.editor.contains(document.activeElement)) document.activeElement.blur();
+  if (!silent){ renderBlocks(); renderDayHeads(); renderFooter(); renderBanner(); }
+  applyPendingRemote();
+}
+
+function editBlock(fn, rebuild){
+  const ed = state.editing; if (!ed) return;
+  const b = findBlock(ed.id); if (!b) return;
+  fn(b);
+  if (b.x) delete b.x;
+  commit();
+  renderBlocks(); renderDayHeads(); renderFooter(); renderBanner();
+  if (rebuild){
+    const focused = document.activeElement && document.activeElement.id;
+    const caret = focused === 'edTitle' ? $('edTitle').selectionStart : null;
+    buildEditor(); positionEditor();
+    if (focused === 'edTitle'){ const t = $('edTitle'); t.focus({preventScroll:true}); if (caret != null) t.setSelectionRange(caret, caret); }
+  }
+}
+
+els.editor.addEventListener('input', e => {
+  if (e.target.id === 'edTitle'){
+    const v = e.target.value;
+    editBlock(b => { b.t = v; });
+    const sg = suggestions(v), box = $('edSugg');
+    box.innerHTML = suggHTML(sg); box.hidden = !sg.length;
+    $('edRepeat').innerHTML = repeatHTML(findBlock(state.editing.id));
+  } else if (e.target.id === 'edNotes'){
+    const v = e.target.value; editBlock(b => { b.n = v; });
+  }
+});
+els.editor.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && e.target.id === 'edTitle'){ e.preventDefault(); closeEditor(); }
+});
+els.editor.addEventListener('click', e => {
+  const t = e.target.closest('button'); if (!t || !state.editing) return;
+  const id = t.id;
+  if (id === 'edClose' || id === 'edSave'){ closeEditor(); return; }
+  if (id === 'edDelete'){
+    const ed = state.editing;
+    const snap = ed.isNew ? state.undo[state.undo.length - 1] : (ed.snap || snapshot());
+    state.week.blocks = state.week.blocks.filter(b => b.id !== ed.id);
+    state.editing = null;
+    if (!ed.isNew) pushUndo(snap);
+    else { state.undo.pop(); renderUndo(); }
+    commit();
+    els.editor.hidden = true; els.scrim.hidden = true;
+    renderAll();
+    if (!ed.isNew) toast('Block deleted', 'Undo', undo);
+    return;
+  }
+  if (id === 'edDone'){ editBlock(b => { b.done = !b.done; syncTodoFromBlock(b); }, true); return; }
+  if (t.dataset.edcat){ const c = t.dataset.edcat; editBlock(b => { b.c = c; }, true); state.cat = c; renderPalette(); return; }
+  if (t.dataset.sugg != null){ const v = t.dataset.sugg, c = t.dataset.sc; editBlock(b => { b.t = v; b.c = c; }, true); return; }
+  if (t.dataset.t){
+    const k = t.dataset.t;
+    editBlock(b => {
+      if (k === 's-'){ const len = b.e - b.s; b.s = Math.max(0, b.s - SNAP); if (len > 0) b.e = b.s + len; }
+      if (k === 's+'){ const len = b.e - b.s; b.s = Math.min(DAY_MIN - len, b.s + SNAP); b.e = b.s + len; }
+      if (k === 'e-') b.e = Math.max(b.s + SNAP, b.e - SNAP);
+      if (k === 'e+') b.e = Math.min(DAY_MIN, b.e + SNAP);
+    }, true);
+    return;
+  }
+  if (t.dataset.rep != null){
+    const day = +t.dataset.rep;
+    const b = findBlock(state.editing.id);
+    const existing = state.week.blocks.find(o => o.id !== b.id && o.d === day && sameAs(o, b));
+    if (existing) state.week.blocks = state.week.blocks.filter(o => o !== existing);
+    else state.week.blocks.push({id: uid(), d: day, s: b.s, e: b.e, t: b.t, c: b.c, n: b.n || ''});
+    editBlock(() => {}, true);
+  }
+});
+els.scrim.addEventListener('pointerdown', e => {
+  e.preventDefault();
+  if (!els.editor.hidden) closeEditor();
+  closePresets(); closeSync();
+  closeMenu(); closeHelp();
+});
+
+/* ================= menu, help, toast ================= */
+function openMenu(){
+  const btn = $('moreBtn').getBoundingClientRect();
+  const hasSample = state.week.blocks.some(b => b.x);
+  els.menu.innerHTML =
+    '<button class="item" data-m="presets">' + ICON.layers + 'Presets</button>' +
+    (Store.isNative ? '<button class="item" data-m="sync">' + ICON.cloud + 'iCloud sync</button>' : '') +
+    '<button class="item" data-m="help">' + ICON.help + 'How it works</button>' +
+    '<hr>' +
+    '<button class="item" data-m="copy">' + ICON.copy + 'Copy last week’s blocks</button>' +
+    (hasSample ? '<button class="item" data-m="sample">' + ICON.sparkle + 'Clear examples</button>' : '') +
+    '<button class="item" data-m="ink">' + ICON.erase + 'Clear ink this week</button>' +
+    '<button class="item danger" data-m="clear">' + ICON.clear + 'Clear this week</button>' +
+    '<hr><div class="menu-label">Hour height</div>' +
+    '<div class="seg" role="group" aria-label="Hour height">' + Object.keys(DENSITY).map(k => '<button data-dens="' + k + '" aria-pressed="' + (state.density === k) + '">' + k[0].toUpperCase() + k.slice(1) + '</button>').join('') + '</div>';
+  els.menu.hidden = false;
+  els.menu.style.top = Math.round(btn.bottom + 8) + 'px';
+  els.menu.style.left = Math.round(clamp(btn.right - els.menu.offsetWidth, 12, innerWidth - els.menu.offsetWidth - 12)) + 'px';
+  els.scrim.hidden = false; els.scrim.classList.remove('dim');
+}
+function closeMenu(){ if (els.menu.hidden) return; els.menu.hidden = true; scrimCheck(); }
+function scrimCheck(){ if (els.editor.hidden && els.menu.hidden && els.help.hidden && els.presets.hidden && els.sync.hidden){ els.scrim.hidden = true; els.scrim.classList.remove('dim'); } }
+function openHelp(){ closeMenu(); els.help.hidden = false; els.scrim.hidden = false; els.scrim.classList.add('dim'); }
+function closeHelp(){ if (els.help.hidden) return; els.help.hidden = true; scrimCheck(); }
+
+els.menu.addEventListener('click', async e => {
+  const t = e.target.closest('button'); if (!t) return;
+  if (t.dataset.dens){ setDensity(t.dataset.dens); openMenu(); return; }
+  const m = t.dataset.m; closeMenu();
+  if (m === 'help') openHelp();
+  if (m === 'presets') openPresets();
+  if (m === 'sync') openSync();
+  if (m === 'day-save') openPresets({tab: 'day', saveDay: +t.dataset.day});
+  if (m === 'day-apply') openPresets({tab: 'day', saveDay: +t.dataset.day, targets: [+t.dataset.day], expandFirst: true});
+  if (m === 'day-clear') clearDay(+t.dataset.day);
+  if (m === 'copy') copyLastWeek();
+  if (m === 'sample') clearSamples();
+  if (m === 'ink') clearInk();
+  if (m === 'clear'){
+    if (!state.week.blocks.length && !state.week.strokes.length){ toast('This week is already empty'); return; }
+    pushUndo(); state.week.blocks = []; state.week.strokes = []; commit(); renderAll();
+    toast('Week cleared', 'Undo', undo);
+  }
+});
+
+function clearSamples(){
+  pushUndo(); state.week.blocks = state.week.blocks.filter(b => !b.x); commit(); renderAll();
+  toast('Examples cleared. The week is yours', 'Undo', undo);
+}
+function clearInk(){
+  if (!state.week.strokes.length){ toast('There is no ink on this week'); return; }
+  pushUndo(); state.week.strokes = []; commit(); renderAll();
+  toast('Ink cleared', 'Undo', undo);
+}
+async function copyLastWeek(){
+  const prevKey = keyOf(addDays(state.weekStart, -7));
+  const myKey = state.key;
+  const prev = normalize(await Store.getWeek(prevKey));
+  if (myKey !== state.key) return;
+  if (!prev.blocks.length){ toast('Last week has no blocks to copy'); return; }
+  pushUndo();
+  let added = 0;
+  for (const b of prev.blocks){
+    if (state.week.blocks.some(o => o.d === b.d && sameAs(o, b))) continue;
+    state.week.blocks.push({id: uid(), d: b.d, s: b.s, e: b.e, t: b.t, c: b.c, n: b.n || ''});
+    added++;
+  }
+  commit(); renderAll();
+  toast(added ? 'Copied ' + added + ' block' + (added === 1 ? '' : 's') + ' from last week' : 'Everything from last week is already here', added ? 'Undo' : null, undo);
+}
+
+let toastTimer = 0;
+function toast(msg, action, fn){
+  const el = $('toast'), btn = $('toastAction');
+  $('toastMsg').textContent = msg;
+  btn.hidden = !action; btn.textContent = action || '';
+  btn.onclick = () => { el.classList.remove('show'); if (fn) fn(); };
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), action ? 5000 : 3200);
+}
+
+/* ================= shared lists (to-dos, presets) ================= */
+let tdrag = null;
+const todoById = id => state.todos.items.find(t => t.id === id);
+const presetById = id => state.presets.items.find(p => p.id === id);
+function saveList(kind){ const l = state[kind]; l.t = Date.now(); l.by = Store.clientId; Store.save(kind, l); }
+function normList(d){ return {items: Array.isArray(d && d.items) ? d.items.filter(x => x && x.id) : [], t: (d && d.t) || 0}; }
+function presetsBusy(){ const a = document.activeElement; return !els.presets.hidden && a && els.presets.contains(a) && a.tagName === 'INPUT'; }
+function onListData(kind){
+  return (data, k) => {
+    const cur = state[kind];
+    if (k === 'empty'){ if (cur.t) Store.save(kind, cur); }
+    else {
+      const inc = normList(data);
+      if (k !== 'sync' && cur.t && inc.t < cur.t){ Store.save(kind, cur); return; }
+      if (kind === 'todos' && (state.todoEditing || tdrag)){ state.pendingTodos = inc; return; }
+      state[kind] = inc;
+    }
+    if (kind === 'todos') renderTodos();
+    else { if (!presetsBusy()) renderPresets(); renderEmpty(); }
+  };
+}
+function applyPendingTodos(){
+  if (state.pendingTodos && !state.todoEditing && !tdrag){ state.todos = state.pendingTodos; state.pendingTodos = null; renderTodos(); }
+}
+function statsOf(blocks){
+  const n = blocks.length, m = blocks.reduce((a, b) => a + (b.e - b.s), 0);
+  return n + ' block' + (n === 1 ? '' : 's') + ' · ' + dur(m);
+}
+
+/* ================= to-do list =================
+   A to-do lives in one list across all weeks. Dragging it onto the week creates a
+   block that remembers the to-do (block.td), so ticking either one ticks both. */
+function linkedBlocks(id){ return state.week.blocks.filter(b => b.td === id).sort((a, b) => a.d - b.d || a.s - b.s); }
+function todoItemHTML(t){
+  const id = esc(t.id);
+  const check = '<button class="td-check" aria-pressed="' + !!t.done + '" aria-label="' + (t.done ? 'Mark not done' : 'Mark done') + '">' + ICON.check + '</button>';
+  if (state.todoEditing === t.id){
+    return '<li class="td-item editing" data-id="' + id + '">' + check +
+      '<div class="td-edit"><input id="tdEdit" type="text" enterkeyhint="done" autocomplete="off" value="' + esc(t.t) + '" aria-label="Edit to-do">' +
+      '<button class="td-del" aria-label="Delete to-do" title="Delete">' + ICON.trash + '</button></div></li>';
+  }
+  const bs = linkedBlocks(t.id);
+  let meta = '';
+  if (bs.length){
+    const b = bs[0];
+    meta = '<span class="td-meta cat-' + esc(b.c || 'work') + '"><span class="dot"></span>' + DAY_SHORT[b.d] + ' ' + hhmm(b.s) + (bs.length > 1 ? ' +' + (bs.length - 1) : '') + '</span>';
+  }
+  return '<li class="td-item' + (t.done ? ' done' : '') + (state.freshTodo === t.id ? ' fresh' : '') + '" data-id="' + id + '">' + check +
+    '<div class="td-body"><span class="td-text">' + esc(t.t) + '</span>' + meta + '</div>' +
+    (t.done ? '' : '<span class="td-grip" aria-hidden="true">' + ICON.grip + '</span>') + '</li>';
+}
+function renderTodos(){
+  const items = state.todos.items;
+  const open = items.filter(t => !t.done);
+  const done = items.filter(t => t.done).sort((a, b) => (b.dt || 0) - (a.dt || 0));
+  const cnt = $('todoCount'); cnt.textContent = open.length; cnt.hidden = !open.length;
+  $('todoBtn').setAttribute('aria-pressed', state.todoOpen);
+  els.todo.hidden = !state.todoOpen;
+  if (!state.todoOpen) return;
+  $('tdCount').textContent = open.length ? open.length + ' open' : '';
+  els.tdList.innerHTML = open.length ? open.map(todoItemHTML).join('') :
+    '<li class="td-empty">' + ICON.list + '<b>' + (done.length ? 'All done' : 'Your list is clear') + '</b><span>Write a task above with your Pencil. Then drag it onto the week to give it a time.</span></li>';
+  let dh = '';
+  if (done.length){
+    dh = '<div class="td-done-head"><button class="td-done-toggle" id="tdDoneToggle" aria-expanded="' + state.showDone + '">' + ICON.chev + 'Completed <b>' + done.length + '</b></button>' +
+      '<button class="btn ghost" id="tdClear">Clear</button></div>';
+    if (state.showDone) dh += '<ul class="td-list">' + done.map(todoItemHTML).join('') + '</ul>';
+  }
+  els.tdDone.innerHTML = dh;
+  $('tdHint').hidden = !open.length;
+  state.freshTodo = null;
+}
+function setTodoOpen(v){
+  if (state.todoEditing) commitTodoEdit();
+  state.todoOpen = v; state.prefs.todoOpen = v; Store.savePrefs(state.prefs);
+  renderTodos();
+}
+function addTodo(text){
+  const t = {id: uid(), t: text, done: false, at: Date.now()};
+  state.todos.items.unshift(t);
+  state.freshTodo = t.id;
+  saveList('todos'); renderTodos();
+}
+function toggleTodo(id){
+  const t = todoById(id); if (!t) return;
+  t.done = !t.done; t.dt = t.done ? Date.now() : 0;
+  saveList('todos');
+  let changed = false;
+  state.week.blocks.forEach(b => { if (b.td === id && !!b.done !== t.done){ b.done = t.done; changed = true; } });
+  if (changed){ commit(); renderBlocks(); }
+  renderTodos();
+}
+function syncTodoFromBlock(b){
+  if (!b.td) return;
+  const t = todoById(b.td);
+  if (!t || !!t.done === !!b.done) return;
+  t.done = !!b.done; t.dt = t.done ? Date.now() : 0;
+  saveList('todos'); renderTodos();
+}
+function removeTodo(id){
+  const i = state.todos.items.findIndex(t => t.id === id); if (i < 0) return;
+  const [t] = state.todos.items.splice(i, 1);
+  if (state.todoEditing === id) state.todoEditing = null;
+  saveList('todos'); renderTodos();
+  toast('To-do deleted', 'Undo', () => { state.todos.items.splice(Math.min(i, state.todos.items.length), 0, t); saveList('todos'); renderTodos(); });
+}
+function clearDoneTodos(){
+  const before = state.todos.items.slice();
+  const n = before.filter(t => t.done).length; if (!n) return;
+  state.todos.items = before.filter(t => !t.done);
+  saveList('todos'); renderTodos();
+  toast('Cleared ' + n + ' completed', 'Undo', () => { state.todos.items = before; saveList('todos'); renderTodos(); });
+}
+function beginTodoEdit(id, kind){
+  if (!todoById(id)) return;
+  state.todoEditing = id; renderTodos();
+  const inp = $('tdEdit'); if (!inp) return;
+  // With the Pencil we leave it unfocused so you can write straight into it (Scribble) without the keyboard.
+  if (kind !== 'pen'){ inp.focus({preventScroll: true}); const n = inp.value.length; try { inp.setSelectionRange(n, n); } catch {} }
+}
+function commitTodoEdit(){
+  const id = state.todoEditing; if (!id) return;
+  const inp = $('tdEdit'), t = todoById(id);
+  state.todoEditing = null;
+  if (t && inp){
+    const v = inp.value.trim();
+    if (!v){ state.todoEditing = id; removeTodo(id); return; }
+    if (v !== t.t){
+      const old = t.t; t.t = v; saveList('todos');
+      let changed = false;
+      state.week.blocks.forEach(b => { if (b.td === id && b.t === old){ b.t = v; changed = true; } });
+      if (changed){ commit(); renderBlocks(); }
+    }
+  }
+  // Replace only the edited row, so a tap that ended the edit still lands on its own button.
+  const li = els.todo.querySelector('.td-item.editing');
+  if (li && t) li.outerHTML = todoItemHTML(t); else renderTodos();
+  applyPendingTodos();
+}
+
+$('tdForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const inp = $('tdInput'), v = inp.value.trim();
+  if (!v) return;
+  addTodo(v); inp.value = '';
+});
+$('todoBtn').addEventListener('click', () => setTodoOpen(!state.todoOpen));
+els.todo.addEventListener('click', e => {
+  const chk = e.target.closest('.td-check');
+  if (chk){ const li = chk.closest('.td-item'); if (li) toggleTodo(li.dataset.id); return; }
+  if (e.target.closest('#tdDoneToggle')){ state.showDone = !state.showDone; renderTodos(); return; }
+  if (e.target.closest('#tdClear')){ clearDoneTodos(); return; }
+  if (e.target.closest('#tdClose')) setTodoOpen(false);
+});
+els.todo.addEventListener('keydown', e => {
+  if (e.target.id === 'tdEdit' && (e.key === 'Enter' || e.key === 'Escape')){ e.preventDefault(); e.stopPropagation(); commitTodoEdit(); }
+});
+els.todo.addEventListener('focusout', e => {
+  if (e.target.id !== 'tdEdit') return;
+  setTimeout(() => { if (state.todoEditing && (!document.activeElement || document.activeElement.id !== 'tdEdit')) commitTodoEdit(); }, 0);
+});
+// Any tap outside the row being edited finishes the edit first.
+document.addEventListener('pointerdown', e => {
+  if (state.todoEditing && !(e.target.closest && e.target.closest('.td-edit'))) commitTodoEdit();
+}, true);
+
+/* dragging a to-do onto the week: Pencil or mouse drags right away, a finger presses and holds first */
+const overlayTodo = () => matchMedia('(max-width: 999px)').matches;
+els.todo.addEventListener('pointerdown', e => {
+  if (e.button > 0 || tdrag) return;
+  const del = e.target.closest('.td-del');
+  if (del){ e.preventDefault(); if (state.todoEditing) removeTodo(state.todoEditing); return; }
+  const li = e.target.closest('.td-item');
+  if (!li || li.classList.contains('editing') || e.target.closest('.td-check')) return;
+  const t = todoById(li.dataset.id); if (!t) return;
+  tdrag = {id: t.id, pointerId: e.pointerId, kind: e.pointerType, x0: e.clientX, y0: e.clientY, x: e.clientX, y: e.clientY, started: false, canDrag: !t.done};
+  if (e.pointerType === 'touch'){ if (tdrag.canDrag) tdrag.timer = setTimeout(startTodoDrag, 380); }
+  else e.preventDefault();
+});
+els.todo.addEventListener('touchstart', e => {
+  const t = e.touches[0];
+  if (t && t.touchType === 'stylus' && e.target.closest('.td-item:not(.done):not(.editing)') && !e.target.closest('.td-check')) e.preventDefault();
+}, {passive: false});
+document.addEventListener('touchmove', e => { if (tdrag && tdrag.started) e.preventDefault(); }, {passive: false});
+window.addEventListener('pointermove', e => {
+  if (!tdrag || e.pointerId !== tdrag.pointerId) return;
+  tdrag.x = e.clientX; tdrag.y = e.clientY;
+  if (!tdrag.started){
+    const dist = Math.hypot(e.clientX - tdrag.x0, e.clientY - tdrag.y0);
+    if (tdrag.kind === 'touch'){ if (dist > 10){ clearTimeout(tdrag.timer); tdrag = null; } return; }
+    if (dist < 6 || !tdrag.canDrag) return;
+    startTodoDrag();
+  }
+  e.preventDefault();
+  moveTodoDrag();
+}, {passive: false});
+window.addEventListener('pointerup', e => endTodoDrag(e, false));
+window.addEventListener('pointercancel', e => endTodoDrag(e, true));
+
+function startTodoDrag(){
+  if (!tdrag) return;
+  const t = todoById(tdrag.id); if (!t){ tdrag = null; return; }
+  tdrag.started = true;
+  const li = els.todo.querySelector('.td-item[data-id="' + CSS.escape(t.id) + '"]');
+  if (li) li.classList.add('lifted');
+  els.todoGhost.querySelector('b').textContent = t.t;
+  els.todoGhost.hidden = false;
+  if (overlayTodo()) els.todo.classList.add('away');   // narrow screens: get the panel out of the way
+  if (navigator.vibrate) try { navigator.vibrate(8); } catch {}
+  moveTodoDrag();
+}
+function moveTodoDrag(){
+  if (!tdrag || !tdrag.started) return;
+  const x = tdrag.x, y = tdrag.y, g = els.todoGhost;
+  g.style.left = x + 'px'; g.style.top = y + 'px';
+  const sr = els.scroller.getBoundingClientRect(), dr = els.days.getBoundingClientRect(), gr = els.gutter.getBoundingClientRect();
+  const panelBlocks = !overlayTodo() && !els.todo.hidden && x >= els.todo.getBoundingClientRect().left;
+  const inside = !panelBlocks && x > Math.max(gr.right, dr.left) && x < Math.min(sr.right, dr.right) && y > sr.top + els.dayheads.offsetHeight && y < sr.bottom;
+  const label = g.querySelector('span');
+  if (inside){
+    const p = pos(x, y), t = todoById(tdrag.id);
+    const s0 = clamp(floorSnap(p.min), 0, DAY_MIN - 60);
+    state.ghost = {d: p.day, s: s0, e: s0 + 60, t: t ? t.t : ''};
+    label.textContent = DAY_FULL[p.day] + ' · ' + hhmm(s0);
+    g.classList.add('over');
+  } else {
+    state.ghost = null;
+    label.textContent = 'Drop on a day to schedule';
+    g.classList.remove('over');
+  }
+  scheduleRender();
+  if (!panelBlocks && x > sr.left && x < sr.right && y > sr.top - 40 && y < sr.bottom + 40) autoScroll(y, moveTodoDrag); else stopAutoScroll();
+}
+function endTodoDrag(e, cancelled){
+  if (!tdrag || e.pointerId !== tdrag.pointerId) return;
+  const d = tdrag; tdrag = null;
+  clearTimeout(d.timer); stopAutoScroll();
+  if (!d.started){
+    if (!cancelled) beginTodoEdit(d.id, d.kind);
+    applyPendingTodos();
+    return;
+  }
+  els.todoGhost.hidden = true; els.todoGhost.classList.remove('over');
+  els.todo.classList.remove('away');
+  const g = state.ghost; state.ghost = null;
+  const t = todoById(d.id);
+  if (g && t && !cancelled){
+    pushUndo();
+    const b = {id: uid(), d: g.d, s: g.s, e: g.e, t: t.t, c: state.cat, td: t.id};
+    state.week.blocks.push(b);
+    commit(); renderAll();
+    toast('Scheduled for ' + DAY_FULL[g.d] + ' at ' + hhmm(g.s), 'Edit', () => openEditor(b.id, {}));
+  } else { renderBlocks(); renderTodos(); }
+  applyPendingTodos(); applyPendingRemote();
+}
+
+/* ================= presets =================
+   A preset is a saved copy of a day's or a week's blocks (no ink, no ticks).
+   Applying one copies those blocks into the current week. */
+function cleanBlock(b, withDay){
+  const o = {s: b.s, e: b.e, t: b.t || '', c: b.c || 'work'};
+  if (b.n) o.n = b.n;
+  if (withDay) o.d = b.d;
+  return o;
+}
+function miniHTML(p){
+  const cols = p.kind === 'week' ? 7 : 1;
+  let lo = 6 * 60, hi = 22 * 60;
+  p.blocks.forEach(b => { lo = Math.min(lo, b.s); hi = Math.max(hi, b.e); });
+  const span = hi - lo || 1;
+  let h = '<span class="ps-mini ' + p.kind + '" aria-hidden="true">';
+  for (let d = 0; d < cols; d++){
+    h += '<span class="mc">';
+    p.blocks.forEach(b => {
+      if (p.kind === 'week' && b.d !== d) return;
+      h += '<i class="cat-' + esc(b.c || 'work') + '" style="top:' + ((b.s - lo) / span * 100).toFixed(1) + '%;height:' + Math.max(4, (b.e - b.s) / span * 100).toFixed(1) + '%"></i>';
+    });
+    h += '</span>';
+  }
+  return h + '</span>';
+}
+function presetRowHTML(p){
+  const open = state.presetOpenId === p.id, id = esc(p.id);
+  let h = '<div class="ps-row' + (open ? ' open' : '') + (state.freshPreset === p.id ? ' fresh' : '') + '" data-pid="' + id + '">' +
+    '<button class="ps-main" data-popen="' + id + '" aria-expanded="' + open + '">' + miniHTML(p) +
+    '<span class="ps-info"><b>' + esc(p.name || 'Untitled preset') + '</b><span>' + statsOf(p.blocks) + '</span></span>' +
+    '<span class="ps-go">' + (open ? ICON.chevUp : 'Apply') + '</span></button>';
+  if (open){
+    const tg = state.presetTargets;
+    h += '<div class="ps-panel">';
+    if (p.kind === 'day'){
+      h += '<div class="field"><span class="field-label">Apply to</span><div class="daypick" role="group" aria-label="Days to apply to">' +
+        DAY_LETTER.map((L, i) => '<button data-target="' + i + '" aria-pressed="' + tg.includes(i) + '" aria-label="' + DAY_FULL[i] + '">' + L + '</button>').join('') + '</div>' +
+        '<div class="ps-quick"><button data-q="weekdays">Weekdays</button><button data-q="weekend">Weekend</button><button data-q="all">Every day</button>' + (tg.length ? '<button data-q="none">None</button>' : '') + '</div></div>';
+    }
+    h += '<div class="field"><span class="field-label">Blocks already planned' + (p.kind === 'day' ? ' on those days' : ' this week') + '</span><div class="seg ps-mode" role="group">' +
+      '<button data-mode="add" aria-pressed="' + !state.presetReplace + '">Keep them</button>' +
+      '<button data-mode="replace" aria-pressed="' + state.presetReplace + '">Replace them</button></div></div>';
+    h += '<div class="field"><span class="field-label">Name</span><input class="ps-input" data-rename="' + id + '" type="text" autocomplete="off" enterkeyhint="done" value="' + esc(p.name) + '" aria-label="Preset name"></div>';
+    const n = tg.length;
+    const label = p.kind === 'week' ? 'Apply to this week' : !n ? 'Pick days above' : n === 1 ? 'Apply to ' + DAY_FULL[tg[0]] : 'Apply to ' + n + ' days';
+    h += '<div class="ed-actions"><button class="btn icon danger" data-pdel="' + id + '" aria-label="Delete preset" title="Delete preset">' + ICON.trash + '</button><div class="spacer"></div>' +
+      '<button class="btn primary" data-papply="' + id + '"' + (p.kind === 'day' && !n ? ' disabled' : '') + '>' + label + '</button></div></div>';
+  }
+  return h + '</div>';
+}
+function renderPresets(){
+  if (els.presets.hidden) return;
+  const tab = state.presetTab, ds = weekDates();
+  const list = state.presets.items.filter(p => p.kind === tab);
+  let save, count, placeholder;
+  if (tab === 'day'){
+    const d = state.presetSaveDay, bl = state.week.blocks.filter(b => b.d === d);
+    count = bl.length; placeholder = 'Name it, e.g. Office day';
+    save = '<span class="field-label">Save a day from this week</span>' +
+      '<div class="daypick" role="group" aria-label="Day to save">' + DAY_LETTER.map((L, i) => {
+        const has = state.week.blocks.some(b => b.d === i);
+        return '<button data-saveday="' + i + '" class="' + (has ? 'has' : '') + '" aria-pressed="' + (i === d) + '" aria-label="' + DAY_FULL[i] + '">' + L + '</button>';
+      }).join('') + '</div>' +
+      '<span class="ps-sum">' + DAY_FULL[d] + ' ' + ds[d].getDate() + ' ' + MON_S[ds[d].getMonth()] + ' · ' + (count ? statsOf(bl) : 'nothing planned yet') + '</span>';
+  } else {
+    count = state.week.blocks.length; placeholder = 'Name it, e.g. Normal work week';
+    save = '<span class="field-label">Save this week</span><span class="ps-sum">' + esc(els.weekTitle.textContent) + ' · ' + (count ? statsOf(state.week.blocks) : 'nothing planned yet') + '</span>';
+  }
+  save += '<div class="ps-name-row"><input class="ps-input" id="psName" type="text" autocomplete="off" enterkeyhint="done" placeholder="' + placeholder + '" value="' + esc(state.presetDraft) + '" aria-label="Preset name">' +
+    '<button class="btn primary" id="psSave"' + (count ? '' : ' disabled') + '>' + ICON.bookmark + '<span>Save</span></button></div>';
+  const empty = tab === 'day'
+    ? '<div class="ps-empty"><b>No day presets yet</b>Pick a day above and save it. Then apply it to any days you like, such as your office routine on Monday to Thursday.</div>'
+    : '<div class="ps-empty"><b>No week presets yet</b>Save this week above. Next week you can apply it in one tap and adjust from there.</div>';
+  els.presets.className = 'pop presets' + (innerWidth < 600 ? ' sheet' : '');
+  els.presets.innerHTML =
+    '<div class="ps-head"><div><h2>Presets</h2><p>Save a day or week you like and reuse it in one tap.</p></div><button class="btn icon ghost" id="psClose" aria-label="Close">' + ICON.close + '</button></div>' +
+    '<div class="seg ps-tabs" role="group" aria-label="Preset type"><button data-ptab="day" aria-pressed="' + (tab === 'day') + '">Day presets</button><button data-ptab="week" aria-pressed="' + (tab === 'week') + '">Week presets</button></div>' +
+    '<section class="ps-save">' + save + '</section>' +
+    '<div class="ps-list-head"><span class="field-label">Your ' + tab + ' presets</span></div>' +
+    '<div class="ps-list">' + (list.length ? list.map(presetRowHTML).join('') : empty) + '</div>';
+  state.freshPreset = null;
+}
+function openPresets(opts){
+  opts = opts || {};
+  closeMenu();
+  if (state.editing) closeEditor();
+  if (opts.tab) state.presetTab = opts.tab;
+  const ti = todayIndex();
+  state.presetSaveDay = opts.saveDay != null ? opts.saveDay : (ti >= 0 ? ti : 0);
+  state.presetTargets = opts.targets ? opts.targets.slice() : [];
+  state.presetReplace = false; state.presetDraft = ''; state.presetOpenId = null;
+  if (opts.expandFirst){ const first = state.presets.items.find(p => p.kind === state.presetTab); if (first) state.presetOpenId = first.id; }
+  els.presets.hidden = false; els.scrim.hidden = false; els.scrim.classList.add('dim');
+  renderPresets();
+  els.presets.scrollTop = 0;
+}
+function closePresets(){ if (els.presets.hidden) return; els.presets.hidden = true; scrimCheck(); }
+function savePreset(){
+  const tab = state.presetTab, ds = weekDates();
+  const name = (($('psName') || {}).value || '').trim();
+  let blocks, def;
+  if (tab === 'day'){
+    const d = state.presetSaveDay;
+    blocks = state.week.blocks.filter(b => b.d === d).sort((a, b) => a.s - b.s).map(b => cleanBlock(b, false));
+    def = DAY_FULL[d] + ' plan';
+  } else {
+    blocks = state.week.blocks.slice().sort((a, b) => a.d - b.d || a.s - b.s).map(b => cleanBlock(b, true));
+    def = 'Week of ' + MON_S[ds[0].getMonth()] + ' ' + ds[0].getDate();
+  }
+  if (!blocks.length){ toast('There are no blocks to save yet'); return; }
+  const p = {id: uid(), kind: tab, name: name || def, blocks, at: Date.now()};
+  state.presets.items.unshift(p);
+  state.presetDraft = ''; state.presetOpenId = null; state.freshPreset = p.id;
+  saveList('presets'); renderPresets(); renderEmpty();
+  toast('Saved “' + p.name + '”');
+}
+function daysLabel(days){
+  const k = days.slice().sort().join('');
+  if (k === '01234') return 'weekdays';
+  if (k === '56') return 'the weekend';
+  if (k === '0123456') return 'every day';
+  return days.slice().sort().map(d => DAY_SHORT[d]).join(', ');
+}
+function applyPreset(p, days, replace){
+  pushUndo();
+  if (replace) state.week.blocks = state.week.blocks.filter(b => !days.includes(b.d));
+  let added = 0;
+  for (const d of days){
+    const src = p.kind === 'week' ? p.blocks.filter(b => b.d === d) : p.blocks;
+    for (const b of src){
+      const nb = {id: uid(), d, s: b.s, e: b.e, t: b.t || '', c: b.c || 'work', n: b.n || ''};
+      if (!replace && state.week.blocks.some(o => o.d === d && sameAs(o, nb))) continue;
+      state.week.blocks.push(nb); added++;
+    }
+  }
+  if (!added && !replace){ state.undo.pop(); renderUndo(); return 0; }
+  commit(); renderAll();
+  return added || -1;
+}
+function deletePreset(id){
+  const i = state.presets.items.findIndex(p => p.id === id); if (i < 0) return;
+  const [p] = state.presets.items.splice(i, 1);
+  if (state.presetOpenId === id) state.presetOpenId = null;
+  saveList('presets'); renderPresets(); renderEmpty();
+  toast('Deleted “' + p.name + '”', 'Undo', () => { state.presets.items.splice(Math.min(i, state.presets.items.length), 0, p); saveList('presets'); renderPresets(); renderEmpty(); });
+}
+
+els.presets.addEventListener('click', e => {
+  const t = e.target.closest('button'); if (!t) return;
+  const ds = t.dataset;
+  if (t.id === 'psClose'){ closePresets(); return; }
+  if (t.id === 'psSave'){ savePreset(); return; }
+  if (ds.ptab){ state.presetTab = ds.ptab; state.presetOpenId = null; renderPresets(); return; }
+  if (ds.saveday != null){ state.presetSaveDay = +ds.saveday; renderPresets(); return; }
+  if (ds.popen){ state.presetOpenId = state.presetOpenId === ds.popen ? null : ds.popen; renderPresets(); return; }
+  if (ds.target != null){
+    const d = +ds.target, tg = state.presetTargets;
+    state.presetTargets = tg.includes(d) ? tg.filter(x => x !== d) : tg.concat(d).sort();
+    renderPresets(); return;
+  }
+  if (ds.q){ state.presetTargets = {weekdays: [0,1,2,3,4], weekend: [5,6], all: [0,1,2,3,4,5,6], none: []}[ds.q]; renderPresets(); return; }
+  if (ds.mode){ state.presetReplace = ds.mode === 'replace'; renderPresets(); return; }
+  if (ds.pdel){ deletePreset(ds.pdel); return; }
+  if (ds.papply){
+    const p = presetById(ds.papply); if (!p) return;
+    const days = p.kind === 'week' ? [0,1,2,3,4,5,6] : state.presetTargets.slice();
+    if (!days.length) return;
+    const added = applyPreset(p, days, state.presetReplace);
+    closePresets();
+    if (!added) toast('Everything in “' + p.name + '” is already planned');
+    else toast('Applied “' + p.name + '”' + (p.kind === 'day' ? ' to ' + daysLabel(days) : ''), 'Undo', undo);
+  }
+});
+els.presets.addEventListener('input', e => {
+  if (e.target.id === 'psName') state.presetDraft = e.target.value;
+  const rid = e.target.dataset && e.target.dataset.rename;
+  if (rid){
+    const p = presetById(rid); if (!p) return;
+    p.name = e.target.value; saveList('presets');
+    const b = e.target.closest('.ps-row').querySelector('.ps-info b'); if (b) b.textContent = p.name || 'Untitled preset';
+  }
+});
+els.presets.addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return;
+  if (e.target.id === 'psName'){ e.preventDefault(); savePreset(); }
+  else if (e.target.dataset && e.target.dataset.rename){ e.preventDefault(); e.target.blur(); }
+});
+els.presets.addEventListener('focusout', e => {
+  const rid = e.target.dataset && e.target.dataset.rename; if (!rid) return;
+  const p = presetById(rid);
+  if (p && !p.name.trim()){ p.name = 'Untitled preset'; saveList('presets'); e.target.value = p.name; }
+});
+$('presetsBtn').addEventListener('click', () => openPresets());
+$('emptyPreset').addEventListener('click', () => openPresets({tab: 'week', expandFirst: true}));
+
+/* ================= day header menu ================= */
+function openDayMenu(i, anchor){
+  closeMenu();
+  if (state.editing) closeEditor();
+  const ds = weekDates(), n = state.week.blocks.filter(b => b.d === i).length;
+  const hasDayPresets = state.presets.items.some(p => p.kind === 'day');
+  els.menu.innerHTML =
+    '<div class="menu-label">' + DAY_FULL[i] + ' ' + ds[i].getDate() + ' ' + MON_S[ds[i].getMonth()] + '</div>' +
+    '<button class="item" data-m="day-save" data-day="' + i + '"' + (n ? '' : ' disabled') + '>' + ICON.bookmark + 'Save as a day preset</button>' +
+    '<button class="item" data-m="day-apply" data-day="' + i + '">' + ICON.layers + (hasDayPresets ? 'Apply a day preset' : 'Day presets') + '</button>' +
+    '<hr><button class="item danger" data-m="day-clear" data-day="' + i + '"' + (n ? '' : ' disabled') + '>' + ICON.clear + 'Clear ' + DAY_FULL[i] + '</button>';
+  els.menu.hidden = false;
+  const r = anchor.getBoundingClientRect();
+  els.menu.style.top = Math.round(r.bottom + 6) + 'px';
+  els.menu.style.left = Math.round(clamp(r.left, 12, innerWidth - els.menu.offsetWidth - 12)) + 'px';
+  els.scrim.hidden = false; els.scrim.classList.remove('dim');
+}
+function clearDay(i){
+  if (!state.week.blocks.some(b => b.d === i)) return;
+  pushUndo();
+  state.week.blocks = state.week.blocks.filter(b => b.d !== i);
+  commit(); renderAll();
+  toast('Cleared ' + DAY_FULL[i], 'Undo', undo);
+}
+els.dayheads.addEventListener('click', e => {
+  const h = e.target.closest('.dh'); if (!h) return;
+  openDayMenu(dhCells.indexOf(h), h);
+});
+els.dayheads.addEventListener('keydown', e => {
+  const h = e.target.closest('.dh');
+  if (h && (e.key === 'Enter' || e.key === ' ')){ e.preventDefault(); openDayMenu(dhCells.indexOf(h), h); }
+});
+
+/* ================= toolbar & header wiring ================= */
+function setMode(m){
+  state.mode = m; renderPalette();
+  els.eraserDot.style.display = 'none';
+}
+['blocks','ink','erase'].forEach(m => $('mode-' + m).addEventListener('click', () => setMode(m)));
+els.palette.addEventListener('click', e => {
+  const t = e.target.closest('button'); if (!t) return;
+  if (t.dataset.cat){ state.cat = t.dataset.cat; state.prefs.cat = state.cat; Store.savePrefs(state.prefs); renderPalette(); }
+  if (t.dataset.ink){ state.ink = t.dataset.ink; state.prefs.ink = state.ink; Store.savePrefs(state.prefs); renderPalette(); }
+  if (t.dataset.size){ state.size = +t.dataset.size; state.prefs.size = state.size; Store.savePrefs(state.prefs); renderPalette(); }
+  if (t.dataset.act === 'clear-ink') clearInk();
+});
+$('prevWeek').addEventListener('click', () => goWeek(-1));
+$('nextWeek').addEventListener('click', () => goWeek(1));
+els.todayBtn.addEventListener('click', () => { openWeek(mondayOf(new Date())); scrollToStart(); });
+els.undoBtn.addEventListener('click', undo);
+els.redoBtn.addEventListener('click', redo);
+$('moreBtn').addEventListener('click', () => { if (els.menu.hidden) openMenu(); else closeMenu(); });
+$('helpClose').addEventListener('click', closeHelp);
+$('bannerHelp').addEventListener('click', openHelp);
+$('bannerClear').addEventListener('click', clearSamples);
+$('emptyCopy').addEventListener('click', copyLastWeek);
+$('addBtn').addEventListener('click', () => {
+  if (state.mode !== 'blocks') setMode('blocks');
+  const ti = todayIndex();
+  let d = 0, s = 9 * 60;
+  if (ti >= 0){ const n = new Date(); d = ti; s = clamp(Math.ceil((n.getHours() * 60 + n.getMinutes()) / 60) * 60, 0, 23 * 60); }
+  createBlock(d, s, s + 60, 'mouse');
+  const el = els.days.querySelector('.block[data-id="' + CSS.escape(state.editing.id) + '"]');
+  if (el){
+    const r = el.getBoundingClientRect(), sr = els.scroller.getBoundingClientRect();
+    if (r.top < sr.top + 60 || r.bottom > sr.bottom - 20){ els.scroller.scrollTop += r.top - sr.top - 120; positionEditor(); }
+  }
+});
+
+function setDensity(k){
+  if (!DENSITY[k]) return;
+  const centerMin = (els.scroller.scrollTop + els.scroller.clientHeight / 2) / mpx();
+  state.density = k; state.prefs.density = k; Store.savePrefs(state.prefs);
+  document.documentElement.style.setProperty('--hour', DENSITY[k] + 'px');
+  renderAll();
+  els.scroller.scrollTop = centerMin * mpx() - els.scroller.clientHeight / 2;
+}
+function scrollToStart(){
+  const ti = todayIndex();
+  let h = 7;
+  if (ti >= 0){ const nh = new Date().getHours(); if (nh >= 10 && nh < 19) h = nh - 2; }
+  els.scroller.scrollTop = h * hourPx() - 6;
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape'){ if (!els.sync.hidden) closeSync(); else if (!els.presets.hidden) closePresets(); else if (!els.help.hidden) closeHelp(); else if (!els.menu.hidden) closeMenu(); else closeEditor(); return; }
+  if (isEditable(e.target)) return;
+  const mod = e.metaKey || e.ctrlKey;
+  if (mod && e.key.toLowerCase() === 'z'){ e.preventDefault(); e.shiftKey ? redo() : undo(); return; }
+  if (mod && e.key.toLowerCase() === 'y'){ e.preventDefault(); redo(); return; }
+  if (mod || e.altKey) return;
+  if (!els.editor.hidden && (e.key === 'Backspace' || e.key === 'Delete')){ $('edDelete').click(); return; }
+  if (!els.editor.hidden || !els.presets.hidden || !els.help.hidden) return;
+  const k = e.key.toLowerCase();
+  if (e.key === 'ArrowLeft') goWeek(-1);
+  else if (e.key === 'ArrowRight') goWeek(1);
+  else if (k === 't') els.todayBtn.click();
+  else if (k === 'b') setMode('blocks');
+  else if (k === 'i') setMode('ink');
+  else if (k === 'e') setMode('erase');
+  else if (k === 'p') openPresets();
+  else if (k === 'd') setTodoOpen(!state.todoOpen);
+  else if (k === 'n') $('addBtn').click();
+});
+
+/* status line */
+Store.onStatus(s => {
+  const el = els.status, txt = el.querySelector('span');
+  el.className = 'status' + (s === 'syncing' ? ' busy' : (s === 'slow' || s === 'toolarge' || s === 'cloudError') ? ' warn' : s === 'nocloud' ? ' off' : '');
+  txt.textContent = ({
+    local: 'Saved on this device', syncing: Store.isNative ? 'Syncing…' : 'Saving…', cloud: 'Synced to your account',
+    slow: 'Can’t reach sync, saved on this device', toolarge: 'Too much ink to sync this week, saved on this device',
+    icloud: 'Synced with iCloud', nocloud: 'On this device only · Set up iCloud sync', cloudError: 'iCloud Drive not reachable, saved on this device',
+  })[s] || '';
+  if (!els.sync.hidden) renderSync();
+});
+els.status.addEventListener('click', () => { if (Store.isNative) openSync(); });
+els.status.addEventListener('keydown', e => { if (Store.isNative && (e.key === 'Enter' || e.key === ' ')){ e.preventDefault(); openSync(); } });
+
+/* ================= iCloud sync sheet (iOS app only) ================= */
+function ago(t){
+  if (!t) return 'not yet';
+  const m = Math.round((Date.now() - t) / 60000);
+  if (m < 1) return 'just now';
+  if (m < 60) return m + ' min ago';
+  const d = new Date(t); return 'at ' + hhmm(d.getHours() * 60 + d.getMinutes());
+}
+function openSync(){
+  closeMenu();
+  if (state.editing) closeEditor();
+  els.sync.hidden = false; els.scrim.hidden = false; els.scrim.classList.add('dim');
+  renderSync();
+}
+function closeSync(){ if (els.sync.hidden) return; els.sync.hidden = true; scrimCheck(); }
+function renderSync(){
+  const c = Store.cloud.info();
+  let h;
+  if (!c.linked){
+    h = '<div class="sync-icon"><svg class="i" viewBox="0 0 24 24"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.1 4.75 4.75 0 0 0 7 18.5z"/></svg></div><h2>Sync with iCloud</h2>' +
+      '<p>Keep your plans and to-dos in a folder in iCloud Drive. Choose the same folder on your iPhone and your iPad and both stay up to date.</p>' +
+      '<ol class="sync-steps"><li>Tap <b>Choose folder</b>.</li><li>Open <b>iCloud Drive</b>, make a new folder called <b>Pencilled In</b> and open it.</li><li>Tap <b>Open</b>. Then do the same on your other device.</li></ol>' +
+      '<div class="sync-actions"><button class="btn ghost" data-sync="close">Not now</button><button class="btn primary" data-sync="pick">Choose folder</button></div>';
+  } else {
+    const state2 = c.syncing ? 'Syncing now…' : c.status === 'cloudError' ? 'Last try failed: ' + esc(c.error || 'iCloud Drive not reachable') : 'Last synced ' + ago(c.lastSync);
+    h = '<div class="sync-icon on"><svg class="i" viewBox="0 0 24 24"><path d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.6 9.1 4.75 4.75 0 0 0 7 18.5z"/></svg></div><h2>iCloud sync is on</h2>' +
+      '<div class="sync-folder"><svg class="i" viewBox="0 0 24 24"><path d="M3.5 7.5a2 2 0 0 1 2-2h4l2 2h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z"/></svg><span>' + esc(c.folder || 'Chosen folder') + '</span></div>' +
+      (c.inICloud === false ? '<p class="sync-warn">This folder is stored on this device only, so other devices can’t see it. Choose a folder inside iCloud Drive instead.</p>' : '') +
+      '<p class="sync-state' + (c.status === 'cloudError' ? ' bad' : '') + '">' + state2 + '</p>' +
+      '<p class="sync-note">Changes usually reach your other device within a minute. Both devices need to be online, and edits made on both are combined.</p>' +
+      '<div class="sync-actions"><button class="btn ghost danger" data-sync="unlink">Stop syncing</button><span class="spacer"></span><button class="btn" data-sync="pick">Change folder</button><button class="btn primary" data-sync="now">Sync now</button></div>';
+  }
+  els.sync.innerHTML = '<button class="btn icon ghost sync-close" data-sync="close" aria-label="Close">' + ICON.close + '</button>' + h;
+}
+els.sync && els.sync.addEventListener('click', async e => {
+  const b = e.target.closest('[data-sync]'); if (!b) return;
+  const a = b.dataset.sync;
+  if (a === 'close'){ closeSync(); return; }
+  if (a === 'now'){ Store.cloud.syncNow(); toast('Syncing with iCloud'); return; }
+  if (a === 'unlink'){ await Store.cloud.unlink(); renderSync(); toast('iCloud sync is off. Your plans stay on this device'); return; }
+  if (a === 'pick'){
+    try {
+      const r = await Store.cloud.pick();
+      if (r){ renderSync(); toast('Syncing with ' + (r.folder || 'your folder')); }
+    } catch (err){ toast('Couldn’t use that folder: ' + ((err && err.message) || err)); }
+  }
+});
+
+/* resize: ink positions depend on column width */
+let lastW = 0;
+new ResizeObserver(() => {
+  const w = els.days.clientWidth;
+  if (w === lastW) return; lastW = w;
+  renderBlocks(); renderInk(); renderNow(); renderDayHeads();
+  if (state.editing) positionEditor();
+}).observe(els.days);
+addEventListener('resize', () => { if (state.editing){ const b = findBlock(state.editing.id); if (b) { buildEditor(); positionEditor(); } } closeMenu(); });
+setInterval(() => { renderNow(); if (state.key !== keyOf(mondayOf(new Date())) || todayIndex() < 0) renderHeader(); }, 30000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden){ renderNow(); renderHeader(); } });
+
+Store.cloud.setBusyCheck(name =>
+  (name === 'w' + state.key && !!(drag || state.editing || tdrag || state.ghost)) ||
+  (name === 'todos' && !!(state.todoEditing || tdrag)) ||
+  (name === 'presets' && presetsBusy()));
+
+/* ================= boot ================= */
+(async function boot(){
+  const local = (() => { try { return JSON.parse(localStorage.getItem('pencilledin:prefs') || 'null'); } catch { return null; } })();
+  applyPrefs(local);
+  state.key = keyOf(state.weekStart);
+  renderAll();
+  scrollToStart();
+  await Store.init();
+  const r = await Store.loadPrefs();
+  state.prefsAuthoritative = r.ok;
+  applyPrefs(r.data);
+  if (typeof state.prefs.todoOpen === 'boolean') state.todoOpen = state.prefs.todoOpen;
+  else state.todoOpen = innerWidth >= 1000;
+  if (Store.isNative){
+    els.status.setAttribute('role', 'button'); els.status.tabIndex = 0; els.status.classList.add('tappable');
+    if (!state.prefs.syncPrompted && !Store.cloud.info().linked){ state.prefs.syncPrompted = true; Store.savePrefs(state.prefs); setTimeout(openSync, 600); }
+  }
+  Store.watch('todos', onListData('todos'));
+  Store.watch('presets', onListData('presets'));
+  openWeek(state.weekStart);
+  scrollToStart();
+})();
+function applyPrefs(p){
+  if (!p) return;
+  state.prefs = Object.assign({seeded:false, recent:[]}, state.prefs, p);
+  if (CATS.some(c => c.k === p.cat)) state.cat = p.cat;
+  if (INKS.some(c => c.k === p.ink)) state.ink = p.ink;
+  if (SIZES.some(s => s.k === p.size)) state.size = p.size;
+  if (DENSITY[p.density]){ state.density = p.density; document.documentElement.style.setProperty('--hour', DENSITY[p.density] + 'px'); }
+}
+})();
+</script>
+</body></html>

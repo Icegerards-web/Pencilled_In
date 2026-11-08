@@ -1,0 +1,30 @@
+workflows:
+  ios-unsigned:
+    name: Unsigned IPA for SideStore
+    instance_type: mac_mini_m2
+    max_build_duration: 30
+    environment:
+      xcode: latest
+    scripts:
+      - name: Install XcodeGen
+        script: brew install xcodegen
+      - name: Bundle the fonts (falls back to Avenir Next if this fails)
+        script: |
+          mkdir -p Web/fonts
+          curl -fsSL -o Web/fonts/HankenGrotesk.ttf "https://github.com/google/fonts/raw/main/ofl/hankengrotesk/HankenGrotesk%5Bwght%5D.ttf" || echo "Hanken Grotesk not downloaded"
+          curl -fsSL -o Web/fonts/BricolageGrotesque.ttf "https://github.com/google/fonts/raw/main/ofl/bricolagegrotesque/BricolageGrotesque%5Bopsz,wdth,wght%5D.ttf" || echo "Bricolage Grotesque not downloaded"
+          ls -la Web/fonts
+      - name: Generate Xcode project
+        script: xcodegen generate
+      - name: Build unsigned app
+        script: |
+          xcodebuild -project PencilledIn.xcodeproj -scheme PencilledIn \
+            -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" build
+      - name: Package IPA
+        script: |
+          mkdir -p Payload
+          cp -R build/Build/Products/Release-iphoneos/PencilledIn.app Payload/
+          zip -qr PencilledIn.ipa Payload
+    artifacts:
+      - PencilledIn.ipa

@@ -1,0 +1,45 @@
+# XcodeGen spec. Codemagic turns this into PencilledIn.xcodeproj (`xcodegen generate`),
+# so the Xcode project itself is never committed.
+name: PencilledIn
+options:
+  bundleIdPrefix: com.icegerards
+  deploymentTarget:
+    iOS: "16.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    SWIFT_VERSION: "5.0"
+    SWIFT_STRICT_CONCURRENCY: minimal
+targets:
+  PencilledIn:
+    type: application
+    platform: iOS
+    sources:
+      - path: App/Sources
+      - path: App/Assets.xcassets
+      - path: Web
+        type: folder
+        buildPhase: resources
+    settings:
+      base:
+        PRODUCT_NAME: PencilledIn
+        PRODUCT_BUNDLE_IDENTIFIER: com.icegerards.pencilledin
+        INFOPLIST_FILE: App/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+        TARGETED_DEVICE_FAMILY: "1,2"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        SUPPORTS_MACCATALYST: NO
+        CODE_SIGN_STYLE: Automatic
+# Shared scheme, so `xcodebuild -scheme PencilledIn` finds it on a fresh CI checkout
+# (XcodeGen does not create schemes on its own).
+schemes:
+  PencilledIn:
+    build:
+      targets:
+        PencilledIn: all
+    run:
+      config: Debug
+    archive:
+      config: Release
